@@ -901,6 +901,7 @@ public class Chunk {
     }
 
     public void loadNearby(IChunkProvider ichunkprovider, IChunkProvider ichunkprovider1, int i, int j) {
+        world.timings.syncChunkLoadPostTimer.startTiming(); // Spigot
         boolean flag = ichunkprovider.isChunkLoaded(i, j - 1);
         boolean flag1 = ichunkprovider.isChunkLoaded(i + 1, j);
         boolean flag2 = ichunkprovider.isChunkLoaded(i, j + 1);
@@ -947,6 +948,7 @@ public class Chunk {
             }
         }
 
+        world.timings.syncChunkLoadPostTimer.stopTiming(); // Spigot
     }
 
     public BlockPosition h(BlockPosition blockposition) {
