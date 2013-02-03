@@ -15,7 +15,7 @@ public class EntityArrow extends Entity implements IProjectile {
     private int f = -1;
     private Block g;
     private int h;
-    private boolean inGround;
+    public boolean inGround = false; // Spigot - private -> public
     public int fromPlayer;
     public int shake;
     public Entity shooter;
@@ -23,6 +23,18 @@ public class EntityArrow extends Entity implements IProjectile {
     private int as;
     private double damage = 2.0D;
     public int knockbackStrength;
+
+    // Spigot Start
+    @Override
+    public void inactiveTick()
+    {
+        if ( this.inGround )
+        {
+            this.ar += 1; // Despawn counter. First int after shooter
+        }
+        super.inactiveTick();
+    }
+    // Spigot End
 
     public EntityArrow(World world) {
         super(world);

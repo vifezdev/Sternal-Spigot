@@ -5,6 +5,15 @@ public class EntityFireworks extends Entity {
     private int ticksFlown;
     public int expectedLifespan;
 
+    // Spigot Start
+    @Override
+    public void inactiveTick()
+    {
+        this.ticksFlown += 1;
+        super.inactiveTick();
+    }
+    // Spigot End
+
     public EntityFireworks(World world) {
         super(world);
         this.setSize(0.25F, 0.25F);

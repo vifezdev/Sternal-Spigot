@@ -140,4 +140,15 @@ public class SpigotWorldConfig
         mobSpawnRange = (byte) getInt( "mob-spawn-range", 4 );
         log( "Mob Spawn Range: " + mobSpawnRange );
     }
+
+    public int animalActivationRange = 32;
+    public int monsterActivationRange = 32;
+    public int miscActivationRange = 16;
+    private void activationRange()
+    {
+        animalActivationRange = getInt( "entity-activation-range.animals", animalActivationRange );
+        monsterActivationRange = getInt( "entity-activation-range.monsters", monsterActivationRange );
+        miscActivationRange = getInt( "entity-activation-range.misc", miscActivationRange );
+        log( "Entity Activation Range: An " + animalActivationRange + " / Mo " + monsterActivationRange + " / Mi " + miscActivationRange );
+    }
 }

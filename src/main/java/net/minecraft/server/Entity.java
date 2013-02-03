@@ -89,14 +89,14 @@ public abstract class Entity implements ICommandListener {
     public int ticksLived;
     public int maxFireTicks;
     public int fireTicks;
-    protected boolean inWater;
+    public boolean inWater; // Spigot - protected -> public // PAIL
     public int noDamageTicks;
     protected boolean justCreated;
     protected boolean fireProof;
     protected DataWatcher datawatcher;
     private double ar;
     private double as;
-    public boolean ad;
+    public boolean ad; public boolean isAddedToChunk() { return ad; } // Spigot // PAIL
     public int ae;
     public int af;
     public int ag;
@@ -116,7 +116,13 @@ public abstract class Entity implements ICommandListener {
     public org.bukkit.projectiles.ProjectileSource projectileSource; // CraftBukkit - For projectiles only
     public boolean forceExplosionKnockback; // CraftBukkit - SPIGOT-949
 
+    // Spigot start
     public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getEntityTimings(this); // Spigot
+    public final byte activationType = org.spigotmc.ActivationRange.initializeEntityActivationType(this);
+    public final boolean defaultActivationState;
+    public long activatedTick = Integer.MIN_VALUE;
+    public void inactiveTick() { }
+    // Spigot end
 
     public int getId() {
         return this.id;
@@ -146,7 +152,12 @@ public abstract class Entity implements ICommandListener {
         this.setPosition(0.0D, 0.0D, 0.0D);
         if (world != null) {
             this.dimension = world.worldProvider.getDimension();
+            // Spigot start
+            this.defaultActivationState = org.spigotmc.ActivationRange.initializeEntityActivationState(this, world.spigotConfig);
+        } else {
+            this.defaultActivationState = false;
         }
+        // Spigot end
 
         this.datawatcher = new DataWatcher(this);
         this.datawatcher.a(0, Byte.valueOf((byte) 0));
