@@ -108,7 +108,7 @@ public class ActivationRange
         maxRange = Math.max( maxRange, miscActivationRange );
         maxRange = Math.min( ( world.spigotConfig.viewDistance << 4 ) - 8, maxRange );
 
-        for ( Entity player : (List<Entity>) world.players )
+        for ( Entity player : (List<Entity>) (List) world.players )
         {
 
             player.activatedTick = MinecraftServer.currentTick;
@@ -190,7 +190,7 @@ public class ActivationRange
     public static boolean checkEntityImmunities(Entity entity)
     {
         // quick checks.
-        if ( entity.inWater /* isInWater */ || entity.fireTicks > 0 )
+        if ( entity.inWater || entity.fireTicks > 0 )
         {
             return true;
         }
@@ -217,14 +217,14 @@ public class ActivationRange
             {
                 return true;
             }
-            if ( entity instanceof EntityVillager && ( (EntityVillager) entity ).ck() /* Getter for first boolean */ )
+            if ( entity instanceof EntityVillager && ( (EntityVillager) entity ).cm() /* Getter for first boolean */ )
             {
                 return true;
             }
             if ( entity instanceof EntityAnimal )
             {
                 EntityAnimal animal = (EntityAnimal) entity;
-                if ( animal.isBaby() || animal.cp() /*love*/ )
+                if ( animal.isBaby() || animal.isInLove() )
                 {
                     return true;
                 }
