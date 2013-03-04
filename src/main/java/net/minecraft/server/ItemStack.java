@@ -339,6 +339,11 @@ public final class ItemStack {
     }
 
     public boolean isDamaged(int i, Random random) {
+        return isDamaged(i, random, null);
+    }
+
+    public boolean isDamaged(int i, Random random, EntityLiving entityliving) {
+        // Spigot end
         if (!this.e()) {
             return false;
         } else {
@@ -353,7 +358,16 @@ public final class ItemStack {
                 }
 
                 i -= k;
-                if (i <= 0) {
+                // Spigot start
+                if (entityliving instanceof EntityPlayer) {
+                    org.bukkit.craftbukkit.inventory.CraftItemStack item = org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(this);
+                    org.bukkit.event.player.PlayerItemDamageEvent event = new org.bukkit.event.player.PlayerItemDamageEvent((org.bukkit.entity.Player) entityliving.getBukkitEntity(), item, i);
+                    org.bukkit.Bukkit.getServer().getPluginManager().callEvent(event);
+                    if (event.isCancelled()) return false;
+                    i = event.getDamage();
+                }
+                // Spigot end
+                if (i <= 0 ) {
                     return false;
                 }
             }
@@ -366,7 +380,7 @@ public final class ItemStack {
     public void damage(int i, EntityLiving entityliving) {
         if (!(entityliving instanceof EntityHuman) || !((EntityHuman) entityliving).abilities.canInstantlyBuild) {
             if (this.e()) {
-                if (this.isDamaged(i, entityliving.bc())) {
+                if (this.isDamaged(i, entityliving.bc(), entityliving)) { // Spigot
                     entityliving.b(this);
                     --this.count;
                     if (entityliving instanceof EntityHuman) {
