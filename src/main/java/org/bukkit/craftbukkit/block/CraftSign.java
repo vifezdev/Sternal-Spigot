@@ -18,6 +18,12 @@ public class CraftSign extends CraftBlockState implements Sign {
 
         CraftWorld world = (CraftWorld) block.getWorld();
         sign = (TileEntitySign) world.getTileEntityAt(getX(), getY(), getZ());
+        // Spigot start
+        if (sign == null) {
+            lines = new String[]{"", "", "", ""};
+            return;
+        }
+        // Spigot end
         lines = new String[sign.lines.length];
         System.arraycopy(revertComponents(sign.lines), 0, lines, 0, lines.length);
     }
