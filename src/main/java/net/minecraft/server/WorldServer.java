@@ -62,7 +62,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         // CraftBukkit end
         this.server = minecraftserver;
         this.tracker = new EntityTracker(this);
-        this.manager = new PlayerChunkMap(this);
+        this.manager = new PlayerChunkMap(this, spigotConfig.viewDistance); // Spigot
         this.worldProvider.a(this);
         this.chunkProvider = this.k();
         this.Q = new org.bukkit.craftbukkit.CraftTravelAgent(this); // CraftBukkit

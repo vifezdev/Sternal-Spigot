@@ -28,9 +28,9 @@ public class PlayerChunkMap {
     private final int[][] i = new int[][] { { 1, 0}, { 0, 1}, { -1, 0}, { 0, -1}};
     private boolean wasNotEmpty; // CraftBukkit - add field
 
-    public PlayerChunkMap(WorldServer worldserver) {
+    public PlayerChunkMap(WorldServer worldserver, int viewDistance /* Spigot */) {
         this.world = worldserver;
-        this.a(worldserver.getMinecraftServer().getPlayerList().s());
+        this.a(viewDistance); // Spigot
     }
 
     public WorldServer a() {
