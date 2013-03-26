@@ -962,6 +962,31 @@ public final class CraftServer implements Server {
 
         worlds.remove(world.getName().toLowerCase());
         console.worlds.remove(console.worlds.indexOf(handle));
+
+        File parentFolder = world.getWorldFolder().getAbsoluteFile();
+
+        // Synchronized because access to RegionFileCache.a is guarded by this lock.
+        synchronized (RegionFileCache.class) {
+            // RegionFileCache.a should be RegionFileCache.cache
+            Iterator<Map.Entry<File, RegionFile>> i = RegionFileCache.a.entrySet().iterator();
+            while(i.hasNext()) {
+                Map.Entry<File, RegionFile> entry = i.next();
+                File child = entry.getKey().getAbsoluteFile();
+                while (child != null) {
+                    if (child.equals(parentFolder)) {
+                        i.remove();
+                        try {
+                            entry.getValue().c(); // Should be RegionFile.close();
+                        } catch (IOException ex) {
+                            getLogger().log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    child = child.getParentFile();
+                }
+            }
+        }
+
         return true;
     }
 
