@@ -18,6 +18,7 @@ import org.bukkit.Statistic.Type;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftStatistic;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -125,6 +126,22 @@ public class CraftEventFactory {
         BlockPlaceEvent event = new BlockPlaceEvent(placedBlock, replacedBlockState, blockClicked, player.getItemInHand(), player, canBuild);
         craftServer.getPluginManager().callEvent(event);
 
+        return event;
+    }
+
+    /**
+     * Mob spawner event
+     */
+    public static SpawnerSpawnEvent callSpawnerSpawnEvent(Entity spawnee, int spawnerX, int spawnerY, int spawnerZ) {
+        org.bukkit.craftbukkit.entity.CraftEntity entity = spawnee.getBukkitEntity();
+        BlockState state = entity.getWorld().getBlockAt(spawnerX, spawnerY, spawnerZ).getState();
+
+        if (!(state instanceof CreatureSpawner)) {
+            state = null;
+        }
+
+        SpawnerSpawnEvent event = new SpawnerSpawnEvent(entity, (CreatureSpawner) state);
+        entity.getServer().getPluginManager().callEvent(event);
         return event;
     }
 
