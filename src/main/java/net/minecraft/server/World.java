@@ -497,6 +497,7 @@ public abstract class World implements IBlockAccess {
         this.d(blockposition.up(), block);
         this.d(blockposition.north(), block);
         this.d(blockposition.south(), block);
+        spigotConfig.antiXrayInstance.updateNearbyBlocks(this, blockposition); // Spigot
     }
 
     public void a(BlockPosition blockposition, Block block, EnumDirection enumdirection) {
@@ -722,9 +723,16 @@ public abstract class World implements IBlockAccess {
         return this.worldProvider.p()[this.getLightLevel(blockposition)];
     }
 
-    public IBlockData getType(BlockPosition blockposition) {
+    // Spigot start
+    public IBlockData getType(BlockPosition blockposition)
+    {
+        return getType( blockposition, true );
+    }
+    
+    public IBlockData getType(BlockPosition blockposition, boolean useCaptured) {
         // CraftBukkit start - tree generation
-        if (captureTreeGeneration) {
+        if (captureTreeGeneration && useCaptured) {
+    // Spigot end
             Iterator<BlockState> it = capturedBlockStates.iterator();
             while (it.hasNext()) {
                 BlockState previous = it.next();

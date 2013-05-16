@@ -9,6 +9,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
     private int[] b;
     private PacketPlayOutMapChunk.ChunkMap[] c;
     private boolean d;
+    private World world; // Spigot
 
     public PacketPlayOutMapChunkBulk() {}
 
@@ -28,7 +29,8 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
             this.b[j] = chunk.locZ;
             this.c[j] = packetplayoutmapchunk_chunkmap;
         }
-
+        
+        world = ((Chunk) list.get(0)).getWorld(); // Spigot
     }
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
@@ -68,6 +70,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         }
 
         for (i = 0; i < this.a.length; ++i) {
+            world.spigotConfig.antiXrayInstance.obfuscate(this.a[i], this.b[i], this.c[i].b, this.c[i].a, world); // Spigot
             packetdataserializer.writeBytes(this.c[i].a);
         }
 

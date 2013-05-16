@@ -60,6 +60,7 @@ public class EntityFallingBlock extends Entity {
                 blockposition = new BlockPosition(this);
                 if (this.world.getType(blockposition).getBlock() == block && !CraftEventFactory.callEntityChangeBlockEvent(this, blockposition.getX(), blockposition.getY(), blockposition.getZ(), Blocks.AIR, 0).isCancelled()) {
                     this.world.setAir(blockposition);
+                    world.spigotConfig.antiXrayInstance.updateNearbyBlocks(world, blockposition); // Spigot
                 } else if (!this.world.isClientSide) {
                     this.die();
                     return;
@@ -85,6 +86,7 @@ public class EntityFallingBlock extends Entity {
                                     return;
                                 }
                                 this.world.setTypeAndData(blockposition, this.block, 3);
+                                world.spigotConfig.antiXrayInstance.updateNearbyBlocks(world, blockposition); // Spigot
                                 // CraftBukkit end
                                 if (block instanceof BlockFalling) {
                                     ((BlockFalling) block).a_(this.world, blockposition);

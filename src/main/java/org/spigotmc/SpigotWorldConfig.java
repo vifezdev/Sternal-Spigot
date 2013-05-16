@@ -1,5 +1,6 @@
 package org.spigotmc;
 
+import java.util.Arrays;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -213,5 +214,37 @@ public class SpigotWorldConfig
     {
         arrowDespawnRate = getInt( "arrow-despawn-rate", 1200  );
         log( "Arrow Despawn Rate: " + arrowDespawnRate );
+    }
+    
+    public boolean antiXray;
+    public int engineMode;
+    public List<Integer> hiddenBlocks;
+    public List<Integer> replaceBlocks;
+    public AntiXray antiXrayInstance;
+    private void antiXray()
+    {
+        antiXray = getBoolean( "anti-xray.enabled", true );
+        log( "Anti X-Ray: " + antiXray );
+
+        engineMode = getInt( "anti-xray.engine-mode", 1 );
+        log( "\tEngine Mode: " + engineMode );
+
+        if ( SpigotConfig.version < 5 )
+        {
+            set( "anti-xray.blocks", null );
+        }
+        hiddenBlocks = getList( "anti-xray.hide-blocks", Arrays.asList( new Integer[]
+        {
+            14, 15, 16, 21, 48, 49, 54, 56, 73, 74, 82, 129, 130
+        } ) );
+        log( "\tHidden Blocks: " + hiddenBlocks );
+
+        replaceBlocks = getList( "anti-xray.replace-blocks", Arrays.asList( new Integer[]
+        {
+            1, 5
+        } ) );
+        log( "\tReplace Blocks: " + replaceBlocks );
+
+        antiXrayInstance = new AntiXray( this );
     }
 }
