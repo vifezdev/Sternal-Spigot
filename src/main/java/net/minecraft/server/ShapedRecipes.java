@@ -10,7 +10,7 @@ public class ShapedRecipes implements IRecipe {
     private final int width;
     private final int height;
     private final ItemStack[] items;
-    private final ItemStack result;
+    public ItemStack result; // Spigot
     private boolean e;
 
     public ShapedRecipes(int i, int j, ItemStack[] aitemstack, ItemStack itemstack) {
@@ -165,4 +165,11 @@ public class ShapedRecipes implements IRecipe {
     public int a() {
         return this.width * this.height;
     }
+
+    // Spigot start
+    public java.util.List<ItemStack> getIngredients()
+    {
+        return java.util.Arrays.asList( items );
+    }
+    // Spigot end
 }

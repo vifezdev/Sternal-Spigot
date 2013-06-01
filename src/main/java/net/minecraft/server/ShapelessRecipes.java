@@ -12,7 +12,7 @@ import org.bukkit.craftbukkit.inventory.CraftShapelessRecipe;
 
 public class ShapelessRecipes implements IRecipe {
 
-    private final ItemStack result;
+    public final ItemStack result; // Spigot
     private final List<ItemStack> ingredients;
 
     public ShapelessRecipes(ItemStack itemstack, List<ItemStack> list) {
@@ -90,4 +90,11 @@ public class ShapelessRecipes implements IRecipe {
     public int a() {
         return this.ingredients.size();
     }
+
+    // Spigot start
+    public java.util.List<ItemStack> getIngredients()
+    {
+        return java.util.Collections.unmodifiableList( ingredients );
+    }
+    // Spigot end
 }
