@@ -538,4 +538,15 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     public void setOp(boolean value) {
         perm.setOp(value);
     }
+
+    // Spigot start
+    private final Spigot spigot = new Spigot()
+    {
+    };
+
+    public Spigot spigot()
+    {
+        return spigot;
+    }
+    // Spigot end
 }

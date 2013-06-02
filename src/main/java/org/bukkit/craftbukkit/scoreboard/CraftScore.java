@@ -59,4 +59,11 @@ final class CraftScore implements Score {
     public CraftScoreboard getScoreboard() {
         return objective.getScoreboard();
     }
+
+    // Spigot start
+    @Override
+    public boolean isScoreSet() throws IllegalStateException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    // Spigot end
 }

@@ -1340,4 +1340,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         PacketPlayOutTitle packetReset = new PacketPlayOutTitle(EnumTitleAction.RESET, null);
         getHandle().playerConnection.sendPacket(packetReset);
     }
+
+    // Spigot start
+    private final Player.Spigot spigot = new Player.Spigot()
+    {
+    };
+
+    public Player.Spigot spigot()
+    {
+        return spigot;
+    }
+    // Spigot end
 }

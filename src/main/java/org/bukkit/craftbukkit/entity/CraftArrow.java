@@ -71,4 +71,15 @@ public class CraftArrow extends AbstractProjectile implements Arrow {
     public void _INVALID_setShooter(LivingEntity shooter) {
         getHandle().shooter = ((CraftLivingEntity) shooter).getHandle();
     }
+
+    // Spigot start
+    private final Arrow.Spigot spigot = new Arrow.Spigot()
+    {
+    };
+
+    public Arrow.Spigot spigot()
+    {
+        return spigot;
+    }
+    // Spigot end
 }
