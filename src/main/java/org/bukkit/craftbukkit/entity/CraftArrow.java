@@ -75,6 +75,17 @@ public class CraftArrow extends AbstractProjectile implements Arrow {
     // Spigot start
     private final Arrow.Spigot spigot = new Arrow.Spigot()
     {
+        @Override
+        public double getDamage()
+        {
+            return getHandle().j();
+        }
+
+        @Override
+        public void setDamage(double damage)
+        {
+            getHandle().b( damage );
+        }
     };
 
     public Arrow.Spigot spigot()
