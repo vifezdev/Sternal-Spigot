@@ -68,4 +68,15 @@ public class SpigotWorldConfig
         config.addDefault( "world-settings.default." + path, def );
         return config.getString( "world-settings." + worldName + "." + path, config.getString( "world-settings.default." + path ) );
     }
+
+    public int chunksPerTick;
+    public boolean clearChunksOnTick;
+    private void chunksPerTick()
+    {
+        chunksPerTick = getInt( "chunks-per-tick", 650 );
+        log( "Chunks to Grow per Tick: " + chunksPerTick );
+
+        clearChunksOnTick = getBoolean( "clear-tick-list", false );
+        log( "Clear tick list: " + clearChunksOnTick );
+    }
 }

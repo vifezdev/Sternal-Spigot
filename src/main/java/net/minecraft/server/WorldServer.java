@@ -357,12 +357,15 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     protected void h() {
         super.h();
         if (this.worldData.getType() == WorldType.DEBUG_ALL_BLOCK_STATES) {
-            Iterator iterator = this.chunkTickList.iterator();
+            // Spigot start
+           gnu.trove.iterator.TLongShortIterator iterator = this.chunkTickList.iterator();
 
             while (iterator.hasNext()) {
-                ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) iterator.next();
+                iterator.advance();
+                long chunkCoord = iterator.key();
 
-                this.getChunkAt(chunkcoordintpair.x, chunkcoordintpair.z).b(false);
+                this.getChunkAt(World.keyToX( chunkCoord ), World.keyToZ( chunkCoord )).b(false);
+                // Spigot end
             }
 
         } else {
@@ -374,9 +377,21 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             //    ChunkCoordIntPair chunkcoordintpair1 = (ChunkCoordIntPair) iterator1.next();
             //    int k = chunkcoordintpair1.x * 16;
             //    int l = chunkcoordintpair1.z * 16;
-            for (long chunkCoord : chunkTickList.popAll()) {
-                int chunkX = LongHash.msw(chunkCoord);
-                int chunkZ = LongHash.lsw(chunkCoord);
+            // Spigot start
+            for (gnu.trove.iterator.TLongShortIterator iter = chunkTickList.iterator(); iter.hasNext(); )
+            {
+                iter.advance();
+                long chunkCoord = iter.key();
+                int chunkX = World.keyToX( chunkCoord );
+                int chunkZ = World.keyToZ( chunkCoord );
+                // If unloaded, or in procedd of being unloaded, drop it
+                if ( ( !this.chunkProvider.isChunkLoaded( chunkX, chunkZ ) ) || ( this.chunkProviderServer.unloadQueue.contains( chunkX, chunkZ ) ) )
+                {
+                    iter.remove();
+                    continue;
+                }
+                // Spigot end
+                // ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) iterator.next();
                 int k = chunkX * 16;
                 int l = chunkZ * 16;
 
@@ -470,6 +485,12 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             }
 
         }
+        // Spigot Start
+        if ( spigotConfig.clearChunksOnTick )
+        {
+            chunkTickList.clear();
+        }
+        // Spigot End
     }
 
     protected BlockPosition a(BlockPosition blockposition) {

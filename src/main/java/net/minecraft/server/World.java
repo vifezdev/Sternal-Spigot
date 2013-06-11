@@ -68,7 +68,7 @@ public abstract class World implements IBlockAccess {
     public Scoreboard scoreboard = new Scoreboard(); // CraftBukkit - public
     public final boolean isClientSide;
     // CraftBukkit - longhashset
-    protected LongHashSet chunkTickList = new LongHashSet();
+    // protected LongHashSet chunkTickList = new LongHashSet(); // Spigot
     private int L;
     public boolean allowMonsters; // CraftBukkit - public
     public boolean allowAnimals; // CraftBukkit - public
@@ -102,6 +102,31 @@ public abstract class World implements IBlockAccess {
     public long ticksPerMonsterSpawns;
     public boolean populating;
     private int tickPosition;
+
+    // Spigot start
+    protected final gnu.trove.map.hash.TLongShortHashMap chunkTickList;
+    protected float growthOdds = 100;
+    protected float modifiedOdds = 100;
+    private final byte chunkTickRadius;
+
+    public static long chunkToKey(int x, int z)
+    {
+        long k = ( ( ( (long) x ) & 0xFFFF0000L ) << 16 ) | ( ( ( (long) x ) & 0x0000FFFFL ) << 0 );
+        k |= ( ( ( (long) z ) & 0xFFFF0000L ) << 32 ) | ( ( ( (long) z ) & 0x0000FFFFL ) << 16 );
+        return k;
+    }
+
+    public static int keyToX(long k)
+    {
+        return (int) ( ( ( k >> 16 ) & 0xFFFF0000 ) | ( k & 0x0000FFFF ) );
+    }
+
+    public static int keyToZ(long k)
+    {
+        return (int) ( ( ( k >> 32 ) & 0xFFFF0000L ) | ( ( k >> 16 ) & 0x0000FFFF ) );
+    }
+    // Spigot end
+
     public final org.spigotmc.SpigotWorldConfig spigotConfig; // Spigot
 
     public CraftWorld getWorld() {
@@ -123,6 +148,12 @@ public abstract class World implements IBlockAccess {
         this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
         this.ticksPerMonsterSpawns = this.getServer().getTicksPerMonsterSpawns(); // CraftBukkit
         // CraftBukkit end
+        // Spigot start
+        this.chunkTickRadius = (byte) ( ( this.getServer().getViewDistance() < 7 ) ? this.getServer().getViewDistance() : 7 );
+        this.chunkTickList = new gnu.trove.map.hash.TLongShortHashMap( spigotConfig.chunksPerTick * 5, 0.7f, Long.MIN_VALUE, Short.MIN_VALUE );
+        this.chunkTickList.setAutoCompactionFactor( 0 );
+        // Spigot end
+
         this.L = this.random.nextInt(12000);
         this.allowMonsters = true;
         this.allowAnimals = true;
@@ -1964,17 +1995,42 @@ public abstract class World implements IBlockAccess {
         int k;
         int l;
 
+        // Spigot start
+        int optimalChunks = spigotConfig.chunksPerTick;
+        // Quick conditions to allow us to exist early
+        if ( optimalChunks > 0  ) {
+        // Keep chunks with growth inside of the optimal chunk range
+        int chunksPerPlayer = Math.min( 200, Math.max( 1, (int) ( ( ( optimalChunks - players.size() ) / (double) players.size() ) + 0.5 ) ) );
+        int randRange = 3 + chunksPerPlayer / 30;
+        // Limit to normal tick radius - including view distance
+        randRange = ( randRange > chunkTickRadius ) ? chunkTickRadius : randRange;
+        // odds of growth happening vs growth happening in vanilla
+        this.growthOdds = this.modifiedOdds = Math.max( 35, Math.min( 100, ( ( chunksPerPlayer + 1 ) * 100F ) / 15F ) );
+        // Spigot end
         for (i = 0; i < this.players.size(); ++i) {
             entityhuman = (EntityHuman) this.players.get(i);
             j = MathHelper.floor(entityhuman.locX / 16.0D);
             k = MathHelper.floor(entityhuman.locZ / 16.0D);
             l = this.q();
 
-            for (int i1 = -l; i1 <= l; ++i1) {
-                for (int j1 = -l; j1 <= l; ++j1) {
-                    this.chunkTickList.add(org.bukkit.craftbukkit.util.LongHash.toLong(i1 + j, j1 + k));
+            // Spigot start - Always update the chunk the player is on
+            long key = chunkToKey( j, k );
+            int existingPlayers = Math.max( 0, chunkTickList.get( key ) ); // filter out -1
+            chunkTickList.put( key, (short) ( existingPlayers + 1 ) );
+
+            // Check and see if we update the chunks surrounding the player this tick
+            for ( int chunk = 0; chunk < chunksPerPlayer; chunk++ )
+            {
+                int dx = ( random.nextBoolean() ? 1 : -1 ) * random.nextInt( randRange );
+                int dz = ( random.nextBoolean() ? 1 : -1 ) * random.nextInt( randRange );
+                long hash = chunkToKey( dx + j, dz + k );
+                if ( !chunkTickList.contains( hash ) && this.chunkProvider.isChunkLoaded(dx + j, dz + k ) )
+                {
+                    chunkTickList.put( hash, (short) -1 ); // no players
                 }
             }
+        }
+            // Spigot End
         }
 
         this.methodProfiler.b();
