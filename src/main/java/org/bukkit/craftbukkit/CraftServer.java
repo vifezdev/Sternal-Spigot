@@ -623,11 +623,7 @@ public final class CraftServer implements Server {
             return true;
         }
 
-        if (sender instanceof Player) {
-            sender.sendMessage("Unknown command. Type \"/help\" for help.");
-        } else {
-            sender.sendMessage("Unknown command. Type \"help\" for help.");
-        }
+        sender.sendMessage(org.spigotmc.SpigotConfig.unknownCommandMessage);
 
         return false;
     }
