@@ -79,4 +79,37 @@ public class SpigotWorldConfig
         clearChunksOnTick = getBoolean( "clear-tick-list", false );
         log( "Clear tick list: " + clearChunksOnTick );
     }
+
+    // Crop growth rates
+    public int cactusModifier;
+    public int caneModifier;
+    public int melonModifier;
+    public int mushroomModifier;
+    public int pumpkinModifier;
+    public int saplingModifier;
+    public int wheatModifier;
+    public int wartModifier;
+    private int getAndValidateGrowth(String crop)
+    {
+        int modifier = getInt( "growth." + crop.toLowerCase() + "-modifier", 100 );
+        if ( modifier == 0 )
+        {
+            log( "Cannot set " + crop + " growth to zero, defaulting to 100" );
+            modifier = 100;
+        }
+        log( crop + " Growth Modifier: " + modifier + "%" );
+
+        return modifier;
+    }
+    private void growthModifiers()
+    {
+        cactusModifier = getAndValidateGrowth( "Cactus" );
+        caneModifier = getAndValidateGrowth( "Cane" );
+        melonModifier = getAndValidateGrowth( "Melon" );
+        mushroomModifier = getAndValidateGrowth( "Mushroom" );
+        pumpkinModifier = getAndValidateGrowth( "Pumpkin" );
+        saplingModifier = getAndValidateGrowth( "Sapling" );
+        wheatModifier = getAndValidateGrowth( "Wheat" );
+        wartModifier = getAndValidateGrowth( "NetherWart" );
+    }
 }
