@@ -2088,7 +2088,7 @@ public abstract class World implements IBlockAccess {
         }
 
         this.methodProfiler.a("playerCheckLight");
-        if (!this.players.isEmpty()) {
+        if (spigotConfig.randomLightUpdates && !this.players.isEmpty()) { // Spigot
             i = this.random.nextInt(this.players.size());
             entityhuman = (EntityHuman) this.players.get(i);
             j = MathHelper.floor(entityhuman.locX) + this.random.nextInt(11) - 5;
