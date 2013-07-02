@@ -1709,6 +1709,7 @@ public abstract class EntityLiving extends Entity {
                 }
             }
             // CraftBukkit end
+            org.bukkit.Bukkit.getPluginManager().callEvent( new org.spigotmc.event.entity.EntityDismountEvent( this.getBukkitEntity(), this.vehicle.getBukkitEntity() ) ); // Spigot
             
             if (!this.world.isClientSide) {
                 this.q(this.vehicle);
