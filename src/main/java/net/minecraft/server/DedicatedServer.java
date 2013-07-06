@@ -162,6 +162,11 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             if (this.R() < 0) {
                 this.setPort(this.propertyManager.getInt("server-port", 25565));
             }
+            // Spigot start
+            this.a((PlayerList) (new DedicatedPlayerList(this)));
+            org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));
+            org.spigotmc.SpigotConfig.registerCommands();
+            // Spigot end
 
             DedicatedServer.LOGGER.info("Generating keypair");
             this.a(MinecraftEncryption.b());
@@ -176,7 +181,11 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 return false;
             }
 
-            this.a((PlayerList) (new DedicatedPlayerList(this))); // CraftBukkit
+            // Spigot Start - Move DedicatedPlayerList up and bring plugin loading from CraftServer to here
+            // this.a((PlayerList) (new DedicatedPlayerList(this))); // CraftBukkit
+            server.loadPlugins();
+            server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
+            // Spigot End
 
             if (!this.getOnlineMode()) {
                 DedicatedServer.LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
