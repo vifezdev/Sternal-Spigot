@@ -77,6 +77,11 @@ public class BlockTNT extends Block {
             EntityArrow entityarrow = (EntityArrow) entity;
 
             if (entityarrow.isBurning()) {
+                // CraftBukkit start
+                if (org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(entityarrow, blockposition.getX(), blockposition.getY(), blockposition.getZ(), Blocks.AIR, 0).isCancelled()) {
+                    return;
+                }
+                // CraftBukkit end
                 this.a(world, blockposition, world.getType(blockposition).set(BlockTNT.EXPLODE, Boolean.valueOf(true)), entityarrow.shooter instanceof EntityLiving ? (EntityLiving) entityarrow.shooter : null);
                 world.setAir(blockposition);
             }
