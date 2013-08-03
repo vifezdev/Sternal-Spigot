@@ -1675,7 +1675,7 @@ public abstract class EntityLiving extends Entity {
             }
         }));
 
-        if (!list.isEmpty()) {
+        if (this.ad() && !list.isEmpty()) { // Spigot: Add this.ad() condition
             for (int i = 0; i < list.size(); ++i) {
                 Entity entity = (Entity) list.get(i);
 

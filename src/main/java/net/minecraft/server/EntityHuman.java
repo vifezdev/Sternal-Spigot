@@ -427,6 +427,7 @@ public abstract class EntityHuman extends EntityLiving {
 
             List list = this.world.getEntities(this, axisalignedbb);
 
+            if (this.ae()) { // Spigot: Add this.ae() condition (second !this.isDead near bottom of EntityLiving)
             for (int i = 0; i < list.size(); ++i) {
                 Entity entity = (Entity) list.get(i);
 
@@ -434,6 +435,7 @@ public abstract class EntityHuman extends EntityLiving {
                     this.d(entity);
                 }
             }
+            } // Spigot 
         }
 
     }
