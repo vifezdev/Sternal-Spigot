@@ -10,7 +10,7 @@ import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
 
 public class BlockRedstoneTorch extends BlockTorch {
 
-    private static Map<World, List<BlockRedstoneTorch.RedstoneUpdateInfo>> b = Maps.newHashMap();
+    private static Map<World, List<BlockRedstoneTorch.RedstoneUpdateInfo>> b = new java.util.WeakHashMap(); // Spigot
     private final boolean isOn;
 
     private boolean a(World world, BlockPosition blockposition, boolean flag) {
