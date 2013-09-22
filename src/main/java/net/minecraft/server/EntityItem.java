@@ -108,7 +108,7 @@ public class EntityItem extends Entity {
 
 
             this.W();
-            if (!this.world.isClientSide && this.age >= 6000) {
+            if (!this.world.isClientSide && this.age >= world.spigotConfig.itemDespawnRate) { // Spigot
                 // CraftBukkit start - fire ItemDespawnEvent
                 if (org.bukkit.craftbukkit.event.CraftEventFactory.callItemDespawnEvent(this).isCancelled()) {
                     this.age = 0;
