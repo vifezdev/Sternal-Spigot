@@ -1358,6 +1358,15 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             getHandle().collidesWithEntities = collides;
             getHandle().k = collides; // First boolean of Entity
         }
+
+        @Override
+        public void respawn()
+        {
+            if ( getHealth() <= 0 && isOnline() )
+            {
+                server.getServer().getPlayerList().moveToWorld( getHandle(), 0, false );
+            }
+        }
     };
 
     public Player.Spigot spigot()
