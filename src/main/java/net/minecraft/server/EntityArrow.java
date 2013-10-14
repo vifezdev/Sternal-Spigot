@@ -155,7 +155,7 @@ public class EntityArrow extends Entity implements IProjectile {
 
             if (block == this.g && i == this.h) {
                 ++this.ar;
-                if (this.ar >= 1200) {
+                if (this.ar >= world.spigotConfig.arrowDespawnRate) { // Spigot - First int after shooter
                     this.die();
                 }
             } else {
