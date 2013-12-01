@@ -84,9 +84,24 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     // Spigot start
     public void initUUID()
     {
-        UUID uuid = UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + this.i.getName() ).getBytes( Charsets.UTF_8 ) );
+        UUID uuid;
+        if ( networkManager.spoofedUUID != null )
+        {
+            uuid = networkManager.spoofedUUID;
+        } else
+        {
+            uuid = UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + this.i.getName() ).getBytes( Charsets.UTF_8 ) );
+        }
 
         this.i = new GameProfile( uuid, this.i.getName() );
+
+        if (networkManager.spoofedProfile != null)
+        {
+            for ( com.mojang.authlib.properties.Property property : networkManager.spoofedProfile )
+            {
+                this.i.getProperties().put( property.getName(), property );
+            }
+        }
     }
     // Spigot end
 
@@ -148,13 +163,19 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
             this.networkManager.handle(new PacketLoginOutEncryptionBegin(this.j, this.server.Q().getPublic(), this.e));
         } else {
             // Spigot start
-            try {
-                initUUID();
-                new LoginHandler().fireEvents();
-            } catch (Exception ex) {
-                disconnect("Failed to verify username!");
-                server.server.getLogger().log(java.util.logging.Level.WARNING, "Exception verifying " + i.getName(), ex);
-            }
+            initUUID();
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try{
+                        new LoginHandler().fireEvents();
+                    } catch (Exception ex) {
+                        disconnect("Failed to verify username!");
+                        server.server.getLogger().log(java.util.logging.Level.WARNING, "Exception verifying " + i.getName(), ex);
+                    }
+                }
+            }).start();
             // Spigot end
         }
 
