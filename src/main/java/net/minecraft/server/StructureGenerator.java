@@ -196,7 +196,7 @@ public abstract class StructureGenerator extends WorldGenBase {
     private void a(World world) {
         if (this.d == null) {
             // Spigot Start
-            if ( world.spigotConfig.saveStructureInfo )
+            if ( world.spigotConfig.saveStructureInfo && !this.a().equals( "Mineshaft" ) )
             {
             this.d = (PersistentStructure) world.a(PersistentStructure.class, this.a());
             } else
