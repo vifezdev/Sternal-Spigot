@@ -59,7 +59,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private final List<IUpdatePlayerListBox> p = Lists.newArrayList();
     protected final ICommandHandler b;
     public final MethodProfiler methodProfiler = new MethodProfiler();
-    private final ServerConnection q;
+    private ServerConnection q; // Spigot
     private final ServerPing r = new ServerPing();
     private final Random s = new Random();
     private String serverIp;
@@ -121,7 +121,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         this.e = proxy;
         MinecraftServer.l = this;
         // this.universe = file; // CraftBukkit
-        this.q = new ServerConnection(this);
+        // this.q = new ServerConnection(this); // Spigot
         this.Z = new UserCache(this, file1);
         this.b = this.h();
         // this.convertable = new WorldLoaderServer(file); // CraftBukkit - moved to DedicatedServer.init
@@ -1322,7 +1322,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
     // Spigot End
     public ServerConnection aq() {
-        return this.q;
+        return this.q == null ? this.q = new ServerConnection(this) : this.q; // Spigot
     }
 
     public boolean as() {
