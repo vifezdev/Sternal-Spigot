@@ -318,9 +318,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     public void playEffect(Location loc, Effect effect, int data) {
         if (getHandle().playerConnection == null) return;
 
-        int packetData = effect.getId();
-        PacketPlayOutWorldEvent packet = new PacketPlayOutWorldEvent(packetData, new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), data, false);
-        getHandle().playerConnection.sendPacket(packet);
+        spigot().playEffect(loc, effect, data, 0, 0, 0, 0, 1, 1, 64); // Spigot
     }
 
     @Override
@@ -1371,6 +1369,63 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             if ( getHealth() <= 0 && isOnline() )
             {
                 server.getServer().getPlayerList().moveToWorld( getHandle(), 0, false );
+            }
+        }
+
+        @Override
+        public void playEffect( Location location, Effect effect, int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius )
+        {
+            Validate.notNull( location, "Location cannot be null" );
+            Validate.notNull( effect, "Effect cannot be null" );
+            Validate.notNull( location.getWorld(), "World cannot be null" );
+            Packet packet;
+            if ( effect.getType() != Effect.Type.PARTICLE )
+            {
+                int packetData = effect.getId();
+                packet = new PacketPlayOutWorldEvent( packetData, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ() ), id, false );
+            } else
+            {
+                net.minecraft.server.EnumParticle particle = null;
+                int[] extra = null;
+                for ( net.minecraft.server.EnumParticle p : net.minecraft.server.EnumParticle.values() )
+                {
+                    if ( effect.getName().startsWith( p.b().replace("_", "") ) )
+                    {
+                        particle = p;
+                        if ( effect.getData() != null ) 
+                        {
+                            if ( effect.getData().equals( org.bukkit.Material.class ) )
+                            {
+                                extra = new int[]{ id };
+                            } else 
+                            {
+                                extra = new int[]{ (data << 12) | (id & 0xFFF) };
+                            }
+                        }
+                        break;
+                    }
+                }
+                if ( extra == null )
+                {
+                    extra = new int[0];
+                }
+                packet = new PacketPlayOutWorldParticles( particle, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, particleCount, extra );
+            }
+            int distance;
+            radius *= radius;
+            if ( getHandle().playerConnection == null )
+            {
+                return;
+            }
+            if ( !location.getWorld().equals( getWorld() ) )
+            {
+                return;
+            }
+
+            distance = (int) getLocation().distanceSquared( location );
+            if ( distance <= radius )
+            {
+                getHandle().playerConnection.sendPacket( packet );
             }
         }
     };
