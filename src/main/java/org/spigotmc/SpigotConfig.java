@@ -10,10 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -232,5 +234,32 @@ public class SpigotConfig
     public static boolean lateBind;
     private static void lateBind() {
         lateBind = getBoolean( "settings.late-bind", false );
+    }
+
+    public static boolean disableStatSaving;
+    public static TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<String>();
+    private static void stats()
+    {
+        disableStatSaving = getBoolean( "stats.disable-saving", false );
+
+        if ( !config.contains( "stats.forced-stats" ) ) {
+            config.createSection( "stats.forced-stats" );
+        }
+
+        ConfigurationSection section = config.getConfigurationSection( "stats.forced-stats" );
+        for ( String name : section.getKeys( true ) )
+        {
+            if ( section.isInt( name ) )
+            {
+                forcedStats.put( name, section.getInt( name ) );
+            }
+        }
+
+        if ( disableStatSaving && section.getInt( "achievement.openInventory", 0 ) < 1 )
+        {
+            Bukkit.getLogger().warning( "*** WARNING *** stats.disable-saving is true but stats.forced-stats.achievement.openInventory" +
+                    " isn't set to 1. Disabling stat saving without forcing the achievement may cause it to get stuck on the player's " +
+                    "screen." );
+        }
     }
 }

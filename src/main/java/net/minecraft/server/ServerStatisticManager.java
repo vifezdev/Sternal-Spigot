@@ -31,6 +31,14 @@ public class ServerStatisticManager extends StatisticManager {
     public ServerStatisticManager(MinecraftServer minecraftserver, File file) {
         this.c = minecraftserver;
         this.d = file;
+        // Spigot start
+        for ( String name : org.spigotmc.SpigotConfig.forcedStats.keySet() )
+        {
+            StatisticWrapper wrapper = new StatisticWrapper();
+            wrapper.a( org.spigotmc.SpigotConfig.forcedStats.get( name ) );
+            a.put( StatisticList.getStatistic( name ), wrapper );
+        }
+        // Spigot end
     }
 
     public void a() {
@@ -48,6 +56,7 @@ public class ServerStatisticManager extends StatisticManager {
     }
 
     public void b() {
+        if ( org.spigotmc.SpigotConfig.disableStatSaving ) return; // Spigot
         try {
             FileUtils.writeStringToFile(this.d, a(this.a));
         } catch (IOException ioexception) {
@@ -57,6 +66,7 @@ public class ServerStatisticManager extends StatisticManager {
     }
 
     public void setStatistic(EntityHuman entityhuman, Statistic statistic, int i) {
+        if ( org.spigotmc.SpigotConfig.disableStatSaving ) return; // Spigot
         int j = statistic.d() ? this.getStatisticValue(statistic) : 0;
 
         super.setStatistic(entityhuman, statistic, i);
