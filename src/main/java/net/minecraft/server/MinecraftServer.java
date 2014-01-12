@@ -742,7 +742,13 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                     worldserver.doTick();
                     worldserver.timings.doTick.stopTiming(); // Spigot
                 } catch (Throwable throwable) {
+                    // Spigot Start
+                    try {
                     crashreport = CrashReport.a(throwable, "Exception ticking world");
+                    } catch (Throwable t){
+                        throw new RuntimeException("Error generating crash report", t);
+                    }
+                    // Spigot End
                     worldserver.a(crashreport);
                     throw new ReportedException(crashreport);
                 }
@@ -752,7 +758,13 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                     worldserver.tickEntities();
                     worldserver.timings.tickEntities.stopTiming(); // Spigot
                 } catch (Throwable throwable1) {
+                    // Spigot Start
+                    try {
                     crashreport = CrashReport.a(throwable1, "Exception ticking world entities");
+                    } catch (Throwable t){
+                        throw new RuntimeException("Error generating crash report", t);
+                    }
+                    // Spigot End
                     worldserver.a(crashreport);
                     throw new ReportedException(crashreport);
                 }
