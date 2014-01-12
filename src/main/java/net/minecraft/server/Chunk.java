@@ -942,7 +942,7 @@ public class Chunk {
             if (this.r && this.world.getTime() != this.lastSaved || this.q) {
                 return true;
             }
-        } else if (this.r && this.world.getTime() >= this.lastSaved + 600L) {
+        } else if (this.r && this.world.getTime() >= this.lastSaved + MinecraftServer.getServer().autosavePeriod * 4) { // Spigot - Only save if we've passed 2 auto save intervals without modification
             return true;
         }
 
