@@ -1093,6 +1093,7 @@ public abstract class World implements IBlockAccess {
             this.everyoneSleeping();
         }
 
+        if (!guardEntityList) { // Spigot - It will get removed after the tick if we are ticking
         int i = entity.ae;
         int j = entity.ag;
 
@@ -1109,6 +1110,7 @@ public abstract class World implements IBlockAccess {
             this.entityList.remove(index);
         }
         // CraftBukkit end
+        } // Spigot
         this.b(entity);
     }
 
