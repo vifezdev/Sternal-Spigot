@@ -457,6 +457,12 @@ public abstract class EntityInsentient extends EntityLiving {
         this.world.methodProfiler.a("checkDespawn");
         this.D();
         this.world.methodProfiler.b();
+        // Spigot Start
+        if ( this.fromMobSpawner )
+        {
+            return;
+        }
+        // Spigot End
         this.world.methodProfiler.a("sensing");
         this.bk.a();
         this.world.methodProfiler.b();
