@@ -464,7 +464,7 @@ public class DispenserRegistry {
 
                     // CraftBukkit start
                     org.bukkit.block.Block block = world.getWorld().getBlockAt(isourceblock.getBlockPosition().getX(), isourceblock.getBlockPosition().getY(), isourceblock.getBlockPosition().getZ());
-                    CraftItemStack craftItem = CraftItemStack.asNewCraftStack(itemstack.getItem());
+                    CraftItemStack craftItem = CraftItemStack.asCraftMirror(itemstack); // Spigot
 
                     BlockDispenseEvent event = new BlockDispenseEvent(block, craftItem.clone(), new org.bukkit.util.Vector(0, 0, 0));
                     if (!BlockDispenser.eventFired) {
