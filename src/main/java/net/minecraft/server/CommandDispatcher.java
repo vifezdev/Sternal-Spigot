@@ -100,7 +100,7 @@ public class CommandDispatcher extends CommandHandler implements ICommandDispatc
             }
         }
 
-        if (icommandlistener != minecraftserver && minecraftserver.worldServer[0].getGameRules().getBoolean("logAdminCommands")) {
+        if (icommandlistener != minecraftserver && minecraftserver.worldServer[0].getGameRules().getBoolean("logAdminCommands") && !org.spigotmc.SpigotConfig.silentCommandBlocks) { // Spigot
             minecraftserver.sendMessage(chatmessage);
         }
 
