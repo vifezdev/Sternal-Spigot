@@ -23,6 +23,7 @@ public class ItemFishingRod extends Item {
             world.getServer().getPluginManager().callEvent(playerFishEvent);
 
             if (playerFishEvent.isCancelled()) {
+                entityhuman.hookedFish = null;
                 return itemstack;
             }
             // CraftBukkit end
