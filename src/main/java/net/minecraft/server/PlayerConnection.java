@@ -1724,7 +1724,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
             boolean flag1 = packetplayinsetcreativeslot.a() >= 1 && packetplayinsetcreativeslot.a() < 36 + PlayerInventory.getHotbarSize();
             // CraftBukkit - Add invalidItems check
-            boolean flag2 = itemstack == null || itemstack.getItem() != null && !invalidItems.contains(Item.getId(itemstack.getItem()));
+            boolean flag2 = itemstack == null || itemstack.getItem() != null && (!invalidItems.contains(Item.getId(itemstack.getItem())) || !org.spigotmc.SpigotConfig.filterCreativeItems); // Spigot
             boolean flag3 = itemstack == null || itemstack.getData() >= 0 && itemstack.count <= 64 && itemstack.count > 0;
             // CraftBukkit start - Call click event
             if (flag || (flag1 && !ItemStack.matches(this.player.defaultContainer.getSlot(packetplayinsetcreativeslot.a()).getItem(), packetplayinsetcreativeslot.getItemStack()))) { // Insist on valid slot
