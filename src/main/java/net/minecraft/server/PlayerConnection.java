@@ -2095,7 +2095,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     }
 
     // CraftBukkit start - Add "isDisconnected" method
-    public final boolean isDisconnected() {
+    public boolean isDisconnected() { // Spigot
         return !this.player.joining && !this.networkManager.channel.config().isAutoRead();
     }
 
