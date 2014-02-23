@@ -1447,6 +1447,22 @@ public class CraftWorld implements World {
         {
             CraftWorld.this.playEffect( location, effect, 0 );
         }
+
+        @Override
+        public LightningStrike strikeLightning(Location loc, boolean isSilent)
+        {
+            EntityLightning lightning = new EntityLightning( world, loc.getX(), loc.getY(), loc.getZ(), false, isSilent );
+            world.strikeLightning( lightning );
+            return new CraftLightningStrike( server, lightning );
+        }
+
+        @Override
+        public LightningStrike strikeLightningEffect(Location loc, boolean isSilent)
+        {
+            EntityLightning lightning = new EntityLightning( world, loc.getX(), loc.getY(), loc.getZ(), true, isSilent );
+            world.strikeLightning( lightning );
+            return new CraftLightningStrike( server, lightning );
+        }
     };
 
     public Spigot spigot()
