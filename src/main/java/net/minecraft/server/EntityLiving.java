@@ -570,6 +570,7 @@ public abstract class EntityLiving extends Entity {
     }
 
     public void addEffect(MobEffect mobeffect) {
+        org.spigotmc.AsyncCatcher.catchOp( "effect add"); // Spigot
         // CraftBukkit start
         if (isTickingEffects) {
             effectsToProcess.add(mobeffect);

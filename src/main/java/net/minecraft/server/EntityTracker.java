@@ -94,6 +94,7 @@ public class EntityTracker {
     }
 
     public void addEntity(Entity entity, int i, final int j, boolean flag) {
+        org.spigotmc.AsyncCatcher.catchOp( "entity track"); // Spigot
         if (i > this.e) {
             i = this.e;
         }
@@ -144,6 +145,7 @@ public class EntityTracker {
     }
 
     public void untrackEntity(Entity entity) {
+        org.spigotmc.AsyncCatcher.catchOp( "entity untrack"); // Spigot
         if (entity instanceof EntityPlayer) {
             EntityPlayer entityplayer = (EntityPlayer) entity;
             Iterator iterator = this.c.iterator();
