@@ -578,6 +578,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
                     double deltaX = this.locX - player.locX;
                     double deltaZ = this.locZ - player.locZ;
                     double distanceSquared = deltaX * deltaX + deltaZ * deltaZ;
+                    if ( world.spigotConfig.dragonDeathSoundRadius > 0 && distanceSquared > world.spigotConfig.dragonDeathSoundRadius * world.spigotConfig.dragonDeathSoundRadius ) continue; // Spigot
                     if (distanceSquared > viewDistance * viewDistance) {
                         double deltaLength = Math.sqrt(distanceSquared);
                         double relativeX = player.locX + (deltaX / deltaLength) * viewDistance;

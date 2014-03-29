@@ -282,4 +282,16 @@ public class SpigotWorldConfig
         maxCollisionsPerEntity = getInt( "max-entity-collisions", 8 );
         log( "Max Entity Collisions: " + maxCollisionsPerEntity );
     }
+
+    public int dragonDeathSoundRadius;
+    private void keepDragonDeathPerWorld()
+    {
+        dragonDeathSoundRadius = getInt( "dragon-death-sound-radius", 0 );
+    }
+
+    public int witherSpawnSoundRadius;
+    private void witherSpawnSoundRadius()
+    {
+        witherSpawnSoundRadius = getInt( "wither-spawn-sound-radius", 0 );
+    }
 }
