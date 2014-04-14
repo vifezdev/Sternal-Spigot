@@ -1286,6 +1286,7 @@ public final class CraftServer implements Server {
     @Deprecated
     public OfflinePlayer getOfflinePlayer(String name) {
         Validate.notNull(name, "Name cannot be null");
+        com.google.common.base.Preconditions.checkArgument( !org.apache.commons.lang.StringUtils.isBlank( name ), "Name cannot be blank" ); // Spigot
 
         // If the name given cannot ever be a valid username give a dummy return, for scoreboard plugins
         if (!validUserPattern.matcher(name).matches()) {
