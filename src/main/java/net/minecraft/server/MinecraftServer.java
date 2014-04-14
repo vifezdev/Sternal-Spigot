@@ -1287,6 +1287,12 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
     }
 
+    // Spigot Start
+    public ServerConnection getServerConnection()
+    {
+        return this.q;
+    }
+    // Spigot End
     public ServerConnection aq() {
         return this.q;
     }
