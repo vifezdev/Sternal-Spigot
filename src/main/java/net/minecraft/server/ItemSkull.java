@@ -35,6 +35,12 @@ public class ItemSkull extends Item {
                 return false;
             } else {
                 if (!world.isClientSide) {
+                    // Spigot Start
+                    if ( !Blocks.SKULL.canPlace( world, blockposition ) )
+                    {
+                        return false;
+                    }
+                    // Spigot End
                     world.setTypeAndData(blockposition, Blocks.SKULL.getBlockData().set(BlockSkull.FACING, enumdirection), 3);
                     int i = 0;
 
