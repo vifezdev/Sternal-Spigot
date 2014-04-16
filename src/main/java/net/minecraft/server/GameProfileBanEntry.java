@@ -12,7 +12,7 @@ public class GameProfileBanEntry extends ExpirableListEntry<GameProfile> {
     }
 
     public GameProfileBanEntry(GameProfile gameprofile, Date date, String s, Date date1, String s1) {
-        super(gameprofile, date1, s, date1, s1);
+        super(gameprofile, date, s, date1, s1); // Spigot
     }
 
     public GameProfileBanEntry(JsonObject jsonobject) {
