@@ -1016,6 +1016,17 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
             s = nbttagcompound.getString("OwnerUUID");
         } else {
             String s1 = nbttagcompound.getString("Owner");
+            // Spigot start
+            if ( s1 == null || s1.isEmpty() )
+            {
+                if (nbttagcompound.hasKey("OwnerName")) {
+                String owner = nbttagcompound.getString("OwnerName");
+                    if (owner != null && !owner.isEmpty()) {
+                        s1 = owner;
+                    }
+                }
+            }
+            // Spigot end
 
             s = NameReferencingFileConverter.a(s1);
         }
