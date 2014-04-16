@@ -415,7 +415,7 @@ public abstract class PlayerList {
             }
 
             // return s;
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, s);
+            if (!gameprofilebanentry.hasExpired()) event.disallow(PlayerLoginEvent.Result.KICK_BANNED, s); // Spigot
         } else if (!this.isWhitelisted(gameprofile)) {
             // return "You are not white-listed on this server!";
             event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, org.spigotmc.SpigotConfig.whitelistMessage); // Spigot
