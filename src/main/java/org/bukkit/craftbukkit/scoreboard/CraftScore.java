@@ -63,7 +63,9 @@ final class CraftScore implements Score {
     // Spigot start
     @Override
     public boolean isScoreSet() throws IllegalStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Scoreboard board = objective.checkState().board;
+
+        return board.getPlayers().contains(entry) && board.getPlayerObjectives(entry).containsKey(objective.getHandle());
     }
     // Spigot end
 }
