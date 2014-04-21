@@ -135,6 +135,8 @@ public abstract class World implements IBlockAccess {
     protected float growthOdds = 100;
     protected float modifiedOdds = 100;
     private final byte chunkTickRadius;
+    public static boolean haveWeSilencedAPhysicsCrash;
+    public static String blockLocation;
 
     public static long chunkToKey(int x, int z)
     {
@@ -570,6 +572,9 @@ public abstract class World implements IBlockAccess {
                 }
                 // CraftBukkit end
                 iblockdata.getBlock().doPhysics(this, blockposition, iblockdata, block);
+            } catch (StackOverflowError stackoverflowerror) { // Spigot Start
+                haveWeSilencedAPhysicsCrash = true;
+                blockLocation = blockposition.getX() + ", " + blockposition.getY() + ", " + blockposition.getZ(); // Spigot End
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.a(throwable, "Exception while updating neighbours");
                 CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Block being updated");
