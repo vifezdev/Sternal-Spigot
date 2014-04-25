@@ -68,6 +68,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public SocketAddress l;
     public java.util.UUID spoofedUUID;
     public com.mojang.authlib.properties.Property[] spoofedProfile;
+    public boolean preparing = true;
     // Spigot End
     private PacketListener m;
     private IChatBaseComponent n;
@@ -82,6 +83,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         super.channelActive(channelhandlercontext);
         this.channel = channelhandlercontext.channel();
         this.l = this.channel.remoteAddress();
+        // Spigot Start
+        this.preparing = false;
+        // Spigot End
 
         try {
             this.a(EnumProtocol.HANDSHAKING);
@@ -235,6 +239,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void close(IChatBaseComponent ichatbasecomponent) {
+        // Spigot Start
+        this.preparing = false;
+        // Spigot End
         if (this.channel.isOpen()) {
             this.channel.close(); // We can't wait as this may be called from an event loop.
             this.n = ichatbasecomponent;
