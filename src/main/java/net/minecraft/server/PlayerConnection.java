@@ -983,7 +983,18 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             } else if (s.isEmpty()) {
                 c.warn(this.player.getName() + " tried to send an empty message");
             } else if (getPlayer().isConversing()) {
-                getPlayer().acceptConversationInput(s);
+                // Spigot start
+                final String message = s;
+                this.minecraftServer.processQueue.add( new Waitable()
+                {
+                    @Override
+                    protected Object evaluate()
+                    {
+                        getPlayer().acceptConversationInput( message );
+                        return null;
+                    }
+                } );
+                // Spigot end
             } else if (this.player.getChatFlags() == EntityHuman.EnumChatVisibility.SYSTEM) { // Re-add "Command Only" flag check
                 ChatMessage chatmessage = new ChatMessage("chat.cannotSend", new Object[0]);
 
