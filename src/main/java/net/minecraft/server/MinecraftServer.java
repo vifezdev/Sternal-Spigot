@@ -486,7 +486,13 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             if (this.n.d()) {
                 this.n.e();
             }
-
+            // Spigot start
+            if( org.spigotmc.SpigotConfig.saveUserCacheOnStopOnly )
+            {
+                LOGGER.info("Saving usercache.json");
+                this.Z.c();
+            }
+            //Spigot end
         }
     }
 

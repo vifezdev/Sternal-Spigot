@@ -121,7 +121,7 @@ public class UserCache {
         this.c.put(gameprofile.getName().toLowerCase(Locale.ROOT), usercache_usercacheentry);
         this.d.put(uuid, usercache_usercacheentry);
         this.e.addFirst(gameprofile);
-        this.c();
+        if( !org.spigotmc.SpigotConfig.saveUserCacheOnStopOnly ) this.c(); // Spigot - skip saving if disabled
     }
 
     public GameProfile getProfile(String s) {
@@ -149,7 +149,7 @@ public class UserCache {
             }
         }
 
-        this.c();
+        if( !org.spigotmc.SpigotConfig.saveUserCacheOnStopOnly ) this.c(); // Spigot - skip saving if disabled
         return usercache_usercacheentry == null ? null : usercache_usercacheentry.a();
     }
 
