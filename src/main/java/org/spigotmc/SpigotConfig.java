@@ -328,4 +328,10 @@ public class SpigotConfig
     {
         saveUserCacheOnStopOnly = getBoolean( "settings.save-user-cache-on-stop-only", false );
     }
+
+    public static int intCacheLimit;
+    private static void intCacheLimit()
+    {
+        intCacheLimit = getInt( "settings.int-cache-limit", 1024 );
+    }
 }
