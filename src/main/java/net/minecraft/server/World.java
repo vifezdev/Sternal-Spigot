@@ -1946,6 +1946,7 @@ public abstract class World implements IBlockAccess {
                     }
                 }
 
+                tileentity.a(this); // Spigot - No null worlds
                 this.b.add(tileentity);
             } else {
                 this.a(tileentity);
