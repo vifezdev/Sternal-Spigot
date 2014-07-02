@@ -47,6 +47,10 @@ import java.util.logging.Logger;
 import net.minecraft.server.NBTCompressedStreamTools;
 import org.apache.commons.codec.binary.Base64;
 
+// Spigot start
+import static org.spigotmc.ValidateUtils.*;
+// Spigot end
+
 /**
  * Children must include the following:
  *
@@ -247,7 +251,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             NBTTagCompound display = tag.getCompound(DISPLAY.NBT);
 
             if (display.hasKey(NAME.NBT)) {
-                displayName = display.getString(NAME.NBT);
+                displayName = limit( display.getString(NAME.NBT), 1024 ); // Spigot
             }
 
             if (display.hasKey(LORE.NBT)) {
@@ -255,7 +259,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
                 lore = new ArrayList<String>(list.size());
 
                 for (int index = 0; index < list.size(); index++) {
-                    String line = list.getString(index);
+                    String line = limit( list.getString(index), 1024 ); // Spigot
                     lore.add(line);
                 }
             }

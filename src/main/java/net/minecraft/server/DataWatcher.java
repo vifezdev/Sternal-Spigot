@@ -155,6 +155,17 @@ public class DataWatcher {
                         arraylist = Lists.newArrayList();
                     }
 
+                   // Spigot start - copy ItemStacks to prevent ConcurrentModificationExceptions
+                    if ( datawatcher_watchableobject.b() instanceof ItemStack )
+                    {
+                        datawatcher_watchableobject = new WatchableObject(
+                                datawatcher_watchableobject.c(),
+                                datawatcher_watchableobject.a(),
+                                ( (ItemStack) datawatcher_watchableobject.b() ).cloneItemStack()
+                        );
+                    }
+                    // Spigot end
+
                     arraylist.add(datawatcher_watchableobject);
                 }
             }
@@ -186,6 +197,21 @@ public class DataWatcher {
         this.f.readLock().lock();
 
         arraylist.addAll(this.dataValues.valueCollection()); // Spigot
+        // Spigot start - copy ItemStacks to prevent ConcurrentModificationExceptions
+        for ( int i = 0; i < arraylist.size(); i++ )
+        {
+            WatchableObject watchableobject = (WatchableObject) arraylist.get( i );
+            if ( watchableobject.b() instanceof ItemStack )
+            {
+                watchableobject = new WatchableObject(
+                        watchableobject.c(),
+                        watchableobject.a(),
+                        ( (ItemStack) watchableobject.b() ).cloneItemStack()
+                );
+                arraylist.set( i, watchableobject );
+            }
+        }
+        // Spigot end
 
         this.f.readLock().unlock();
         return arraylist;
