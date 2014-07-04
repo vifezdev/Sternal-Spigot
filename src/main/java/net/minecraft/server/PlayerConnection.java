@@ -418,7 +418,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     d15 = d11 * d11 + d12 * d12 + d13 * d13;
                     boolean flag1 = false;
 
-                    if (d15 > 0.0625D && !this.player.isSleeping() && !this.player.playerInteractManager.isCreative()) {
+                    // Spigot: make "moved wrongly" limit configurable
+                    if (d15 > org.spigotmc.SpigotConfig.movedWronglyThreshold && !this.player.isSleeping() && !this.player.playerInteractManager.isCreative()) {
                         flag1 = true;
                         PlayerConnection.c.warn(this.player.getName() + " moved wrongly!");
                     }

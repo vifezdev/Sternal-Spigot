@@ -334,4 +334,10 @@ public class SpigotConfig
     {
         intCacheLimit = getInt( "settings.int-cache-limit", 1024 );
     }
+
+    public static double movedWronglyThreshold;
+    private static void movedWronglyThreshold()
+    {
+        movedWronglyThreshold = getDouble( "settings.moved-wrongly-threshold", 0.0625D );
+    }
 }
