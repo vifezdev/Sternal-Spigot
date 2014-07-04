@@ -294,4 +294,13 @@ public class SpigotWorldConfig
     {
         witherSpawnSoundRadius = getInt( "wither-spawn-sound-radius", 0 );
     }
+
+    public int villageSeed;
+    public int largeFeatureSeed;
+    private void initWorldGenSeeds()
+    {
+        villageSeed = getInt( "seed-village", 10387312 );
+        largeFeatureSeed = getInt( "seed-feature", 14357617 );
+        log( "Custom Map Seeds:  Village: " + villageSeed + " Feature: " + largeFeatureSeed );
+    }
 }
