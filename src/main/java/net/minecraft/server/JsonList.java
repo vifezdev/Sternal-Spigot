@@ -170,6 +170,17 @@ public class JsonList<K, V extends JsonListEntry<K>> {
         try {
             bufferedreader = Files.newReader(this.c, Charsets.UTF_8);
             collection = (Collection) this.b.fromJson(bufferedreader, JsonList.f);
+        // Spigot Start
+        } catch ( java.io.FileNotFoundException ex )
+        {
+            org.bukkit.Bukkit.getLogger().log( java.util.logging.Level.INFO, "Unable to find file {0}, creating it.", this.c );
+        } catch ( com.google.gson.JsonSyntaxException ex )
+        {
+            org.bukkit.Bukkit.getLogger().log( java.util.logging.Level.WARNING, "Unable to read file {0}, backing it up to {0}.backup and creating new copy.", this.c );
+            File backup = new File( this.c + ".backup" );
+            this.c.renameTo( backup );
+            this.c.delete();
+        // Spigot End
         } finally {
             IOUtils.closeQuietly(bufferedreader);
         }
