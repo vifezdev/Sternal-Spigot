@@ -124,6 +124,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     // Spigot end
 
     public MinecraftServer(OptionSet options, Proxy proxy, File file1) {
+        io.netty.util.ResourceLeakDetector.setEnabled( false ); // Spigot - disable
         this.e = proxy;
         MinecraftServer.l = this;
         // this.universe = file; // CraftBukkit
