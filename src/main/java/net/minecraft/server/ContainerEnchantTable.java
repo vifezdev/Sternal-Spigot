@@ -336,7 +336,11 @@ public class ContainerEnchantTable extends Container {
                     ((Slot) this.c.get(0)).set(itemstack1.cloneItemStack());
                     itemstack1.count = 0;
                 } else if (itemstack1.count >= 1) {
-                    ((Slot) this.c.get(0)).set(new ItemStack(itemstack1.getItem(), 1, itemstack1.getData()));
+                    // Spigot start
+                    ItemStack clone = itemstack1.cloneItemStack();
+                    clone.count = 1;
+                    ((Slot) this.c.get(0)).set(clone);
+                    // Spigot end
                     --itemstack1.count;
                 }
             }
