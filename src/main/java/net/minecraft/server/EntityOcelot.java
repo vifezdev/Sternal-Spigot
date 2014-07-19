@@ -6,6 +6,7 @@ public class EntityOcelot extends EntityTameableAnimal {
 
     private PathfinderGoalAvoidTarget<EntityHuman> bo;
     private PathfinderGoalTempt bp;
+    public boolean spawnBonus = true; // Spigot
 
     public EntityOcelot(World world) {
         super(world);
@@ -230,7 +231,7 @@ public class EntityOcelot extends EntityTameableAnimal {
 
     public GroupDataEntity prepare(DifficultyDamageScaler difficultydamagescaler, GroupDataEntity groupdataentity) {
         groupdataentity = super.prepare(difficultydamagescaler, groupdataentity);
-        if (this.world.random.nextInt(7) == 0) {
+        if (spawnBonus && this.world.random.nextInt(7) == 0) { // Spigot
             for (int i = 0; i < 2; ++i) {
                 EntityOcelot entityocelot = new EntityOcelot(this.world);
 
