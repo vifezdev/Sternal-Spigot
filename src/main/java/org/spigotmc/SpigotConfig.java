@@ -340,4 +340,10 @@ public class SpigotConfig
     {
         movedWronglyThreshold = getDouble( "settings.moved-wrongly-threshold", 0.0625D );
     }
+
+    public static double movedTooQuicklyThreshold;
+    private static void movedTooQuicklyThreshold()
+    {
+        movedTooQuicklyThreshold = getDouble( "settings.moved-too-quickly-threshold", 100.0D );
+    }
 }
