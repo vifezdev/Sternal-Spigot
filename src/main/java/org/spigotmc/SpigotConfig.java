@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import net.minecraft.server.AttributeRanged;
+import net.minecraft.server.GenericAttributes;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -345,5 +347,18 @@ public class SpigotConfig
     private static void movedTooQuicklyThreshold()
     {
         movedTooQuicklyThreshold = getDouble( "settings.moved-too-quickly-threshold", 100.0D );
+    }
+
+    public static double maxHealth = 2048;
+    public static double movementSpeed = 2048;
+    public static double attackDamage = 2048;
+    private static void attributeMaxes()
+    {
+        maxHealth = getDouble( "settings.attribute.maxHealth.max", maxHealth );
+        ( (AttributeRanged) GenericAttributes.maxHealth ).b = maxHealth;
+        movementSpeed = getDouble( "settings.attribute.movementSpeed.max", movementSpeed );
+        ( (AttributeRanged) GenericAttributes.MOVEMENT_SPEED ).b = movementSpeed;
+        attackDamage = getDouble( "settings.attribute.attackDamage.max", attackDamage );
+        ( (AttributeRanged) GenericAttributes.ATTACK_DAMAGE ).b = attackDamage;
     }
 }
