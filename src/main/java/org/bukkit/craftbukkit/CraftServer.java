@@ -1685,6 +1685,11 @@ public final class CraftServer implements Server {
         {
             return org.spigotmc.SpigotConfig.config;
         }
+
+        @Override
+        public void restart() {
+            org.spigotmc.RestartCommand.restart();
+        }
     };
 
     public Spigot spigot()
