@@ -1084,7 +1084,7 @@ public abstract class EntityHuman extends EntityLiving {
                             }
                         }
 
-                        this.applyExhaustion(0.3F);
+                        this.applyExhaustion(world.spigotConfig.combatExhaustion); // Spigot - Change to use configurable value
                     } else if (flag1) {
                         entity.extinguish();
                     }
@@ -1331,9 +1331,9 @@ public abstract class EntityHuman extends EntityLiving {
         super.bF();
         this.b(StatisticList.u);
         if (this.isSprinting()) {
-            this.applyExhaustion(0.8F);
+            this.applyExhaustion(world.spigotConfig.sprintExhaustion); // Spigot - Change to use configurable value
         } else {
-            this.applyExhaustion(0.2F);
+            this.applyExhaustion(world.spigotConfig.walkExhaustion); // Spigot - Change to use configurable value
         }
 
     }

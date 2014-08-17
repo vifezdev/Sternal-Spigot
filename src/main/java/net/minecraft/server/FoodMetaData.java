@@ -63,7 +63,7 @@ public class FoodMetaData {
             if (this.foodTickTimer >= 80) {
                 // CraftBukkit - added RegainReason
                 entityhuman.heal(1.0F, org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason.SATIATED);
-                this.a(3.0F);
+                this.a(entityhuman.world.spigotConfig.regenExhaustion); // Spigot - Change to use configurable value
                 this.foodTickTimer = 0;
             }
         } else if (this.foodLevel <= 0) {

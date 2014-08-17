@@ -303,4 +303,16 @@ public class SpigotWorldConfig
         largeFeatureSeed = getInt( "seed-feature", 14357617 );
         log( "Custom Map Seeds:  Village: " + villageSeed + " Feature: " + largeFeatureSeed );
     }
+
+    public float walkExhaustion;
+    public float sprintExhaustion;
+    public float combatExhaustion;
+    public float regenExhaustion;
+    private void initHunger()
+    {
+        walkExhaustion = (float) getDouble( "hunger.walk-exhaustion", 0.2 );
+        sprintExhaustion = (float) getDouble( "hunger.sprint-exhaustion", 0.8 );
+        combatExhaustion = (float) getDouble( "hunger.combat-exhaustion", 0.3 );
+        regenExhaustion = (float) getDouble( "hunger.regen-exhaustion", 3 );
+    }
 }
