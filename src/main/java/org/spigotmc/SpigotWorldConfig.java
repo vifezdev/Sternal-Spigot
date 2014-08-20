@@ -315,4 +315,15 @@ public class SpigotWorldConfig
         combatExhaustion = (float) getDouble( "hunger.combat-exhaustion", 0.3 );
         regenExhaustion = (float) getDouble( "hunger.regen-exhaustion", 3 );
     }
+
+    public int currentPrimedTnt = 0;
+    public int maxTntTicksPerTick;
+    private void maxTntPerTick() {
+        if ( SpigotConfig.version < 7 )
+        {
+            set( "max-tnt-per-tick", 100 );
+        }
+        maxTntTicksPerTick = getInt( "max-tnt-per-tick", 100 );
+        log( "Max TNT Explosions: " + maxTntTicksPerTick );
+    }
 }

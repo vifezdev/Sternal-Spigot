@@ -595,6 +595,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         }
 
         super.tickEntities();
+        spigotConfig.currentPrimedTnt = 0; // Spigot
     }
 
     public void j() {
