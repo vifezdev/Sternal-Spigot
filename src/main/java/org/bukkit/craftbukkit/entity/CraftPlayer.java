@@ -1143,12 +1143,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public void setFlying(boolean value) {
+        boolean needsUpdate = getHandle().abilities.canFly != value; // PaperSpigot - Only refresh abilities if needed
         if (!getAllowFlight() && value) {
             throw new IllegalArgumentException("Cannot make player fly if getAllowFlight() is false");
         }
 
         getHandle().abilities.isFlying = value;
-        getHandle().updateAbilities();
+        if (needsUpdate) getHandle().updateAbilities(); // PaperSpigot - Only refresh abilities if needed
     }
 
     @Override
