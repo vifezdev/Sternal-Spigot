@@ -18,6 +18,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.world.StructureGrowEvent;
 // CraftBukkit end
 
+import org.github.paperspigot.PaperSpigotConfig; // PaperSpigot
+
 public final class ItemStack {
 
     public static final DecimalFormat a = new DecimalFormat("#.###");
@@ -321,9 +323,13 @@ public final class ItemStack {
         }
 
         // Is this a block?
-        if (CraftMagicNumbers.getBlock(CraftMagicNumbers.getId(this.getItem())) != Blocks.AIR) {
+        // PaperSpigot start - Allow specific blocks to retain their data values
+        int id = CraftMagicNumbers.getId(this.getItem());
+        if (CraftMagicNumbers.getBlock(id) != Blocks.AIR) {
             // If vanilla doesn't use data on it don't allow any
-            if (!(this.usesData() || this.getItem().usesDurability())) {
+            if ((PaperSpigotConfig.dataValueAllowedItems == null || !PaperSpigotConfig.dataValueAllowedItems.contains(id)) &&
+                    (!(this.usesData() || this.getItem().usesDurability()))) {
+            // PaperSpigot end
                 i = 0;
             }
         }

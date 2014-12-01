@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import net.minecraft.server.MinecraftServer;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -161,5 +160,12 @@ public class PaperSpigotConfig
     {
         strengthEffectModifier = getDouble( "effect-modifiers.strength", 1.3D );
         weaknessEffectModifier = getDouble( "effect-modifiers.weakness", -0.5D );
+    }
+
+    public static Set<Integer> dataValueAllowedItems;
+    private static void dataValueAllowedItems()
+    {
+        dataValueAllowedItems = new HashSet<Integer>( getList( "data-value-allowed-items", Collections.emptyList() ) );
+        Bukkit.getLogger().info( "Data value allowed items: " + StringUtils.join(dataValueAllowedItems, ", ") );
     }
 }
