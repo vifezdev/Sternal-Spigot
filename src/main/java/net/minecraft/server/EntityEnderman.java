@@ -251,6 +251,13 @@ public class EntityEnderman extends EntityMonster {
             }
         }
 
+        // PaperSpigot start - Drop the block the entity is holding when it dies
+        Item carriedItem = Item.getItemOf(getCarried().getBlock());
+        if (carriedItem != null) {
+            this.a(carriedItem, 1);
+        }
+        // PaperSpigot end
+
     }
 
     public void setCarried(IBlockData iblockdata) {
