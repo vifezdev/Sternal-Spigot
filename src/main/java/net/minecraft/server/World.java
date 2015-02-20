@@ -137,6 +137,9 @@ public abstract class World implements IBlockAccess {
     private final byte chunkTickRadius;
     public static boolean haveWeSilencedAPhysicsCrash;
     public static String blockLocation;
+    private org.spigotmc.TickLimiter entityLimiter;
+    private org.spigotmc.TickLimiter tileLimiter;
+    private int tileTickPosition;
 
     public static long chunkToKey(int x, int z)
     {
@@ -225,6 +228,8 @@ public abstract class World implements IBlockAccess {
         this.getServer().addWorld(this.world); 
         // CraftBukkit end
         timings = new SpigotTimings.WorldTimingsHandler(this); // Spigot - code below can generate new world and access timings 
+        this.entityLimiter = new org.spigotmc.TickLimiter(spigotConfig.entityMaxTickTime);
+        this.tileLimiter = new org.spigotmc.TickLimiter(spigotConfig.tileMaxTickTime);
     }
 
     public World b() {
@@ -1396,7 +1401,12 @@ public abstract class World implements IBlockAccess {
         timings.entityTick.startTiming(); // Spigot
         guardEntityList = true; // Spigot
         // CraftBukkit start - Use field for loop variable
-        for (this.tickPosition = 0; this.tickPosition < this.entityList.size(); ++this.tickPosition) {
+        int entitiesThisCycle = 0;
+        if (tickPosition < 0) tickPosition = 0;
+        for (entityLimiter.initTick();
+                entitiesThisCycle < entityList.size() && (entitiesThisCycle % 10 != 0 || entityLimiter.shouldContinue());
+                tickPosition++, entitiesThisCycle++) {
+            tickPosition = (tickPosition < entityList.size()) ? tickPosition : 0;
             entity = (Entity) this.entityList.get(this.tickPosition);
             // CraftBukkit end
             if (entity.vehicle != null) {
@@ -1452,14 +1462,19 @@ public abstract class World implements IBlockAccess {
             this.c.clear();
         }
         // CraftBukkit end
-        Iterator iterator = this.tileEntityList.iterator();
 
-        while (iterator.hasNext()) {
-            TileEntity tileentity = (TileEntity) iterator.next();
+        // Spigot start
+        int tilesThisCycle = 0;
+        for (tileLimiter.initTick();
+                tilesThisCycle < tileEntityList.size() && (tilesThisCycle % 10 != 0 || tileLimiter.shouldContinue());
+                tileTickPosition++, tilesThisCycle++) {
+            tileTickPosition = (tileTickPosition < tileEntityList.size()) ? tileTickPosition : 0;
+            TileEntity tileentity = (TileEntity) this.tileEntityList.get(tileTickPosition);
             // Spigot start
             if (tileentity == null) {
                 getServer().getLogger().severe("Spigot has detected a null entity and has removed it, preventing a crash");
-                iterator.remove();
+                tilesThisCycle--;
+                this.tileEntityList.remove(tileTickPosition--);
                 continue;
             }
             // Spigot end
@@ -1487,7 +1502,8 @@ public abstract class World implements IBlockAccess {
             }
 
             if (tileentity.x()) {
-                iterator.remove();
+                tilesThisCycle--;
+                this.tileEntityList.remove(tileTickPosition--);
                 this.h.remove(tileentity);
                 if (this.isLoaded(tileentity.getPosition())) {
                     this.getChunkAtWorldCoords(tileentity.getPosition()).e(tileentity.getPosition());
