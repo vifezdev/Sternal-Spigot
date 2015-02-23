@@ -248,6 +248,13 @@ public abstract class Entity implements ICommandListener {
         this.K();
     }
 
+    /**
+     * PaperSpigot - Checks if the feature is enabled and the entity is above the nether world bedrock height
+     */
+    private boolean paperNetherCheck() {
+        return this.world.paperSpigotConfig.netherVoidTopDamage && this.world.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && this.locY >= 128.0D;
+    }
+
     public void K() {
         this.world.methodProfiler.a("entityBaseTick");
         if (this.vehicle != null && this.vehicle.dead) {
@@ -324,7 +331,7 @@ public abstract class Entity implements ICommandListener {
             this.fallDistance *= 0.5F;
         }
 
-        if (this.locY < -64.0D) {
+        if (this.locY < -64.0D || paperNetherCheck()) { // PaperSpigot - Configurable top-of-nether void damage
             this.O();
         }
 

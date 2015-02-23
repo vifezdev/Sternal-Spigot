@@ -196,4 +196,10 @@ public class PaperSpigotWorldConfig
     {
         boatsDropBoats = getBoolean( "game-mechanics.boats-drop-boats", false );
     }
+
+    public boolean netherVoidTopDamage;
+    private void nethervoidTopDamage()
+    {
+        netherVoidTopDamage = getBoolean( "nether-ceiling-void-damage", false );
+    }
 }
