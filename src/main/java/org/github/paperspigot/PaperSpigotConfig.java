@@ -138,4 +138,10 @@ public class PaperSpigotConfig
         config.addDefault( path, def );
         return config.getString( path, config.getString( path ) );
     }
+
+    public static double babyZombieMovementSpeed;
+    private static void babyZombieMovementSpeed()
+    {
+        babyZombieMovementSpeed = getDouble( "settings.baby-zombie-movement-speed", 0.5D ); // Player moves at 0.1F, for reference
+    }
 }
