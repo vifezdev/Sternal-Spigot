@@ -230,6 +230,7 @@ public abstract class World implements IBlockAccess {
         }); 
         this.getServer().addWorld(this.world); 
         // CraftBukkit end
+        this.keepSpawnInMemory = this.paperSpigotConfig.keepSpawnInMemory; // PaperSpigot
         timings = new SpigotTimings.WorldTimingsHandler(this); // Spigot - code below can generate new world and access timings 
         this.entityLimiter = new org.spigotmc.TickLimiter(spigotConfig.entityMaxTickTime);
         this.tileLimiter = new org.spigotmc.TickLimiter(spigotConfig.tileMaxTickTime);

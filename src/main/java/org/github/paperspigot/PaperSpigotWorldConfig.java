@@ -139,4 +139,11 @@ public class PaperSpigotWorldConfig
         softDespawnDistance = softDespawnDistance*softDespawnDistance;
         hardDespawnDistance = hardDespawnDistance*hardDespawnDistance;
     }
+
+    public boolean keepSpawnInMemory;
+    private void keepSpawnInMemory()
+    {
+        keepSpawnInMemory = getBoolean( "keep-spawn-loaded", true );
+        log( "Keep spawn chunk loaded: " + keepSpawnInMemory );
+    }
 }
