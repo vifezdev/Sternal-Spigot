@@ -141,7 +141,8 @@ public class EntitySquid extends EntityWaterAnimal {
     }
 
     public boolean bR() {
-        return this.locY > 45.0D && this.locY < (double) this.world.F() && super.bR();
+        // PaperSpigot - Configurable squid spawn range
+        return this.locY > this.world.paperSpigotConfig.squidMinSpawnHeight && this.locY < (double) this.world.paperSpigotConfig.squidMaxSpawnHeight && super.bR();
     }
 
     public void b(float f, float f1, float f2) {

@@ -81,4 +81,13 @@ public class PaperSpigotWorldConfig
         allowUndeadHorseLeashing = getBoolean( "allow-undead-horse-leashing", false );
         log( "Allow undead horse types to be leashed: " + allowUndeadHorseLeashing );
     }
+
+    public double squidMinSpawnHeight;
+    public double squidMaxSpawnHeight;
+    private void squidSpawnHeight()
+    {
+        squidMinSpawnHeight = getDouble( "squid-spawn-height.minimum", 45.0D );
+        squidMaxSpawnHeight = getDouble( "squid-spawn-height.maximum", 63.0D );
+        log( "Squids will spawn between Y: " + squidMinSpawnHeight + " and Y: " + squidMaxSpawnHeight );
+    }
 }
