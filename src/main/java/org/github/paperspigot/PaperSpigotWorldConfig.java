@@ -114,4 +114,12 @@ public class PaperSpigotWorldConfig
         fishingMinTicks = getInt( "fishing-time-range.MinimumTicks", 100 );
         fishingMaxTicks = getInt( "fishing-time-range.MaximumTicks", 900 );
     }
+
+    public float blockBreakExhaustion;
+    public float playerSwimmingExhaustion;
+    private void exhaustionValues()
+    {
+        blockBreakExhaustion = getFloat( "player-exhaustion.block-break", 0.025F );
+        playerSwimmingExhaustion = getFloat( "player-exhaustion.swimming", 0.015F );
+    }
 }
