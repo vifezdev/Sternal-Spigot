@@ -7,6 +7,7 @@ public class MobEffectAttackDamage extends MobEffectList {
     }
 
     public double a(int i, AttributeModifier attributemodifier) {
-        return this.id == MobEffectList.WEAKNESS.id ? (double) (-0.5F * (float) (i + 1)) : 1.3D * (double) (i + 1);
+        // PaperSpigot - Configurable modifiers for strength and weakness effects
+        return this.id == MobEffectList.WEAKNESS.id ? (double) (org.github.paperspigot.PaperSpigotConfig.weaknessEffectModifier * (float) (i + 1)) : org.github.paperspigot.PaperSpigotConfig.strengthEffectModifier * (double) (i + 1);
     }
 }
