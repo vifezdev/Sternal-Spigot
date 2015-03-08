@@ -65,4 +65,11 @@ public class CraftTNTPrimed extends CraftEntity implements TNTPrimed {
 
         return null;
     }
+
+    // PaperSpigot start
+    @Override
+    public org.bukkit.Location getSourceLoc() {
+        return getHandle().sourceLoc;
+    }
+    // PaperSpigot end
 }

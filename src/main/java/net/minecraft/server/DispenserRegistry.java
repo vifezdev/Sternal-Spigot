@@ -541,7 +541,7 @@ public class DispenserRegistry {
                     }
                 }
 
-                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, event.getVelocity().getX(), event.getVelocity().getY(), event.getVelocity().getZ(), (EntityLiving) null);
+                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(block.getLocation(), world, event.getVelocity().getX(), event.getVelocity().getY(), event.getVelocity().getZ(), (EntityLiving) null); // PaperSpigot
                 // CraftBukkit end
 
                 world.addEntity(entitytntprimed);

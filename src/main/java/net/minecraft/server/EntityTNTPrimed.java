@@ -8,15 +8,23 @@ public class EntityTNTPrimed extends Entity {
     private EntityLiving source;
     public float yield = 4; // CraftBukkit - add field
     public boolean isIncendiary = false; // CraftBukkit - add field
+    public org.bukkit.Location sourceLoc; // PaperSpigot
 
+    // PaperSpigot start - TNT source location API
     public EntityTNTPrimed(World world) {
+        this(null, world);
+    }
+
+    public EntityTNTPrimed(org.bukkit.Location loc, World world) {
         super(world);
+        sourceLoc = loc;
+    // PaperSpigot end
         this.k = true;
         this.setSize(0.98F, 0.98F);
     }
 
-    public EntityTNTPrimed(World world, double d0, double d1, double d2, EntityLiving entityliving) {
-        this(world);
+    public EntityTNTPrimed(org.bukkit.Location loc, World world, double d0, double d1, double d2, EntityLiving entityliving) {
+        this(loc, world);
         this.setPosition(d0, d1, d2);
         float f = (float) (Math.random() * 3.1415927410125732D * 2.0D);
 
@@ -102,10 +110,25 @@ public class EntityTNTPrimed extends Entity {
 
     protected void b(NBTTagCompound nbttagcompound) {
         nbttagcompound.setByte("Fuse", (byte) this.fuseTicks);
+        // PaperSpigot start - TNT source location API
+        if (sourceLoc != null) {
+            nbttagcompound.setInt("SourceLoc_x", sourceLoc.getBlockX());
+            nbttagcompound.setInt("SourceLoc_y", sourceLoc.getBlockY());
+            nbttagcompound.setInt("SourceLoc_z", sourceLoc.getBlockZ());
+        }
+        // PaperSpigot end
     }
 
     protected void a(NBTTagCompound nbttagcompound) {
         this.fuseTicks = nbttagcompound.getByte("Fuse");
+        // PaperSpigot start - TNT source location API
+        if (nbttagcompound.hasKey("SourceLoc_x")) {
+            int srcX = nbttagcompound.getInt("SourceLoc_x");
+            int srcY = nbttagcompound.getInt("SourceLoc_y");
+            int srcZ = nbttagcompound.getInt("SourceLoc_z");
+            sourceLoc = new org.bukkit.Location(world.getWorld(), srcX, srcY, srcZ);
+        }
+        // PaperSpigot end
     }
 
     public EntityLiving getSource() {

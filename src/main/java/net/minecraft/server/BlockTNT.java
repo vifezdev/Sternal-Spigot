@@ -29,7 +29,8 @@ public class BlockTNT extends Block {
 
     public void wasExploded(World world, BlockPosition blockposition, Explosion explosion) {
         if (!world.isClientSide) {
-            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), explosion.getSource());
+            org.bukkit.Location loc = explosion.source instanceof EntityTNTPrimed ? ((EntityTNTPrimed) explosion.source).sourceLoc : new org.bukkit.Location(world.getWorld(), blockposition.getX(), blockposition.getY(), blockposition.getZ()); // PaperSpigot
+            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(loc, world, (double) ((float) blockposition.getX() + 0.5F), (double) ((float) blockposition.getY() + 0.5F), (double) ((float) blockposition.getZ() + 0.5F), explosion.getSource()); // PaperSpigot - add loc
 
             entitytntprimed.fuseTicks = world.random.nextInt(entitytntprimed.fuseTicks / 4) + entitytntprimed.fuseTicks / 8;
             world.addEntity(entitytntprimed);
@@ -43,7 +44,8 @@ public class BlockTNT extends Block {
     public void a(World world, BlockPosition blockposition, IBlockData iblockdata, EntityLiving entityliving) {
         if (!world.isClientSide) {
             if (((Boolean) iblockdata.get(BlockTNT.EXPLODE)).booleanValue()) {
-                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), entityliving);
+                org.bukkit.Location loc = new org.bukkit.Location(world.getWorld(), blockposition.getX(), blockposition.getY(), blockposition.getZ()); // PaperSpigot
+                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(loc, world, (double) ((float) blockposition.getX() + 0.5F), (double) ((float) blockposition.getY() + 0.5F), (double) ((float) blockposition.getZ() + 0.5F), entityliving); // PaperSpigot - add loc
 
                 world.addEntity(entitytntprimed);
                 world.makeSound(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);

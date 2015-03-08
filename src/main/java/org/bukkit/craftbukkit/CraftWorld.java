@@ -1110,7 +1110,8 @@ public class CraftWorld implements World {
                 throw new IllegalArgumentException("Cannot spawn hanging entity for " + clazz.getName() + " at " + location);
             }
         } else if (TNTPrimed.class.isAssignableFrom(clazz)) {
-            entity = new EntityTNTPrimed(world, x, y, z, null);
+            org.bukkit.Location loc = new org.bukkit.Location(world.getWorld(), x, y, z); // PaperSpigot
+            entity = new EntityTNTPrimed(loc, world, x, y, z, null);
         } else if (ExperienceOrb.class.isAssignableFrom(clazz)) {
             entity = new EntityExperienceOrb(world, x, y, z, 0);
         } else if (Weather.class.isAssignableFrom(clazz)) {
