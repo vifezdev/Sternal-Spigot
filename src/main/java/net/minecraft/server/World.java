@@ -1418,10 +1418,13 @@ public abstract class World implements IBlockAccess {
                     this.g(entity);
                     SpigotTimings.tickEntityTimer.stopTiming(); // Spigot
                 } catch (Throwable throwable1) {
-                    crashreport = CrashReport.a(throwable1, "Ticking entity");
-                    crashreportsystemdetails = crashreport.a("Entity being ticked");
-                    entity.appendEntityCrashDetails(crashreportsystemdetails);
-                    throw new ReportedException(crashreport);
+                    // PaperSpigot start - Prevent tile entity and entity crashes
+                    SpigotTimings.tickEntityTimer.stopTiming();
+                    System.err.println("Entity threw exception at " + entity.world.getWorld().getName() + ":" + entity.locX + "," + entity.locY + "," + entity.locZ);
+                    throwable1.printStackTrace();
+                    entity.dead = true;
+                    continue;
+                    // PaperSpigot end
                 }
             }
 
@@ -1480,11 +1483,14 @@ public abstract class World implements IBlockAccess {
                         tileentity.tickTimer.startTiming(); // Spigot
                         ((IUpdatePlayerListBox) tileentity).c();
                     } catch (Throwable throwable2) {
-                        CrashReport crashreport1 = CrashReport.a(throwable2, "Ticking block entity");
-                        CrashReportSystemDetails crashreportsystemdetails1 = crashreport1.a("Block entity being ticked");
-
-                        tileentity.a(crashreportsystemdetails1);
-                        throw new ReportedException(crashreport1);
+                        // PaperSpigot start - Prevent tile entity and entity crashes
+                        tileentity.tickTimer.stopTiming();
+                        System.err.println("TileEntity threw exception at " + tileentity.world.getWorld().getName() + ":" + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ());
+                        throwable2.printStackTrace();
+                        tilesThisCycle--;
+                        this.tileEntityList.remove(tileTickPosition--);
+                        continue;
+                        // PaperSpigot end
                     }
                     // Spigot start
                     finally {

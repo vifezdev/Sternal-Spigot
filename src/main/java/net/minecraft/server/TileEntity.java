@@ -157,7 +157,12 @@ public abstract class TileEntity {
             }
         });
         if (this.world != null) {
-            CrashReportSystemDetails.a(crashreportsystemdetails, this.position, this.w(), this.u());
+            // PaperSpigot start - Prevent tile entity and entity crashes
+            Block block = this.w();
+            if (block != null) {
+                CrashReportSystemDetails.a(crashreportsystemdetails, this.position, this.w(), this.u());
+            }
+            // PaperSpigot end
             crashreportsystemdetails.a("Actual block type", new Callable() {
                 public String a() throws Exception {
                     int i = Block.getId(TileEntity.this.world.getType(TileEntity.this.position).getBlock());
