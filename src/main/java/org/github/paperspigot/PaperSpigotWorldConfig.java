@@ -74,4 +74,11 @@ public class PaperSpigotWorldConfig
         config.addDefault( "world-settings.default." + path, def );
         return config.getString( "world-settings." + worldName + "." + path, config.getString( "world-settings.default." + path ) );
     }
+
+    public boolean allowUndeadHorseLeashing;
+    private void allowUndeadHorseLeashing()
+    {
+        allowUndeadHorseLeashing = getBoolean( "allow-undead-horse-leashing", false );
+        log( "Allow undead horse types to be leashed: " + allowUndeadHorseLeashing );
+    }
 }

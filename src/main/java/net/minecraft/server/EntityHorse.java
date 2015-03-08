@@ -179,6 +179,11 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
     }
 
     public boolean cb() {
+        // PaperSpigot start - Configurable undead horse leashing
+        if (this.world.paperSpigotConfig.allowUndeadHorseLeashing) {
+            return super.cb();
+        }
+        // PaperSpigot end
         return !this.cR() && super.cb();
     }
 
