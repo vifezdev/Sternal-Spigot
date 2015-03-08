@@ -70,6 +70,12 @@ public class EntityFallingBlock extends Entity {
             this.motY -= 0.03999999910593033D;
             this.move(this.motX, this.motY, this.motZ);
 
+            // PaperSpigot start - Remove entities in unloaded chunks
+            if (this.inUnloadedChunk && world.paperSpigotConfig.removeUnloadedFallingBlocks) {
+                this.die();
+            }
+            // PaperSpigot end
+
             // PaperSpigot start - Drop falling blocks above the specified height
             if (this.world.paperSpigotConfig.fallingBlockHeightNerf != 0 && this.locY > this.world.paperSpigotConfig.fallingBlockHeightNerf) {
                 if (this.dropItem) {

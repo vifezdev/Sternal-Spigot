@@ -115,6 +115,7 @@ public abstract class Entity implements ICommandListener {
     public boolean valid; // CraftBukkit
     public org.bukkit.projectiles.ProjectileSource projectileSource; // CraftBukkit - For projectiles only
     public boolean forceExplosionKnockback; // CraftBukkit - SPIGOT-949
+    public boolean inUnloadedChunk = false; // PaperSpigot - Remove entities in unloaded chunks
 
     // Spigot start
     public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getEntityTimings(this); // Spigot

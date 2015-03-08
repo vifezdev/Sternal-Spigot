@@ -180,4 +180,14 @@ public class PaperSpigotWorldConfig
         removeInvalidMobSpawnerTEs = getBoolean( "remove-invalid-mob-spawner-tile-entities", true );
         log( "Remove invalid mob spawner tile entities: " + removeInvalidMobSpawnerTEs );
     }
+
+    public boolean removeUnloadedEnderPearls;
+    public boolean removeUnloadedTNTEntities;
+    public boolean removeUnloadedFallingBlocks;
+    private void removeUnloaded()
+    {
+        removeUnloadedEnderPearls = getBoolean( "remove-unloaded.enderpearls", true );
+        removeUnloadedTNTEntities = getBoolean( "remove-unloaded.tnt-entities", true );
+        removeUnloadedFallingBlocks = getBoolean( "remove-unloaded.falling-blocks", true );
+    }
 }
