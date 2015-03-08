@@ -35,7 +35,7 @@ public class BlockFlowing extends BlockFluids {
             b0 = 2;
         }
 
-        int j = this.a(world);
+        int j = this.getFlowSpeed(world, blockposition); // PaperSpigot
         int k;
 
         if (i > 0) {
@@ -259,8 +259,22 @@ public class BlockFlowing extends BlockFluids {
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
         if (!this.e(world, blockposition, iblockdata)) {
-            world.a(blockposition, (Block) this, this.a(world));
+            world.a(blockposition, (Block) this, this.getFlowSpeed(world, blockposition)); // PaperSpigot
         }
 
+    }
+
+    /**
+     * PaperSpigot - Get flow speed. Throttle if its water and flowing adjacent to lava
+     */
+    public int getFlowSpeed(World world, BlockPosition blockposition) {
+        if (this.getMaterial() == Material.WATER && (
+                world.getType(blockposition.north(1)).getBlock().getMaterial() == Material.LAVA ||
+                        world.getType(blockposition.south(1)).getBlock().getMaterial() == Material.LAVA ||
+                        world.getType(blockposition.west(1)).getBlock().getMaterial() == Material.LAVA ||
+                        world.getType(blockposition.east(1)).getBlock().getMaterial() == Material.LAVA)) {
+            return world.paperSpigotConfig.waterOverLavaFlowSpeed;
+        }
+        return super.a(world);
     }
 }
