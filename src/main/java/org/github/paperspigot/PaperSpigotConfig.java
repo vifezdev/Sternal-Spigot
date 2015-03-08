@@ -144,4 +144,14 @@ public class PaperSpigotConfig
     {
         babyZombieMovementSpeed = getDouble( "settings.baby-zombie-movement-speed", 0.5D ); // Player moves at 0.1F, for reference
     }
+
+    public static boolean interactLimitEnabled;
+    private static void interactLimitEnabled()
+    {
+        interactLimitEnabled = getBoolean( "settings.limit-player-interactions", true );
+        if ( !interactLimitEnabled )
+        {
+            Bukkit.getLogger().log( Level.INFO, "Disabling player interaction limiter, your server may be more vulnerable to malicious users" );
+        }
+    }
 }
