@@ -147,6 +147,14 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             }
         }
 
+        // PaperSpigot start - Allow projectiles to fly through vanished players the shooter can't see
+        if (movingobjectposition != null && movingobjectposition.entity instanceof EntityPlayer && shooter != null && shooter instanceof EntityPlayer) {
+            if (!((EntityPlayer) shooter).getBukkitEntity().canSee(((EntityPlayer) movingobjectposition.entity).getBukkitEntity())) {
+                movingobjectposition = null;
+            }
+        }
+        // PaperSpigot end
+
         if (movingobjectposition != null) {
             if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.BLOCK && this.world.getType(movingobjectposition.a()).getBlock() == Blocks.PORTAL) {
                 this.d(movingobjectposition.a());

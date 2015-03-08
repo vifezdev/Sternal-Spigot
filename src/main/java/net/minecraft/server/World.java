@@ -1673,6 +1673,13 @@ public abstract class World implements IBlockAccess {
         for (int i = 0; i < list.size(); ++i) {
             Entity entity1 = (Entity) list.get(i);
 
+            // PaperSpigot start - Allow block placement if the placer cannot see the vanished blocker
+            if (entity instanceof EntityPlayer && entity1 instanceof EntityPlayer) {
+                if (!((EntityPlayer) entity).getBukkitEntity().canSee(((EntityPlayer) entity1).getBukkitEntity())) {
+                    continue;
+                }
+            }
+
             if (!entity1.dead && entity1.k && entity1 != entity && (entity == null || entity.vehicle != entity1 && entity.passenger != entity1)) {
                 return false;
             }

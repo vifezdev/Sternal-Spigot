@@ -187,6 +187,14 @@ public class EntityFishingHook extends Entity {
                 movingobjectposition = new MovingObjectPosition(entity);
             }
 
+            // PaperSpigot start - Allow fishing hooks to fly through vanished players the shooter can't see
+            if (movingobjectposition != null && movingobjectposition.entity instanceof EntityPlayer && owner != null && owner instanceof EntityPlayer) {
+                if (!((EntityPlayer) owner).getBukkitEntity().canSee(((EntityPlayer) movingobjectposition.entity).getBukkitEntity())) {
+                    movingobjectposition = null;
+                }
+            }
+            // PaperSpigot end
+
             if (movingobjectposition != null) {
                 org.bukkit.craftbukkit.event.CraftEventFactory.callProjectileHitEvent(this); // Craftbukkit - Call event
                 if (movingobjectposition.entity != null) {

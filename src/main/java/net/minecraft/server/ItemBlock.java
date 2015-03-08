@@ -25,7 +25,7 @@ public class ItemBlock extends Item {
             return false;
         } else if (!entityhuman.a(blockposition, enumdirection, itemstack)) {
             return false;
-        } else if (world.a(this.a, blockposition, false, enumdirection, (Entity) null, itemstack)) {
+        } else if (world.a(this.a, blockposition, false, enumdirection, entityhuman, itemstack)) { // PaperSpigot - Pass entityhuman instead of null
             int i = this.filterData(itemstack.getData());
             IBlockData iblockdata1 = this.a.getPlacedState(world, blockposition, enumdirection, f, f1, f2, i, entityhuman);
 
