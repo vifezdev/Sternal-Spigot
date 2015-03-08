@@ -90,4 +90,11 @@ public class PaperSpigotWorldConfig
         squidMaxSpawnHeight = getDouble( "squid-spawn-height.maximum", 63.0D );
         log( "Squids will spawn between Y: " + squidMinSpawnHeight + " and Y: " + squidMaxSpawnHeight );
     }
+
+    public float playerBlockingDamageMultiplier;
+    private void playerBlockingDamageMultiplier()
+    {
+        playerBlockingDamageMultiplier = getFloat( "player-blocking-damage-multiplier", 0.5F );
+        log( "Player blocking damage multiplier set to " + playerBlockingDamageMultiplier );
+    }
 }
