@@ -33,6 +33,7 @@ public abstract class EntityInsentient extends EntityLiving {
     private boolean bo;
     private Entity bp;
     private NBTTagCompound bq;
+    public PathfinderGoalFloat goalFloat; // PaperSpigot
 
     public EntityInsentient(World world) {
         super(world);
@@ -460,6 +461,12 @@ public abstract class EntityInsentient extends EntityLiving {
         // Spigot Start
         if ( this.fromMobSpawner )
         {
+            // PaperSpigot start - Allow nerfed mobs to jump
+            if (goalFloat != null) {
+                if (goalFloat.a()) goalFloat.e();
+                this.g.b();
+            }
+            // PaperSpigot end
             return;
         }
         // Spigot End

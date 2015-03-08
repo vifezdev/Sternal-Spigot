@@ -6,6 +6,7 @@ public class PathfinderGoalFloat extends PathfinderGoal {
 
     public PathfinderGoalFloat(EntityInsentient entityinsentient) {
         this.a = entityinsentient;
+        entityinsentient.goalFloat = this; // PaperSpigot
         this.a(4);
         ((Navigation) entityinsentient.getNavigation()).d(true);
     }
