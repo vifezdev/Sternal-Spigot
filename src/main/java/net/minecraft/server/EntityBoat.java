@@ -340,13 +340,7 @@ public class EntityBoat extends Entity {
                     if (!destroyEvent.isCancelled()) {
                     this.die();
                     if (this.world.getGameRules().getBoolean("doEntityDrops")) {
-                        for (k = 0; k < 3; ++k) {
-                            this.a(Item.getItemOf(Blocks.PLANKS), 1, 0.0F);
-                        }
-
-                        for (k = 0; k < 2; ++k) {
-                            this.a(Items.STICK, 1, 0.0F);
-                        }
+                        breakNaturally(); // PaperSpigot
                     }
                     } // CraftBukkit end
                 }
@@ -451,15 +445,7 @@ public class EntityBoat extends Entity {
                     if (!destroyEvent.isCancelled()) {
                     this.die();
                     if (this.world.getGameRules().getBoolean("doEntityDrops")) {
-                        int i;
-
-                        for (i = 0; i < 3; ++i) {
-                            this.a(Item.getItemOf(Blocks.PLANKS), 1, 0.0F);
-                        }
-
-                        for (i = 0; i < 2; ++i) {
-                            this.a(Items.STICK, 1, 0.0F);
-                        }
+                        breakNaturally(); // PaperSpigot
                     }
                     } // CraftBukkit end
                 }
@@ -494,5 +480,22 @@ public class EntityBoat extends Entity {
 
     public int m() {
         return this.datawatcher.getInt(18);
+    }
+
+    /**
+     * PaperSpigot - Handles boat drops depending on the user's config setting
+     */
+    public void breakNaturally() {
+        if (this.world.paperSpigotConfig.boatsDropBoats) {
+            this.a(Items.BOAT, 1, 0.0F);
+        } else {
+            for (int k = 0; k < 3; ++k) {
+                this.a(Item.getItemOf(Blocks.PLANKS), 1, 0.0F);
+            }
+
+            for (int k = 0; k < 2; ++k) {
+                this.a(Items.STICK, 1, 0.0F);
+            }
+        }
     }
 }
