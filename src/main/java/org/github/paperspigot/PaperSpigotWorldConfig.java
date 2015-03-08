@@ -146,4 +146,24 @@ public class PaperSpigotWorldConfig
         keepSpawnInMemory = getBoolean( "keep-spawn-loaded", true );
         log( "Keep spawn chunk loaded: " + keepSpawnInMemory );
     }
+
+    public int fallingBlockHeightNerf;
+    private void fallingBlockheightNerf()
+    {
+        fallingBlockHeightNerf = getInt( "falling-block-height-nerf", 0 );
+        if ( fallingBlockHeightNerf != 0 )
+        {
+            log( "Falling Block Height Limit set to Y: " + fallingBlockHeightNerf );
+        }
+    }
+
+    public int tntEntityHeightNerf;
+    private void tntEntityHeightNerf()
+    {
+        tntEntityHeightNerf = getInt( "tnt-entity-height-nerf", 0 );
+        if ( tntEntityHeightNerf != 0 )
+        {
+            log( "TNT Entity Height Limit set to Y: " + tntEntityHeightNerf );
+        }
+    }
 }

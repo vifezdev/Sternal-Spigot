@@ -47,6 +47,13 @@ public class EntityTNTPrimed extends Entity {
         this.lastZ = this.locZ;
         this.motY -= 0.03999999910593033D;
         this.move(this.motX, this.motY, this.motZ);
+
+        // PaperSpigot start - Drop TNT entities above the specified height
+        if (this.world.paperSpigotConfig.tntEntityHeightNerf != 0 && this.locY > this.world.paperSpigotConfig.tntEntityHeightNerf) {
+            this.die();
+        }
+        // PaperSpigot end
+
         this.motX *= 0.9800000190734863D;
         this.motY *= 0.9800000190734863D;
         this.motZ *= 0.9800000190734863D;

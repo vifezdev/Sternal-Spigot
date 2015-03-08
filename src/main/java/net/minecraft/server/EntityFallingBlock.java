@@ -69,6 +69,17 @@ public class EntityFallingBlock extends Entity {
 
             this.motY -= 0.03999999910593033D;
             this.move(this.motX, this.motY, this.motZ);
+
+            // PaperSpigot start - Drop falling blocks above the specified height
+            if (this.world.paperSpigotConfig.fallingBlockHeightNerf != 0 && this.locY > this.world.paperSpigotConfig.fallingBlockHeightNerf) {
+                if (this.dropItem) {
+                    this.a(new ItemStack(block, 1, block.getDropData(this.block)), 0.0F);
+                }
+
+                this.die();
+            }
+            // PaperSpigot end
+
             this.motX *= 0.9800000190734863D;
             this.motY *= 0.9800000190734863D;
             this.motZ *= 0.9800000190734863D;
