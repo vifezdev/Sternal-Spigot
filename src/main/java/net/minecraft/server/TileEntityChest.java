@@ -8,17 +8,17 @@ import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 // CraftBukkit end
 
-public class TileEntityChest extends TileEntityContainer implements IUpdatePlayerListBox, IInventory {
+public class TileEntityChest extends TileEntityContainer implements IInventory { // PaperSpigot - remove IUpdatePlayerListBox
 
     private ItemStack[] items = new ItemStack[27];
     public boolean a;
-    public TileEntityChest f;
-    public TileEntityChest g;
-    public TileEntityChest h;
-    public TileEntityChest i;
-    public float j;
+    public TileEntityChest f; // PaperSpigot - adjacentChestZNeg
+    public TileEntityChest g; // PaperSpigot - adjacentChestXPos
+    public TileEntityChest h; // PaperSpigot - adjacentChestXNeg
+    public TileEntityChest i; // PaperSpigot - adjacentChestZPos
+    public float j; // PaperSpigot - lidAngle
     public float k;
-    public int l;
+    public int l; // PaperSpigot - numPlayersUsing
     private int n;
     private int o = -1;
     private String p;
@@ -238,6 +238,8 @@ public class TileEntityChest extends TileEntityContainer implements IUpdatePlaye
     }
 
     public void c() {
+        // PaperSpigot - Move chest sounds out of the tick loop
+        /*
         this.m();
         int i = this.position.getX();
         int j = this.position.getY();
@@ -318,7 +320,8 @@ public class TileEntityChest extends TileEntityContainer implements IUpdatePlaye
                 this.j = 0.0F;
             }
         }
-
+        */
+        // PaperSpigot end
     }
 
     public boolean c(int i, int j) {
@@ -339,6 +342,28 @@ public class TileEntityChest extends TileEntityContainer implements IUpdatePlaye
 
             ++this.l;
             if (this.world == null) return; // CraftBukkit
+
+            // PaperSpigot start - Move chest open sound out of the tick loop
+            this.m();
+
+            if (this.l > 0 && this.j == 0.0F && this.f == null && this.h == null) {
+                this.j = 0.7F;
+
+                double d0 = (double) this.position.getZ() + 0.5D;
+                double d1 = (double) this.position.getX() + 0.5D;
+
+                if (this.i != null) {
+                    d0 += 0.5D;
+                }
+
+                if (this.g != null) {
+                    d1 += 0.5D;
+                }
+
+                this.world.makeSound(d1, (double) this.position.getY() + 0.5D, d0, "random.chestopen", 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
+            }
+            // PaperSpigot end
+
             this.world.playBlockAction(this.position, this.w(), 1, this.l);
 
             // CraftBukkit start - Call redstone event
@@ -361,6 +386,33 @@ public class TileEntityChest extends TileEntityContainer implements IUpdatePlaye
             int oldPower = Math.max(0, Math.min(15, this.l)); // CraftBukkit - Get power before new viewer is added
             --this.l;
             if (this.world == null) return; // CraftBukkit
+
+            // PaperSpigot start - Move chest close sound handling out of the tick loop
+            if (this.l == 0 && this.j > 0.0F || this.l > 0 && this.j < 1.0F) {
+                float f = 0.1F;
+
+                if (this.l > 0) {
+                    this.j += f;
+                } else {
+                    this.j -= f;
+                }
+
+                double d0 = (double) this.getPosition().getX() + 0.5D;
+                double d2 = (double) this.getPosition().getZ() + 0.5D;
+
+                if (this.i != null) {
+                    d2 += 0.5D;
+                }
+
+                if (this.g != null) {
+                    d0 += 0.5D;
+                }
+
+                this.world.makeSound(d0, (double) this.getPosition().getY() + 0.5D, d2, "random.chestclosed", 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
+                this.j = 0.0F;
+            }
+            // PaperSpigot end
+
             this.world.playBlockAction(this.position, this.w(), 1, this.l);
 
             // CraftBukkit start - Call redstone event

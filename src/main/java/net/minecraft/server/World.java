@@ -52,7 +52,7 @@ public abstract class World implements IBlockAccess {
     };
     // Spigot end
     protected final List<Entity> g = Lists.newArrayList();
-    public final List<TileEntity> h = Lists.newArrayList();
+    //public final List<TileEntity> h = Lists.newArrayList(); // PaperSpigot - Remove unused list
     public final List<TileEntity> tileEntityList = Lists.newArrayList();
     private final List<TileEntity> b = Lists.newArrayList();
     private final List<TileEntity> c = Lists.newArrayList();
@@ -1450,7 +1450,7 @@ public abstract class World implements IBlockAccess {
         // CraftBukkit start - From below, clean up tile entities before ticking them
         if (!this.c.isEmpty()) {
             this.tileEntityList.removeAll(this.c);
-            this.h.removeAll(this.c);
+            //this.h.removeAll(this.c); // PaperSpigot - Remove unused list
             this.c.clear();
         }
         // CraftBukkit end
@@ -1496,7 +1496,7 @@ public abstract class World implements IBlockAccess {
             if (tileentity.x()) {
                 tilesThisCycle--;
                 this.tileEntityList.remove(tileTickPosition--);
-                this.h.remove(tileentity);
+                //this.h.remove(tileentity); // PaperSpigot - Remove unused list
                 if (this.isLoaded(tileentity.getPosition())) {
                     this.getChunkAtWorldCoords(tileentity.getPosition()).e(tileentity.getPosition());
                 }
@@ -1543,7 +1543,7 @@ public abstract class World implements IBlockAccess {
     }
 
     public boolean a(TileEntity tileentity) {
-        boolean flag = this.h.add(tileentity);
+        boolean flag = true; // PaperSpigot - Remove unused list
 
         if (flag && tileentity instanceof IUpdatePlayerListBox) {
             this.tileEntityList.add(tileentity);
@@ -1561,7 +1561,7 @@ public abstract class World implements IBlockAccess {
             while (iterator.hasNext()) {
                 TileEntity tileentity = (TileEntity) iterator.next();
 
-                this.h.add(tileentity);
+                //this.h.add(tileentity); // PaperSpigot - Remove unused list
                 if (tileentity instanceof IUpdatePlayerListBox) {
                     this.tileEntityList.add(tileentity);
                 }
@@ -1997,7 +1997,7 @@ public abstract class World implements IBlockAccess {
         } else {
             if (tileentity != null) {
                 this.b.remove(tileentity);
-                this.h.remove(tileentity);
+                //this.h.remove(tileentity); // PaperSpigot - Remove unused list
                 this.tileEntityList.remove(tileentity);
             }
 
