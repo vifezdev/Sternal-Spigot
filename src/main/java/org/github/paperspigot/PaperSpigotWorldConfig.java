@@ -173,4 +173,11 @@ public class PaperSpigotWorldConfig
         waterOverLavaFlowSpeed = getInt( "water-over-lava-flow-speed", 5 );
         log( "Water over lava flow speed: " + waterOverLavaFlowSpeed );
     }
+
+    public boolean removeInvalidMobSpawnerTEs;
+    private void removeInvalidMobSpawnerTEs()
+    {
+        removeInvalidMobSpawnerTEs = getBoolean( "remove-invalid-mob-spawner-tile-entities", true );
+        log( "Remove invalid mob spawner tile entities: " + removeInvalidMobSpawnerTEs );
+    }
 }

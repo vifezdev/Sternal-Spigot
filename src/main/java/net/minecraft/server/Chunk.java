@@ -784,6 +784,11 @@ public class Chunk {
             tileentity.D();
             this.tileEntities.put(blockposition, tileentity);
             // CraftBukkit start
+            // PaperSpigot start - Remove invalid mob spawner tile entities
+        } else if (this.world.paperSpigotConfig.removeInvalidMobSpawnerTEs && tileentity instanceof TileEntityMobSpawner &&
+                org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(getType(blockposition)) != org.bukkit.Material.MOB_SPAWNER) {
+            this.tileEntities.remove(blockposition);
+            // PaperSpigot end
         } else {
             System.out.println("Attempted to place a tile entity (" + tileentity + ") at " + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ()
                 + " (" + org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(getType(blockposition)) + ") where there was no entity tile!");
