@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.minecraft.server.MinecraftServer;
+
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.fusesource.jansi.AnsiConsole;
 
 public class Main {
@@ -17,6 +20,13 @@ public class Main {
     public static boolean useConsole = true;
 
     public static void main(String[] args) {
+        if (!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_8)) {
+            System.err.println("TacoSpigot requires java 8");
+            System.err.println("Oracle dropped all support for java " + SystemUtils.JAVA_VERSION);
+            System.err.println("Please update to use TacoSpigot and the numerous bug-fixes, performance improvements, and security fixes");
+            System.err.println("Shutting down");
+            System.exit(1);
+        }
         // Todo: Installation script
         OptionParser parser = new OptionParser() {
             {
