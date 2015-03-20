@@ -11,7 +11,7 @@ public class PathfinderGoalNearestAttackableTarget<T extends EntityLiving> exten
     protected final Class<T> a;
     private final int g;
     protected final PathfinderGoalNearestAttackableTarget.DistanceComparator b;
-    protected Predicate<? super T> c;
+    protected Predicate c;
     protected EntityLiving d;
 
     public PathfinderGoalNearestAttackableTarget(EntityCreature entitycreature, Class<T> oclass, boolean flag) {
