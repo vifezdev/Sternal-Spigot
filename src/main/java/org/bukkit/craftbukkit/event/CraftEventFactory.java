@@ -970,4 +970,13 @@ public class CraftEventFactory {
         firework.world.getServer().getPluginManager().callEvent(event);
         return event;
     }
+
+    // PaperSpigot start - Add PlayerLocaleChangeEvent
+    public static PlayerLocaleChangeEvent callPlayerLocaleChangeEvent(EntityHuman who, String oldLocale, String newLocale) {
+        Player player = (Player) who.getBukkitEntity();
+        PlayerLocaleChangeEvent event = new PlayerLocaleChangeEvent(player, oldLocale, newLocale);
+        Bukkit.getPluginManager().callEvent(event);
+        return event;
+    }
+    // PaperSpigot end
 }

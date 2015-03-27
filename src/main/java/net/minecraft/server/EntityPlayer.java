@@ -995,7 +995,13 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     }
 
     public void a(PacketPlayInSettings packetplayinsettings) {
+        // PaperSpigot start - Add PlayerLocaleChangeEvent
+        String oldLocale = this.locale;
         this.locale = packetplayinsettings.a();
+        if (!this.locale.equals(oldLocale)) {
+            CraftEventFactory.callPlayerLocaleChangeEvent(this, oldLocale, this.locale);
+        }
+        // PaperSpigot end
         this.bR = packetplayinsettings.c();
         this.bS = packetplayinsettings.d();
         this.getDataWatcher().watch(10, Byte.valueOf((byte) packetplayinsettings.e()));
