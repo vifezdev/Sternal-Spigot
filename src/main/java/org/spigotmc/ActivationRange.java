@@ -14,6 +14,7 @@ import net.minecraft.server.EntityCreature;
 import net.minecraft.server.EntityCreeper;
 import net.minecraft.server.EntityEnderCrystal;
 import net.minecraft.server.EntityEnderDragon;
+import net.minecraft.server.EntityFallingBlock;
 import net.minecraft.server.EntityFireball;
 import net.minecraft.server.EntityFireworks;
 import net.minecraft.server.EntityHuman;
@@ -82,6 +83,7 @@ public class ActivationRange
                 || entity instanceof EntityFireball
                 || entity instanceof EntityWeather
                 || entity instanceof EntityTNTPrimed
+                || entity instanceof EntityFallingBlock // PaperSpigot - Always tick falling blocks
                 || entity instanceof EntityEnderCrystal
                 || entity instanceof EntityFireworks )
         {
