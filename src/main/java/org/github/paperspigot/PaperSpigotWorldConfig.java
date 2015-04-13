@@ -202,4 +202,14 @@ public class PaperSpigotWorldConfig
     {
         netherVoidTopDamage = getBoolean( "nether-ceiling-void-damage", false );
     }
+
+    public int tickNextTickCap;
+    public boolean tickNextTickListCapIgnoresRedstone;
+    private void tickNextTickCap()
+    {
+        tickNextTickCap = getInt( "tick-next-tick-list-cap", 10000 ); // Higher values will be friendlier to vanilla style mechanics (to a point) but may hurt performance
+        tickNextTickListCapIgnoresRedstone = getBoolean( "tick-next-tick-list-cap-ignores-redstone", false ); // Redstone TickNextTicks will always bypass the preceding cap.
+        log( "WorldServer TickNextTick cap set at " + tickNextTickCap );
+        log( "WorldServer TickNextTickList cap always processes redstone: " + tickNextTickListCapIgnoresRedstone );
+    }
 }

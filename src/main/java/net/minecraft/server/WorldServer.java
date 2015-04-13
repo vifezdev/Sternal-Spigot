@@ -611,6 +611,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             if (false) { // CraftBukkit
                 throw new IllegalStateException("TickNextTick list out of synch");
             } else {
+                // PaperSpigot start - No, stop doing this, it affects things like redstone
+                /*
                 if (i > 1000) {
                     // CraftBukkit start - If the server has too much to process over time, try to alleviate that
                     if (i > 20 * 1000) {
@@ -619,7 +621,11 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                         i = 1000;
                     }
                     // CraftBukkit end
+                */
+                if (i > paperSpigotConfig.tickNextTickCap) {
+                    i = paperSpigotConfig.tickNextTickCap;
                 }
+                // PaperSpigot end
 
                 this.methodProfiler.a("cleaning");
 
@@ -635,6 +641,23 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                     this.M.remove(nextticklistentry);
                     this.V.add(nextticklistentry);
                 }
+
+                // PaperSpigot start - Allow redstone ticks to bypass the tickNextTickListCap
+                if (paperSpigotConfig.tickNextTickListCapIgnoresRedstone) {
+                    Iterator<NextTickListEntry> iterator = this.M.iterator();
+                    while (iterator.hasNext()) {
+                        NextTickListEntry next = iterator.next();
+                        if (!flag && next.b > this.worldData.getTime()) {
+                            break;
+                        }
+
+                        if (next.a().isPowerSource() || next.a() instanceof IContainer) {
+                            iterator.remove();
+                            this.V.add(next);
+                        }
+                    }
+                }
+                // PaperSpigot end
 
                 this.methodProfiler.b();
                 this.methodProfiler.a("ticking");
