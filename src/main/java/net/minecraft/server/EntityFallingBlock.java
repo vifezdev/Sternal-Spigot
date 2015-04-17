@@ -16,13 +16,26 @@ public class EntityFallingBlock extends Entity {
     private int fallHurtMax = 40;
     private float fallHurtAmount = 2.0F;
     public NBTTagCompound tileEntityData;
+    public org.bukkit.Location sourceLoc; // PaperSpigot
 
+    // PaperSpigot start - Add FallingBlock source location API
     public EntityFallingBlock(World world) {
+        this(null, world);
+    }
+
+    public EntityFallingBlock(org.bukkit.Location loc, World world) {
         super(world);
+        sourceLoc = loc;
     }
 
     public EntityFallingBlock(World world, double d0, double d1, double d2, IBlockData iblockdata) {
+        this(null, world, d0, d1, d2, iblockdata);
+    }
+
+    public EntityFallingBlock(org.bukkit.Location loc, World world, double d0, double d1, double d2, IBlockData iblockdata) {
         super(world);
+        sourceLoc = loc;
+    // PaperSpigot end
         this.block = iblockdata;
         this.k = true;
         this.setSize(0.98F, 0.98F);
@@ -197,7 +210,13 @@ public class EntityFallingBlock extends Entity {
         if (this.tileEntityData != null) {
             nbttagcompound.set("TileEntityData", this.tileEntityData);
         }
-
+        // PaperSpigot start - Add FallingBlock source location API
+        if (sourceLoc != null) {
+            nbttagcompound.setInt("SourceLoc_x", sourceLoc.getBlockX());
+            nbttagcompound.setInt("SourceLoc_y", sourceLoc.getBlockY());
+            nbttagcompound.setInt("SourceLoc_z", sourceLoc.getBlockZ());
+        }
+        // PaperSpigot end
     }
 
     protected void a(NBTTagCompound nbttagcompound) {
@@ -233,7 +252,14 @@ public class EntityFallingBlock extends Entity {
         if (block == null || block.getMaterial() == Material.AIR) {
             this.block = Blocks.SAND.getBlockData();
         }
-
+        // PaperSpigot start - Add FallingBlock source location API
+        if (nbttagcompound.hasKey("SourceLoc_x")) {
+            int srcX = nbttagcompound.getInt("SourceLoc_x");
+            int srcY = nbttagcompound.getInt("SourceLoc_y");
+            int srcZ = nbttagcompound.getInt("SourceLoc_z");
+            sourceLoc = new org.bukkit.Location(world.getWorld(), srcX, srcY, srcZ);
+        }
+        // PaperSpigot end
     }
 
     public void a(boolean flag) {

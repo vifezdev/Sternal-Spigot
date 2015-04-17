@@ -886,7 +886,10 @@ public class CraftWorld implements World {
         double y = location.getBlockY() + 0.5;
         double z = location.getBlockZ() + 0.5;
 
-        EntityFallingBlock entity = new EntityFallingBlock(world, x, y, z, net.minecraft.server.Block.getById(material.getId()).fromLegacyData(data));
+        // PaperSpigot start - Add FallingBlock source location API
+        location = location.clone();
+        EntityFallingBlock entity = new EntityFallingBlock(location, world, x, y, z, net.minecraft.server.Block.getById(material.getId()).fromLegacyData(data));
+        // PaperSpigot end
         entity.ticksLived = 1;
 
         world.addEntity(entity, SpawnReason.CUSTOM);
@@ -921,8 +924,10 @@ public class CraftWorld implements World {
             IBlockData blockData = world.getType(new BlockPosition(x, y, z));
             int type = CraftMagicNumbers.getId(blockData.getBlock());
             int data = blockData.getBlock().toLegacyData(blockData);
-
-            entity = new EntityFallingBlock(world, x + 0.5, y + 0.5, z + 0.5, net.minecraft.server.Block.getById(type).fromLegacyData(data));
+            // PaperSpigot start - Add FallingBlock source location API
+            location = location.clone();
+            entity = new EntityFallingBlock(location, world, x + 0.5, y + 0.5, z + 0.5, net.minecraft.server.Block.getById(type).fromLegacyData(data));
+            // PaperSpigot end
         } else if (Projectile.class.isAssignableFrom(clazz)) {
             if (Snowball.class.isAssignableFrom(clazz)) {
                 entity = new EntitySnowball(world, x, y, z);

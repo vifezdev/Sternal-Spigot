@@ -28,7 +28,10 @@ public class BlockDragonEgg extends Block {
             byte b0 = 32;
 
             if (!BlockFalling.instaFall && world.areChunksLoadedBetween(blockposition.a(-b0, -b0, -b0), blockposition.a(b0, b0, b0))) {
-                world.addEntity(new EntityFallingBlock(world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), this.getBlockData()));
+                // PaperSpigot start - Add FallingBlock source location API
+                org.bukkit.Location loc = new org.bukkit.Location(world.getWorld(), (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F));
+                world.addEntity(new EntityFallingBlock(loc, world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), this.getBlockData()));
+                // PaperSpigot end
             } else {
                 world.setAir(blockposition);
 

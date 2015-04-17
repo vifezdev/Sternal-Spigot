@@ -57,4 +57,11 @@ public class CraftFallingSand extends CraftEntity implements FallingSand {
     public void setHurtEntities(boolean hurtEntities) {
         getHandle().hurtEntities = hurtEntities;
     }
+
+    // PaperSpigot start - Add FallingBlock source location API
+    @Override
+    public org.bukkit.Location getSourceLoc() {
+        return getHandle().sourceLoc;
+    }
+    // PaperSpigot end
 }
