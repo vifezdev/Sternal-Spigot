@@ -8,6 +8,11 @@ import net.minecraft.server.Blocks;
 import net.minecraft.server.World;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 
+// PaperSpigot start
+import java.util.HashSet;
+import java.util.Set;
+// PaperSpigot end
+
 public class AntiXray
 {
 
@@ -18,6 +23,10 @@ public class AntiXray
     private final boolean[] obfuscateBlocks = new boolean[ Short.MAX_VALUE ];
     // Used to select a random replacement ore
     private final byte[] replacementOres;
+    // PaperSpigot start
+    public boolean queueUpdates = true;
+    public final Set<BlockPosition> pendingUpdates = new HashSet<BlockPosition>();
+    // PaperSpigot end
 
     public AntiXray(SpigotWorldConfig config)
     {
@@ -44,6 +53,25 @@ public class AntiXray
     }
 
     /**
+     * PaperSpigot - Flush queued block updates for world.
+     */
+    public void flushUpdates(World world)
+    {
+        if ( world.spigotConfig.antiXray && !pendingUpdates.isEmpty() )
+        {
+            queueUpdates = false;
+
+            for ( BlockPosition position : pendingUpdates )
+            {
+                updateNearbyBlocks( world, position );
+            }
+
+            pendingUpdates.clear();
+            queueUpdates = true;
+        }
+    }
+
+    /**
      * Starts the timings handler, then updates all blocks within the set radius
      * of the given coordinate, revealing them if they are hidden ores.
      */
@@ -51,6 +79,13 @@ public class AntiXray
     {
         if ( world.spigotConfig.antiXray )
         {
+            // PaperSpigot start
+            if ( queueUpdates )
+            {
+                pendingUpdates.add( position );
+                return;
+            }
+            // PaperSpigot end
             update.startTiming();
             updateNearbyBlocks( world, position, 2, false ); // 2 is the radius, we shouldn't change it as that would make it exponentially slower
             update.stopTiming();
