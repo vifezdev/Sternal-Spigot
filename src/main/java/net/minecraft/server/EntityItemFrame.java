@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import java.util.UUID;
+import org.apache.commons.codec.Charsets;
+
 public class EntityItemFrame extends EntityHanging {
 
     private float c = 1.0F;
@@ -85,7 +88,7 @@ public class EntityItemFrame extends EntityHanging {
             if (itemstack.getItem() == Items.FILLED_MAP) {
                 WorldMap worldmap = ((ItemWorldMap) itemstack.getItem()).getSavedMap(itemstack, this.world);
 
-                worldmap.decorations.remove("frame-" + this.getId());
+                worldmap.decorations.remove(UUID.nameUUIDFromBytes(("frame-" + this.getId()).getBytes(Charsets.US_ASCII))); // Spigot
             }
 
             itemstack.a((EntityItemFrame) null);
