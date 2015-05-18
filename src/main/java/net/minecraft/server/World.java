@@ -2,35 +2,23 @@ package net.minecraft.server;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-
-// CraftBukkit start
 import com.google.common.collect.Maps;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.util.CraftMagicNumbers;
-import org.bukkit.craftbukkit.util.LongHashSet;
-import org.bukkit.craftbukkit.SpigotTimings; // Spigot
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.SpigotTimings;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.weather.ThunderChangeEvent;
+import org.bukkit.generator.ChunkGenerator;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+
+// CraftBukkit start
 // CraftBukkit end
 
 public abstract class World implements IBlockAccess {
@@ -2806,6 +2794,53 @@ public abstract class World implements IBlockAccess {
 
         return false;
     }
+
+    // PaperSpigot start - Modified methods for affects spawning
+    public EntityHuman findNearbyPlayerWhoAffectsSpawning(Entity entity, double d0) {
+        return this.findNearbyPlayerWhoAffectsSpawning(entity.locX, entity.locY, entity.locZ, d0);
+    }
+
+    public EntityHuman findNearbyPlayerWhoAffectsSpawning(double d0, double d1, double d2, double d3) {
+        double d4 = -1.0D;
+        EntityHuman entityhuman = null;
+
+        for (int i = 0; i < this.players.size(); ++i) {
+            EntityHuman entityhuman1 = (EntityHuman) this.players.get(i);
+            // CraftBukkit start - Fixed an NPE
+            if (entityhuman1 == null || entityhuman1.dead || !entityhuman1.affectsSpawning) {
+                continue;
+            }
+            // CraftBukkit end
+
+            if (IEntitySelector.d.apply(entityhuman1)) {
+                double d5 = entityhuman1.e(d0, d1, d2);
+
+                if ((d3 < 0.0D || d5 < d3 * d3) && (d4 == -1.0D || d5 < d4)) {
+                    d4 = d5;
+                    entityhuman = entityhuman1;
+                }
+            }
+        }
+
+        return entityhuman;
+    }
+
+    public boolean isPlayerNearbyWhoAffectsSpawning(double d0, double d1, double d2, double d3) {
+        for (int i = 0; i < this.players.size(); ++i) {
+            EntityHuman entityhuman = (EntityHuman) this.players.get(i);
+
+            if (IEntitySelector.d.apply(entityhuman)) {
+                double d4 = entityhuman.e(d0, d1, d2);
+
+                if (d3 < 0.0D || d4 < d3 * d3 && entityhuman.affectsSpawning) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    // PaperSpigot end
 
     public EntityHuman a(String s) {
         for (int i = 0; i < this.players.size(); ++i) {

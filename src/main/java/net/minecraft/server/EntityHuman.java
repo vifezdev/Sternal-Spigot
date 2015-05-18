@@ -60,6 +60,7 @@ public abstract class EntityHuman extends EntityLiving {
     private final GameProfile bH;
     private boolean bI = false;
     public EntityFishingHook hookedFish;
+    public boolean affectsSpawning = true; // PaperSpigot
 
     // CraftBukkit start
     public boolean fauxSleeping;

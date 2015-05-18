@@ -7,6 +7,7 @@ import io.netty.buffer.Unpooled;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.Override;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
@@ -1470,6 +1471,18 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             packet.components = components;
             getHandle().playerConnection.sendPacket(packet);
         }
+
+        // PaperSpigot start - Implement affects spawning API
+        @Override
+        public boolean getAffectsSpawning() {
+            return getHandle().affectsSpawning;
+        }
+
+        @Override
+        public void setAffectsSpawning(boolean affects) {
+            getHandle().affectsSpawning = affects;
+        }
+        // PaperSpigot end
     };
 
     public Player.Spigot spigot()

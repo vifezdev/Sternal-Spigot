@@ -431,7 +431,7 @@ public abstract class EntityInsentient extends EntityLiving {
         if (this.persistent) {
             this.ticksFarFromPlayer = 0;
         } else {
-            EntityHuman entityhuman = this.world.findNearbyPlayer(this, -1.0D);
+            EntityHuman entityhuman = this.world.findNearbyPlayerWhoAffectsSpawning(this, -1.0D); // PaperSpigot - Affects Spawning API
 
             if (entityhuman != null) {
                 double d0 = entityhuman.locX - this.locX;

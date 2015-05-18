@@ -52,7 +52,7 @@ public final class SpawnerCreature {
             while (iterator.hasNext()) {
                 EntityHuman entityhuman = (EntityHuman) iterator.next();
 
-                if (!entityhuman.isSpectator()) {
+                if (!entityhuman.isSpectator() || !entityhuman.affectsSpawning) { // PaperSpigot
                     int l = MathHelper.floor(entityhuman.locX / 16.0D);
 
                     j = MathHelper.floor(entityhuman.locZ / 16.0D);
@@ -156,7 +156,7 @@ public final class SpawnerCreature {
                                                 float f = (float) j3 + 0.5F;
                                                 float f1 = (float) l3 + 0.5F;
 
-                                                if (!worldserver.isPlayerNearby((double) f, (double) k3, (double) f1, 24.0D) && blockposition.c((double) f, (double) k3, (double) f1) >= 576.0D) {
+                                                if (!worldserver.isPlayerNearbyWhoAffectsSpawning((double) f, (double) k3, (double) f1, 24.0D) && blockposition.c((double) f, (double) k3, (double) f1) >= 576.0D) { // PaperSpigot - Affects Spawning API
                                                     if (biomebase_biomemeta == null) {
                                                         biomebase_biomemeta = worldserver.a(enumcreaturetype, blockposition2);
                                                         if (biomebase_biomemeta == null) {
