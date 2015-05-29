@@ -666,6 +666,8 @@ public abstract class PlayerList {
         }
 
         TravelAgent agent = exit != null ? (TravelAgent) ((CraftWorld) exit.getWorld()).getHandle().getTravelAgent() : org.bukkit.craftbukkit.CraftTravelAgent.DEFAULT; // return arbitrary TA to compensate for implementation dependent plugins
+        agent.setCanCreatePortal(cause != TeleportCause.END_PORTAL); // PaperSpigot - Configurable end credits, don't allow End Portals to create portals
+
         PlayerPortalEvent event = new PlayerPortalEvent(entityplayer.getBukkitEntity(), enter, exit, agent, cause);
         event.useTravelAgent(useTravelAgent);
         Bukkit.getServer().getPluginManager().callEvent(event);
@@ -673,7 +675,8 @@ public abstract class PlayerList {
             return;
         }
 
-        exit = event.useTravelAgent() ? event.getPortalTravelAgent().findOrCreate(event.getTo()) : event.getTo();
+        // PaperSpigot - Configurable end credits, if a plugin sets to use a travel agent even if the cause is an end portal, ignore it
+        exit = cause != TeleportCause.END_PORTAL && event.useTravelAgent() ? event.getPortalTravelAgent().findOrCreate(event.getTo()) : event.getTo();
         if (exit == null) {
             return;
         }
