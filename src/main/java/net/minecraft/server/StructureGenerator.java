@@ -88,6 +88,7 @@ public abstract class StructureGenerator extends WorldGenBase {
     }
 
     public boolean b(BlockPosition blockposition) {
+        if (this.c == null) return false; // PaperSpigot
         this.a(this.c);
         return this.c(blockposition) != null;
     }
@@ -115,6 +116,7 @@ public abstract class StructureGenerator extends WorldGenBase {
     }
 
     public boolean a(World world, BlockPosition blockposition) {
+        if (this.c == null) return false; // PaperSpigot
         this.a(world);
         Iterator iterator = this.e.values().iterator();
 

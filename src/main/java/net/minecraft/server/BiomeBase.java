@@ -278,7 +278,7 @@ public abstract class BiomeBase {
         BlockPosition.MutableBlockPosition blockposition_mutableblockposition = new BlockPosition.MutableBlockPosition();
 
         for (int l1 = 255; l1 >= 0; --l1) {
-            if (l1 <= random.nextInt(5)) {
+            if (l1 <= (world.paperSpigotConfig.generateFlatBedrock ? 0 : random.nextInt(5))) { // PaperSpigot - Configurable flat bedrock
                 chunksnapshot.a(k1, l1, j1, Blocks.BEDROCK.getBlockData());
             } else {
                 IBlockData iblockdata2 = chunksnapshot.a(k1, l1, j1);

@@ -94,7 +94,7 @@ public class BiomeMesa extends BiomeBase {
                 chunksnapshot.a(l, l1, k, Blocks.STONE.getBlockData());
             }
 
-            if (l1 <= random.nextInt(5)) {
+            if (l1 <= (world.paperSpigotConfig.generateFlatBedrock ? 0 : random.nextInt(5))) { // PaperSpigot - Configurable flat bedrock
                 chunksnapshot.a(l, l1, k, Blocks.BEDROCK.getBlockData());
             } else {
                 IBlockData iblockdata2 = chunksnapshot.a(l, l1, k);

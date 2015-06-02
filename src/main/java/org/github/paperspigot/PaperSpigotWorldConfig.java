@@ -237,4 +237,28 @@ public class PaperSpigotWorldConfig
         loadUnloadedTNTEntities = getBoolean( "load-chunks.tnt-entities", false );
         loadUnloadedFallingBlocks = getBoolean( "load-chunks.falling-blocks", false );
     }
+
+    public boolean generateCanyon;
+    public boolean generateCaves;
+    public boolean generateDungeon;
+    public boolean generateFortress;
+    public boolean generateMineshaft;
+    public boolean generateMonument;
+    public boolean generateStronghold;
+    public boolean generateTemple;
+    public boolean generateVillage;
+    public boolean generateFlatBedrock;
+    private void generatorSettings()
+    {
+        generateCanyon = getBoolean( "generator-settings.canyon", true );
+        generateCaves = getBoolean( "generator-settings.caves", true );
+        generateDungeon = getBoolean( "generator-settings.dungeon", true );
+        generateFortress = getBoolean( "generator-settings.fortress", true );
+        generateMineshaft = getBoolean( "generator-settings.mineshaft", true );
+        generateMonument = getBoolean( "generator-settings.monument", true );
+        generateStronghold = getBoolean( "generator-settings.stronghold", true );
+        generateTemple = getBoolean( "generator-settings.temple", true );
+        generateVillage = getBoolean( "generator-settings.village", true );
+        generateFlatBedrock = getBoolean( "generator-settings.flat-bedrock", false );
+    }
 }

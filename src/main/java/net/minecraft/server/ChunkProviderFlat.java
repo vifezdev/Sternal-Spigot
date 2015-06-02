@@ -25,7 +25,7 @@ public class ChunkProviderFlat implements IChunkProvider {
         if (flag) {
             Map map = this.d.b();
 
-            if (map.containsKey("village")) {
+            if (map.containsKey("village") && world.paperSpigotConfig.generateVillage) { // PaperSpigot
                 Map map1 = (Map) map.get("village");
 
                 if (!map1.containsKey("size")) {
@@ -35,19 +35,19 @@ public class ChunkProviderFlat implements IChunkProvider {
                 this.e.add(new WorldGenVillage(map1));
             }
 
-            if (map.containsKey("biome_1")) {
+            if (map.containsKey("biome_1") && world.paperSpigotConfig.generateTemple) { // PaperSpigot
                 this.e.add(new WorldGenLargeFeature((Map) map.get("biome_1")));
             }
 
-            if (map.containsKey("mineshaft")) {
+            if (map.containsKey("mineshaft") && world.paperSpigotConfig.generateMineshaft) { // PaperSpigot
                 this.e.add(new WorldGenMineshaft((Map) map.get("mineshaft")));
             }
 
-            if (map.containsKey("stronghold")) {
+            if (map.containsKey("stronghold") && world.paperSpigotConfig.generateStronghold) { // PaperSpigot
                 this.e.add(new WorldGenStronghold((Map) map.get("stronghold")));
             }
 
-            if (map.containsKey("oceanmonument")) {
+            if (map.containsKey("oceanmonument") && world.paperSpigotConfig.generateMonument) { // PaperSpigot
                 this.e.add(new WorldGenMonument((Map) map.get("oceanmonument")));
             }
         }
@@ -60,7 +60,7 @@ public class ChunkProviderFlat implements IChunkProvider {
             this.i = new WorldGenLakes(Blocks.LAVA);
         }
 
-        this.g = this.d.b().containsKey("dungeon");
+        this.g = world.paperSpigotConfig.generateDungeon && this.d.b().containsKey("dungeon");  // PaperSpigot
         int j = 0;
         int k = 0;
         boolean flag1 = true;
