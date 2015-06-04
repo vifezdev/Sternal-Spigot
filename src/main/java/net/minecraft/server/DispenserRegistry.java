@@ -520,7 +520,11 @@ public class DispenserRegistry {
                 org.bukkit.block.Block block = world.getWorld().getBlockAt(isourceblock.getBlockPosition().getX(), isourceblock.getBlockPosition().getY(), isourceblock.getBlockPosition().getZ());
                 CraftItemStack craftItem = CraftItemStack.asCraftMirror(itemstack1);
 
-                BlockDispenseEvent event = new BlockDispenseEvent(block, craftItem.clone(), new org.bukkit.util.Vector(blockposition.getX() + 0.5, blockposition.getY() + 0.5, blockposition.getZ() + 0.5));
+                // PaperSpigot start - Fix cannons
+                double y = blockposition.getY();
+                if (!world.paperSpigotConfig.fixCannons) y += 0.5;
+                BlockDispenseEvent event = new BlockDispenseEvent(block, craftItem.clone(), new org.bukkit.util.Vector(blockposition.getX() + 0.5, y, blockposition.getZ() + 0.5));
+                // PaperSpigot end
                 if (!BlockDispenser.eventFired) {
                    world.getServer().getPluginManager().callEvent(event);
                 }

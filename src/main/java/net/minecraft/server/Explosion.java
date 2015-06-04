@@ -143,9 +143,16 @@ public class Explosion {
                         // CraftBukkit end
                         double d14 = EnchantmentProtection.a(entity, d13);
 
+                        // PaperSpigot start - Fix cannons
+                        /*
                         entity.motX += d8 * d14;
                         entity.motY += d9 * d14;
                         entity.motZ += d10 * d14;
+                        */
+                        // This impulse method sets the dirty flag, so clients will get an immediate velocity update
+                        entity.g(d8 * d14, d9 * d14, d10 * d14);
+                        // PaperSpigot end
+
                         if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable) {
                             this.k.put((EntityHuman) entity, new Vec3D(d8 * d13, d9 * d13, d10 * d13));
                         }

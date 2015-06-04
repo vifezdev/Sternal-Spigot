@@ -37,6 +37,7 @@ public class EntityTNTPrimed extends Entity {
         this.lastY = d1;
         this.lastZ = d2;
         this.source = entityliving;
+        if (world.paperSpigotConfig.fixCannons) this.motX = this.motZ = 0.0F; // PaperSpigot - Fix cannons
     }
 
     protected void h() {}
@@ -150,7 +151,64 @@ public class EntityTNTPrimed extends Entity {
         return this.source;
     }
 
-    public float getHeadHeight() {
-        return 0.0F;
+    // PaperSpigot start - Fix cannons
+    @Override
+    public double f(double d0, double d1, double d2) {
+        if (!world.paperSpigotConfig.fixCannons) return super.f(d0, d1, d2);
+
+        double d3 = this.locX - d0;
+        double d4 = this.locY + this.getHeadHeight() - d1;
+        double d5 = this.locZ - d2;
+
+        return (double) MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
     }
+
+    @Override
+    public boolean aL() {
+        return !world.paperSpigotConfig.fixCannons && super.aL();
+    }
+
+    @Override
+    public float getHeadHeight() {
+        return world.paperSpigotConfig.fixCannons ? this.length / 2 : 0.0F;
+    }
+
+    /**
+     * Author: Jedediah Smith <jedediah@silencegreys.com>
+     */
+    @Override
+    public boolean W() {
+        if (!world.paperSpigotConfig.fixCannons) return super.W();
+
+        // Preserve velocity while calling the super method
+        double oldMotX = this.motX;
+        double oldMotY = this.motY;
+        double oldMotZ = this.motZ;
+
+        super.W();
+
+        this.motX = oldMotX;
+        this.motY = oldMotY;
+        this.motZ = oldMotZ;
+
+        if (this.inWater) {
+            // Send position and velocity updates to nearby players on every tick while the TNT is in water.
+            // This does pretty well at keeping their clients in sync with the server.
+            EntityTrackerEntry ete = ((WorldServer) this.getWorld()).getTracker().trackedEntities.get(this.getId());
+            if (ete != null) {
+                PacketPlayOutEntityVelocity velocityPacket = new PacketPlayOutEntityVelocity(this);
+                PacketPlayOutEntityTeleport positionPacket = new PacketPlayOutEntityTeleport(this);
+
+                for (EntityPlayer viewer : ete.trackedPlayers) {
+                    if ((viewer.locX - this.locX) * (viewer.locY - this.locY) * (viewer.locZ - this.locZ) < 16 * 16) {
+                        viewer.playerConnection.sendPacket(velocityPacket);
+                        viewer.playerConnection.sendPacket(positionPacket);
+                    }
+                }
+            }
+        }
+
+        return this.inWater;
+    }
+    // PaperSpigot end
 }

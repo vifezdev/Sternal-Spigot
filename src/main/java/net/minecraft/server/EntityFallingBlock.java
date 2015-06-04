@@ -282,4 +282,22 @@ public class EntityFallingBlock extends Entity {
     public IBlockData getBlock() {
         return this.block;
     }
+
+    // PaperSpigot start - Fix cannons
+    @Override
+    public double f(double d0, double d1, double d2) {
+        if (!world.paperSpigotConfig.fixCannons) return super.f(d0, d1, d2);
+
+        double d3 = this.locX - d0;
+        double d4 = this.locY + this.getHeadHeight() - d1;
+        double d5 = this.locZ - d2;
+
+        return (double) MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
+    }
+
+    @Override
+    public float getHeadHeight() {
+        return world.paperSpigotConfig.fixCannons ? this.length / 2 : super.getHeadHeight();
+    }
+    // PaperSpigot end
 }

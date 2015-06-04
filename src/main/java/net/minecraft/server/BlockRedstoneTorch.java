@@ -52,6 +52,17 @@ public class BlockRedstoneTorch extends BlockTorch {
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
         if (this.isOn) {
+            // PaperSpigot start - Fix cannons
+            if (world.paperSpigotConfig.fixCannons) {
+                world.applyPhysics(blockposition.shift(EnumDirection.DOWN), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.UP), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.WEST), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.EAST), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.SOUTH), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.NORTH), this);
+                return;
+            }
+            // PaperSpigot end
             EnumDirection[] aenumdirection = EnumDirection.values();
             int i = aenumdirection.length;
 
@@ -66,6 +77,17 @@ public class BlockRedstoneTorch extends BlockTorch {
 
     public void remove(World world, BlockPosition blockposition, IBlockData iblockdata) {
         if (this.isOn) {
+            // PaperSpigot start - Fix cannons
+            if (world.paperSpigotConfig.fixCannons) {
+                world.applyPhysics(blockposition.shift(EnumDirection.DOWN), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.UP), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.WEST), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.EAST), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.SOUTH), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.NORTH), this);
+                return;
+            }
+            // PaperSpigot end
             EnumDirection[] aenumdirection = EnumDirection.values();
             int i = aenumdirection.length;
 

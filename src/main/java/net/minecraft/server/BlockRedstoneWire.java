@@ -142,6 +142,17 @@ public class BlockRedstoneWire extends Block {
             }
 
             this.R.add(blockposition);
+            // PaperSpigot start - Fix cannons
+            if (world.paperSpigotConfig.fixCannons) {
+                this.R.add(blockposition.shift(EnumDirection.WEST));
+                this.R.add(blockposition.shift(EnumDirection.EAST));
+                this.R.add(blockposition.shift(EnumDirection.DOWN));
+                this.R.add(blockposition.shift(EnumDirection.UP));
+                this.R.add(blockposition.shift(EnumDirection.NORTH));
+                this.R.add(blockposition.shift(EnumDirection.SOUTH));
+                return iblockdata;
+            }
+            // PaperSpigot end
             EnumDirection[] aenumdirection = EnumDirection.values();
             int i1 = aenumdirection.length;
 
@@ -158,6 +169,17 @@ public class BlockRedstoneWire extends Block {
     private void e(World world, BlockPosition blockposition) {
         if (world.getType(blockposition).getBlock() == this) {
             world.applyPhysics(blockposition, this);
+            // PaperSpigot start - Fix cannons
+            if (world.paperSpigotConfig.fixCannons) {
+                world.applyPhysics(blockposition.shift(EnumDirection.WEST), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.EAST), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.NORTH), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.SOUTH), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.DOWN), this);
+                world.applyPhysics(blockposition.shift(EnumDirection.UP), this);
+                return;
+            }
+            // PaperSpigot end
             EnumDirection[] aenumdirection = EnumDirection.values();
             int i = aenumdirection.length;
 
