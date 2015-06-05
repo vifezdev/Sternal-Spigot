@@ -300,4 +300,10 @@ public class PaperSpigotWorldConfig
         fixCannons = getBoolean( "fix-cannons", false );
         log( "Fix TNT cannons: " + fixCannons );
     }
+
+    public boolean fallingBlocksCollideWithSigns;
+    private void fallingBlocksCollideWithSigns()
+    {
+        fallingBlocksCollideWithSigns = getBoolean( "falling-blocks-collide-with-signs", false );
+    }
 }
