@@ -212,4 +212,11 @@ public class PaperSpigotWorldConfig
         log( "WorldServer TickNextTick cap set at " + tickNextTickCap );
         log( "WorldServer TickNextTickList cap always processes redstone: " + tickNextTickListCapIgnoresRedstone );
     }
+
+    public boolean useAsyncLighting;
+    private void useAsyncLighting()
+    {
+        useAsyncLighting = getBoolean( "use-async-lighting", false );
+        log( "World async lighting: " + useAsyncLighting );
+    }
 }

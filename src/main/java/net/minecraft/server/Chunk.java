@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger; // PaperSpigot
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,6 +45,10 @@ public class Chunk {
     private int v;
     private ConcurrentLinkedQueue<BlockPosition> w;
     protected gnu.trove.map.hash.TObjectIntHashMap<Class> entityCount = new gnu.trove.map.hash.TObjectIntHashMap<Class>(); // Spigot
+    // PaperSpigot start - Asynchronous light updates
+    public AtomicInteger pendingLightUpdates = new AtomicInteger();
+    public long lightUpdateTime;
+    // PaperSpigot end
 
     // CraftBukkit start - Neighbor loaded cache for chunk lighting and entity ticking
     private int neighbors = 0x1 << 12;
@@ -274,7 +280,7 @@ public class Chunk {
     private void a(int i, int j, int k, int l) {
         if (l > k && this.world.areChunksLoaded(new BlockPosition(i, 0, j), 16)) {
             for (int i1 = k; i1 < l; ++i1) {
-                this.world.c(EnumSkyBlock.SKY, new BlockPosition(i, i1, j));
+                this.world.updateLight(EnumSkyBlock.SKY, new BlockPosition(i, i1, j)); // PaperSpigot - Asynchronous lighting updates
             }
 
             this.q = true;
@@ -1044,7 +1050,7 @@ public class Chunk {
 
     public void b(boolean flag) {
         if (this.k && !this.world.worldProvider.o() && !flag) {
-            this.h(this.world.isClientSide);
+            this.recheckGaps(this.world.isClientSide); // PaperSpigot - Asynchronous lighting updates
         }
 
         this.p = true;
@@ -1063,6 +1069,23 @@ public class Chunk {
             }
         }
 
+    }
+
+    /**
+     * PaperSpigot - Recheck gaps asynchronously.
+     */
+    public void recheckGaps(final boolean isClientSide) {
+        if (!world.paperSpigotConfig.useAsyncLighting) {
+            this.h(isClientSide);
+            return;
+        }
+
+        world.lightingExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                Chunk.this.h(isClientSide);
+            }
+        });
     }
 
     public boolean isReady() {
