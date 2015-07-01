@@ -59,6 +59,17 @@ public class ChunkProviderServer implements IChunkProvider {
             return;
         }
         // PaperSpigot end
+        // PaperSpigot start - Don't unload chunk if it contains an entity that loads chunks
+        if (chunk != null) {
+            for (List<Entity> entities : chunk.entitySlices) {
+                for (Entity entity : entities) {
+                    if (entity.loadChunks) {
+                        return;
+                    }
+                }
+            }
+        }
+        // PaperSpigot end
         if (this.world.worldProvider.e()) {
             if (!this.world.c(i, j)) {
                 // CraftBukkit start

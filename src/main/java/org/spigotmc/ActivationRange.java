@@ -252,7 +252,7 @@ public class ActivationRange
     {
         SpigotTimings.checkIfActiveTimer.startTiming();
         // Never safe to skip fireworks or entities not yet added to chunk
-        if ( !entity.isAddedToChunk() || entity instanceof EntityFireworks ) {
+        if ( !entity.isAddedToChunk() || entity instanceof EntityFireworks || entity.loadChunks ) { // PaperSpigot
             SpigotTimings.checkIfActiveTimer.stopTiming();
             return true;
         }

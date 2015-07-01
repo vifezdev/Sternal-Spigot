@@ -1167,8 +1167,14 @@ public abstract class World implements IBlockAccess {
             {
                 if ( !this.isChunkLoaded( chunkx, chunkz, true ) )
                 {
-                    entity.inUnloadedChunk = true; // PaperSpigot - Remove entities in unloaded chunks
-                    continue;
+                    // PaperSpigot start
+                    if (entity.loadChunks) {
+                        ((ChunkProviderServer) entity.world.chunkProvider).getChunkAt(chunkx, chunkz);
+                    } else {
+                        entity.inUnloadedChunk = true; // PaperSpigot - Remove entities in unloaded chunks
+                        continue;
+                    }
+                    // PaperSpigot end
                 }
                 int cz = chunkz << 4;
                 Chunk chunk = this.getChunkAt( chunkx, chunkz );
@@ -1648,6 +1654,7 @@ public abstract class World implements IBlockAccess {
             int i1 = MathHelper.floor(entity.locZ / 16.0D);
 
             if (!entity.ad || entity.ae != k || entity.af != l || entity.ag != i1) {
+                if (entity.loadChunks) entity.loadChunks(); // PaperSpigot - Force load chunks
                 if (entity.ad && this.isChunkLoaded(entity.ae, entity.ag, true)) {
                     this.getChunkAt(entity.ae, entity.ag).a(entity, entity.af);
                 }

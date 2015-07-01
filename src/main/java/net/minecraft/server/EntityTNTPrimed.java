@@ -21,6 +21,7 @@ public class EntityTNTPrimed extends Entity {
     // PaperSpigot end
         this.k = true;
         this.setSize(0.98F, 0.98F);
+        this.loadChunks = world.paperSpigotConfig.loadUnloadedTNTEntities; // PaperSpigot
     }
 
     public EntityTNTPrimed(org.bukkit.Location loc, World world, double d0, double d1, double d2, EntityLiving entityliving) {
@@ -96,7 +97,15 @@ public class EntityTNTPrimed extends Entity {
     private void explode() {
         // CraftBukkit start
         // float f = 4.0F;
-        
+
+        // PaperSpigot start - Force load chunks during TNT explosions
+        ChunkProviderServer chunkProviderServer = ((ChunkProviderServer) world.chunkProvider);
+        boolean forceChunkLoad = chunkProviderServer.forceChunkLoad;
+        if (world.paperSpigotConfig.loadUnloadedTNTEntities) {
+            chunkProviderServer.forceChunkLoad = true;
+        }
+        // PaperSpigot end
+
         org.bukkit.craftbukkit.CraftServer server = this.world.getServer();
 
         ExplosionPrimeEvent event = new ExplosionPrimeEvent((org.bukkit.entity.Explosive) org.bukkit.craftbukkit.entity.CraftEntity.getEntity(server, this));
@@ -106,6 +115,12 @@ public class EntityTNTPrimed extends Entity {
             this.world.createExplosion(this, this.locX, this.locY + (double) (this.length / 2.0F), this.locZ, event.getRadius(), event.getFire(), true);
         }
         // CraftBukkit end
+
+        // PaperSpigot start - Force load chunks during TNT explosions
+        if (world.paperSpigotConfig.loadUnloadedTNTEntities) {
+            chunkProviderServer.forceChunkLoad = forceChunkLoad;
+        }
+        // PaperSpigot end
     }
 
     protected void b(NBTTagCompound nbttagcompound) {

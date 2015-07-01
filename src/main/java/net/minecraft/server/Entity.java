@@ -116,6 +116,7 @@ public abstract class Entity implements ICommandListener {
     public org.bukkit.projectiles.ProjectileSource projectileSource; // CraftBukkit - For projectiles only
     public boolean forceExplosionKnockback; // CraftBukkit - SPIGOT-949
     public boolean inUnloadedChunk = false; // PaperSpigot - Remove entities in unloaded chunks
+    public boolean loadChunks = false; // PaperSpigot - Entities can load chunks they move through and keep them loaded
 
     // Spigot start
     public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getEntityTimings(this); // Spigot
@@ -403,8 +404,21 @@ public abstract class Entity implements ICommandListener {
         return this.world.getCubes(this, axisalignedbb).isEmpty() && !this.world.containsLiquid(axisalignedbb);
     }
 
+    /**
+     * PaperSpigot - Load surrounding chunks the entity is moving through
+     */
+    public void loadChunks() {
+        for (int cx = (int) locX >> 4; cx <= (int) (locX + motX) >> 4; ++cx) {
+            for (int cz = (int) locZ >> 4; cz <= (int) (locZ + motZ) >> 4; ++cz) {
+                ((ChunkProviderServer) world.chunkProvider).getChunkAt(cx, cz);
+            }
+        }
+    }
+
+
     public void move(double d0, double d1, double d2) {
         org.bukkit.craftbukkit.SpigotTimings.entityMoveTimer.startTiming(); // Spigot
+        if (this.loadChunks) loadChunks(); // PaperSpigot - Load chunks
         if (this.noclip) {
             this.a(this.getBoundingBox().c(d0, d1, d2));
             this.recalcPosition();
