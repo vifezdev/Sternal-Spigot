@@ -129,8 +129,10 @@ public class PlayerChunkMap {
         // CraftBukkit start - Load nearby chunks first
         List<ChunkCoordIntPair> chunkList = new LinkedList<ChunkCoordIntPair>();
 
-        for (int k = i - this.g; k <= i + this.g; ++k) {
-            for (int l = j - this.g; l <= j + this.g; ++l) {
+        // PaperSpigot start - Player view distance API
+        for (int k = i - entityplayer.viewDistance; k <= i + entityplayer.viewDistance; ++k) {
+            for (int l = j - entityplayer.viewDistance; l <= j + entityplayer.viewDistance; ++l) {
+        // PaperSpigot end
                 chunkList.add(new ChunkCoordIntPair(k, l));
             }
         }
@@ -148,7 +150,7 @@ public class PlayerChunkMap {
     public void b(EntityPlayer entityplayer) {
         ArrayList arraylist = Lists.newArrayList(entityplayer.chunkCoordIntPairQueue);
         int i = 0;
-        int j = this.g;
+        int j = entityplayer.viewDistance; // PaperSpigot - Player view distance API
         int k = (int) entityplayer.locX >> 4;
         int l = (int) entityplayer.locZ >> 4;
         int i1 = 0;
@@ -194,8 +196,10 @@ public class PlayerChunkMap {
         int i = (int) entityplayer.d >> 4;
         int j = (int) entityplayer.e >> 4;
 
-        for (int k = i - this.g; k <= i + this.g; ++k) {
-            for (int l = j - this.g; l <= j + this.g; ++l) {
+        // PaperSpigot start - Player view distance API
+        for (int k = i - entityplayer.viewDistance; k <= i + entityplayer.viewDistance; ++k) {
+            for (int l = j - entityplayer.viewDistance; l <= j + entityplayer.viewDistance; ++l) {
+        // PaperSpigot end
                 PlayerChunkMap.PlayerChunk playerchunkmap_playerchunk = this.a(k, l, false);
 
                 if (playerchunkmap_playerchunk != null) {
@@ -224,7 +228,7 @@ public class PlayerChunkMap {
         if (d2 >= 64.0D) {
             int k = (int) entityplayer.d >> 4;
             int l = (int) entityplayer.e >> 4;
-            int i1 = this.g;
+            int i1 = entityplayer.viewDistance; // PaperSpigot - Player view distance API
             int j1 = i - k;
             int k1 = j - l;
             List<ChunkCoordIntPair> chunksToLoad = new LinkedList<ChunkCoordIntPair>(); // CraftBukkit
@@ -308,6 +312,38 @@ public class PlayerChunkMap {
             this.g = i;
         }
     }
+
+    // PaperSpigot start - Player view distance API
+    public void updateViewDistance(EntityPlayer player, int viewDistance) {
+        viewDistance = MathHelper.clamp(viewDistance, 3, 32);
+        if (viewDistance != player.viewDistance) {
+            int cx = (int) player.locX >> 4;
+            int cz = (int) player.locZ >> 4;
+
+            if (viewDistance - player.viewDistance > 0) {
+                for (int x = cx - viewDistance; x <= cx + viewDistance; ++x) {
+                    for (int z = cz - viewDistance; z <= cz + viewDistance; ++z) {
+                        PlayerChunkMap.PlayerChunk playerchunkmap_playerchunk = this.a(x, z, true);
+
+                        if (!playerchunkmap_playerchunk.b.contains(player)) {
+                            playerchunkmap_playerchunk.a(player);
+                        }
+                    }
+                }
+            } else {
+                for (int x = cx - player.viewDistance; x <= cx + player.viewDistance; ++x) {
+                    for (int z = cz - player.viewDistance; z <= cz + player.viewDistance; ++z) {
+                        if (!this.a(x, z, cx, cz, viewDistance)) {
+                            this.a(x, z, true).b(player);
+                        }
+                    }
+                }
+            }
+
+            player.viewDistance = viewDistance;
+        }
+    }
+    // PaperSpigot end
 
     public static int getFurthestViewableBlock(int i) {
         return i * 16 - 16;

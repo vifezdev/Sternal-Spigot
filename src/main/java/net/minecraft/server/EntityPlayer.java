@@ -64,6 +64,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     // CraftBukkit end
     // Spigot start
     public boolean collidesWithEntities = true;
+    public int viewDistance; // PaperSpigot - Player view distance API
 
     @Override
     public boolean ad()
@@ -80,6 +81,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
     public EntityPlayer(MinecraftServer minecraftserver, WorldServer worldserver, GameProfile gameprofile, PlayerInteractManager playerinteractmanager) {
         super(worldserver, gameprofile);
+        this.viewDistance = world.spigotConfig.viewDistance; // PaperSpigot - Player view distance API
         playerinteractmanager.player = this;
         this.playerInteractManager = playerinteractmanager;
         BlockPosition blockposition = worldserver.getSpawn();

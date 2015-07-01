@@ -1484,6 +1484,18 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             getHandle().affectsSpawning = affects;
         }
         // PaperSpigot end
+
+        // PaperSpigot start - Player view distance API
+        @Override
+        public int getViewDistance() {
+            return getHandle().viewDistance;
+        }
+
+        @Override
+        public void setViewDistance(int viewDistance) {
+            ((WorldServer) getHandle().world).getPlayerChunkMap().updateViewDistance(getHandle(), viewDistance);
+        }
+        // PaperSpigot end
     };
 
     public Player.Spigot spigot()
