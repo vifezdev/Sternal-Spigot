@@ -276,6 +276,9 @@ public class BlockFlowing extends BlockFluids {
      * PaperSpigot - Get flow speed. Throttle if its water and flowing adjacent to lava
      */
     public int getFlowSpeed(World world, BlockPosition blockposition) {
+        if (this.getMaterial() == Material.LAVA) {
+            return world.worldProvider.o() ? world.paperSpigotConfig.lavaFlowSpeedNether : world.paperSpigotConfig.lavaFlowSpeedNormal;
+        }
         if (this.getMaterial() == Material.WATER && (
                 world.getType(blockposition.north(1)).getBlock().getMaterial() == Material.LAVA ||
                         world.getType(blockposition.south(1)).getBlock().getMaterial() == Material.LAVA ||

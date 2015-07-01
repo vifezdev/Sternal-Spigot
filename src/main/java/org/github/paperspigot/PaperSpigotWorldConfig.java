@@ -320,4 +320,12 @@ public class PaperSpigotWorldConfig
         fastDrainLava = getBoolean( "fast-drain.lava", false );
         fastDrainWater = getBoolean( "fast-drain.water", false );
     }
+
+    public int lavaFlowSpeedNormal;
+    public int lavaFlowSpeedNether;
+    private void lavaFlowSpeed()
+    {
+        lavaFlowSpeedNormal = getInt( "lava-flow-speed.normal", 30 );
+        lavaFlowSpeedNether = getInt( "lava-flow-speed.nether", 10 );
+    }
 }
