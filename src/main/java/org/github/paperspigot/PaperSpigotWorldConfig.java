@@ -312,4 +312,12 @@ public class PaperSpigotWorldConfig
     {
         optimizeExplosions = getBoolean( "optimize-explosions", false );
     }
+
+    public boolean fastDrainLava;
+    public boolean fastDrainWater;
+    private void fastDraining()
+    {
+        fastDrainLava = getBoolean( "fast-drain.lava", false );
+        fastDrainWater = getBoolean( "fast-drain.water", false );
+    }
 }
