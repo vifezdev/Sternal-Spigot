@@ -102,6 +102,7 @@ public class BlockFlowing extends BlockFluids {
             this.f(world, blockposition, iblockdata);
         }
 
+        if (world.getType(blockposition).getBlock().getMaterial() != material) return; // PaperSpigot - Stop updating flowing block if material has changed
         IBlockData iblockdata2 = world.getType(blockposition.down());
 
         if (this.h(world, blockposition.down(), iblockdata2)) {
