@@ -65,6 +65,7 @@ public abstract class PlayerList {
 
     // CraftBukkit start
     private CraftServer cserver;
+    private final Map<String,EntityPlayer> playersByName = new org.spigotmc.CaseInsensitiveMap<EntityPlayer>();
 
     public PlayerList(MinecraftServer minecraftserver) {
         this.cserver = minecraftserver.server = new CraftServer(minecraftserver, this);
@@ -287,6 +288,7 @@ public abstract class PlayerList {
 
     public void onPlayerJoin(EntityPlayer entityplayer, String joinMessage) { // CraftBukkit added param
         this.players.add(entityplayer);
+        this.playersByName.put(entityplayer.getName(), entityplayer); // Spigot
         this.j.put(entityplayer.getUniqueID(), entityplayer);
         // this.sendAll(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[] { entityplayer})); // CraftBukkit - replaced with loop below
         WorldServer worldserver = this.server.getWorldServer(entityplayer.dimension);
@@ -358,6 +360,7 @@ public abstract class PlayerList {
         worldserver.kill(entityplayer);
         worldserver.getPlayerChunkMap().removePlayer(entityplayer);
         this.players.remove(entityplayer);
+        this.playersByName.remove(entityplayer.getName()); // Spigot
         UUID uuid = entityplayer.getUniqueID();
         EntityPlayer entityplayer1 = (EntityPlayer) this.j.get(uuid);
 
@@ -508,6 +511,7 @@ public abstract class PlayerList {
         // entityplayer.u().getTracker().untrackEntity(entityplayer); // CraftBukkit
         entityplayer.u().getPlayerChunkMap().removePlayer(entityplayer);
         this.players.remove(entityplayer);
+        this.playersByName.remove(entityplayer.getName()); // Spigot
         this.server.getWorldServer(entityplayer.dimension).removeEntity(entityplayer);
         BlockPosition blockposition = entityplayer.getBed();
         boolean flag1 = entityplayer.isRespawnForced();
@@ -603,6 +607,7 @@ public abstract class PlayerList {
             worldserver.getPlayerChunkMap().addPlayer(entityplayer1);
             worldserver.addEntity(entityplayer1);
             this.players.add(entityplayer1);
+            this.playersByName.put(entityplayer1.getName(), entityplayer1); // Spigot
             this.j.put(entityplayer1.getUniqueID(), entityplayer1);
         }
         // Added from changeDimension
@@ -1020,19 +1025,7 @@ public abstract class PlayerList {
     }
 
     public EntityPlayer getPlayer(String s) {
-        Iterator iterator = this.players.iterator();
-
-        EntityPlayer entityplayer;
-
-        do {
-            if (!iterator.hasNext()) {
-                return null;
-            }
-
-            entityplayer = (EntityPlayer) iterator.next();
-        } while (!entityplayer.getName().equalsIgnoreCase(s));
-
-        return entityplayer;
+        return this.playersByName.get(s); // Spigot
     }
 
     public void sendPacketNearby(double d0, double d1, double d2, double d3, int i, Packet packet) {
