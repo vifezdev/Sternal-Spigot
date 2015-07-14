@@ -346,4 +346,10 @@ public class PaperSpigotWorldConfig
     {
         disableIceAndSnow = getBoolean( "disable-ice-and-snow", false );
     }
+
+    public boolean disableMoodSounds;
+    private void disableMoodSounds()
+    {
+        disableMoodSounds = getBoolean( "disable-mood-sounds", false );
+    }
 }

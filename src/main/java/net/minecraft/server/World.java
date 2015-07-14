@@ -2248,7 +2248,7 @@ public abstract class World implements IBlockAccess {
 
     protected void a(int i, int j, Chunk chunk) {
         this.methodProfiler.c("moodSound");
-        if (this.L == 0 && !this.isClientSide) {
+        if (!this.paperSpigotConfig.disableMoodSounds && this.L == 0 && !this.isClientSide) { // PaperSpigot - Disable mood sounds
             this.m = this.m * 3 + 1013904223;
             int k = this.m >> 2;
             int l = k & 15;
