@@ -352,4 +352,10 @@ public class PaperSpigotWorldConfig
     {
         disableMoodSounds = getBoolean( "disable-mood-sounds", false );
     }
+
+    public int mobSpawnerTickRate;
+    private void mobSpawnerTickRate()
+    {
+        mobSpawnerTickRate = getInt( "mob-spawner-tick-rate", 1 );
+    }
 }
