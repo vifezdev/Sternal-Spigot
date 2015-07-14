@@ -340,4 +340,10 @@ public class PaperSpigotWorldConfig
     {
         disableThunder = getBoolean( "disable-thunder", false );
     }
+
+    public boolean disableIceAndSnow;
+    private void disableIceAndSnow()
+    {
+        disableIceAndSnow = getBoolean( "disable-ice-and-snow", false );
+    }
 }

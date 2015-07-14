@@ -432,7 +432,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                 }
 
                 this.methodProfiler.c("iceandsnow");
-                if (this.random.nextInt(16) == 0) {
+                if (!this.paperSpigotConfig.disableIceAndSnow && this.random.nextInt(16) == 0) { // PaperSpigot - Disable ice and snow
                     this.m = this.m * 3 + 1013904223;
                     i1 = this.m >> 2;
                     blockposition = this.q(new BlockPosition(k + (i1 & 15), 0, l + (i1 >> 8 & 15)));
