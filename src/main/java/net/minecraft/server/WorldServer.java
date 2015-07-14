@@ -422,7 +422,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                 int i1;
                 BlockPosition blockposition;
 
-                if (this.random.nextInt(100000) == 0 && this.S() && this.R()) {
+                if (!this.paperSpigotConfig.disableThunder && this.random.nextInt(100000) == 0 && this.S() && this.R()) { // PaperSpigot - Disable thunder
                     this.m = this.m * 3 + 1013904223;
                     i1 = this.m >> 2;
                     blockposition = this.a(new BlockPosition(k + (i1 & 15), 0, l + (i1 >> 8 & 15)));
