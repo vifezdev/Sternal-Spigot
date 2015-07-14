@@ -1166,11 +1166,12 @@ public abstract class World implements IBlockAccess {
             int cx = chunkx << 4;
             for ( int chunkz = ( i1 >> 4 ); chunkz <= ( ( j1 - 1 ) >> 4 ); chunkz++ )
             {
-                if ( !this.isChunkLoaded( chunkx, chunkz, true ) )
+                Chunk chunk = this.getChunkIfLoaded( chunkx, chunkz );
+                if ( chunk == null )
                 {
                     // PaperSpigot start
                     if (entity.loadChunks) {
-                        ((ChunkProviderServer) entity.world.chunkProvider).getChunkAt(chunkx, chunkz);
+                        chunk = ((ChunkProviderServer) entity.world.chunkProvider).getChunkAt(chunkx, chunkz);
                     } else {
                         entity.inUnloadedChunk = true; // PaperSpigot - Remove entities in unloaded chunks
                         continue;
@@ -1178,7 +1179,6 @@ public abstract class World implements IBlockAccess {
                     // PaperSpigot end
                 }
                 int cz = chunkz << 4;
-                Chunk chunk = this.getChunkAt( chunkx, chunkz );
                 // Compute ranges within chunk
                 int xstart = ( i < cx ) ? cx : i;
                 int xend = ( j < ( cx + 16 ) ) ? j : ( cx + 16 );
@@ -1224,6 +1224,8 @@ public abstract class World implements IBlockAccess {
             }
         }
         // Spigot end
+
+        if (entity instanceof EntityItem) return arraylist; // PaperSpigot - Optimize item movement
 
         double d0 = 0.25D;
         List list = this.getEntities(entity, axisalignedbb.grow(d0, d0, d0));
