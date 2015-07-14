@@ -328,4 +328,10 @@ public class PaperSpigotWorldConfig
         lavaFlowSpeedNormal = getInt( "lava-flow-speed.normal", 30 );
         lavaFlowSpeedNether = getInt( "lava-flow-speed.nether", 10 );
     }
+
+    public boolean disableExplosionKnockback;
+    private void disableExplosionKnockback()
+    {
+        disableExplosionKnockback = getBoolean( "disable-explosion-knockback", false );
+    }
 }

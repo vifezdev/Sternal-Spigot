@@ -779,7 +779,10 @@ public abstract class EntityLiving extends Entity {
                     }
                 }
 
-                if (flag) {
+                // PaperSpigot start - Disable explosion knockback
+                boolean knockbackCancelled = false;
+                if (flag && !(knockbackCancelled = world.paperSpigotConfig.disableExplosionKnockback && damagesource.isExplosion() && this instanceof EntityHuman)) {
+                // PaperSpigot end
                     this.world.broadcastEntityEffect(this, (byte) 2);
                     if (damagesource != DamageSource.DROWN) {
                         this.ac();
@@ -800,6 +803,8 @@ public abstract class EntityLiving extends Entity {
                         this.aw = (float) ((int) (Math.random() * 2.0D) * 180);
                     }
                 }
+
+                if (knockbackCancelled) this.world.broadcastEntityEffect(this, (byte) 2); // PaperSpigot
 
                 String s;
 

@@ -141,7 +141,7 @@ public class Explosion {
                             continue;
                         }
                         // CraftBukkit end
-                        double d14 = EnchantmentProtection.a(entity, d13);
+                        double d14 = entity instanceof EntityHuman && world.paperSpigotConfig.disableExplosionKnockback ? 0 : EnchantmentProtection.a(entity, d13); // PaperSpigot
 
                         // PaperSpigot start - Fix cannons
                         /*
@@ -153,7 +153,7 @@ public class Explosion {
                         entity.g(d8 * d14, d9 * d14, d10 * d14);
                         // PaperSpigot end
 
-                        if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable) {
+                        if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
                             this.k.put((EntityHuman) entity, new Vec3D(d8 * d13, d9 * d13, d10 * d13));
                         }
                     }
