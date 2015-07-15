@@ -50,6 +50,49 @@ public class Chunk {
     public long lightUpdateTime;
     // PaperSpigot end
 
+    // PaperSpigot start - ChunkMap caching
+    private PacketPlayOutMapChunk.ChunkMap chunkMap;
+    private int emptySectionBits;
+
+    public PacketPlayOutMapChunk.ChunkMap getChunkMap(boolean groundUpContinuous, int primaryBitMask) {
+        if (!world.paperSpigotConfig.cacheChunkMaps || !groundUpContinuous || (primaryBitMask != 0 && primaryBitMask != '\uffff')) {
+            return PacketPlayOutMapChunk.a(this, groundUpContinuous, !world.worldProvider.o(), primaryBitMask);
+        }
+
+        if (primaryBitMask == 0) {
+            PacketPlayOutMapChunk.ChunkMap chunkMap = new PacketPlayOutMapChunk.ChunkMap();
+            chunkMap.a = new byte[0];
+            return chunkMap;
+        }
+
+        boolean isDirty = false;
+        for (int i = 0; i < sections.length; ++i) {
+            ChunkSection section = sections[i];
+            if (section == null) {
+                if ((emptySectionBits & (1 << i)) == 0) {
+                    isDirty = true;
+                    emptySectionBits |= (1 << i);
+                }
+            } else {
+                if ((emptySectionBits & (1 << i)) == 1) {
+                    isDirty = true;
+                    emptySectionBits &= ~(1 << i);
+                    section.isDirty = false;
+                } else if (section.isDirty) {
+                    isDirty = true;
+                    section.isDirty = false;
+                }
+            }
+        }
+
+        if (isDirty || chunkMap == null) {
+            chunkMap = PacketPlayOutMapChunk.a(this, true, !world.worldProvider.o(), '\uffff');
+        }
+
+        return chunkMap;
+    }
+    // PaperSpigot end
+
     // CraftBukkit start - Neighbor loaded cache for chunk lighting and entity ticking
     private int neighbors = 0x1 << 12;
 

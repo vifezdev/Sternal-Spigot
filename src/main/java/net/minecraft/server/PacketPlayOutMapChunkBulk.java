@@ -23,7 +23,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
 
         for (int j = 0; j < i; ++j) {
             Chunk chunk = (Chunk) list.get(j);
-            PacketPlayOutMapChunk.ChunkMap packetplayoutmapchunk_chunkmap = PacketPlayOutMapChunk.a(chunk, true, this.d, '\uffff');
+            PacketPlayOutMapChunk.ChunkMap packetplayoutmapchunk_chunkmap = chunk.getChunkMap(true, '\uffff'); // PaperSpigot
 
             this.a[j] = chunk.locX;
             this.b[j] = chunk.locZ;

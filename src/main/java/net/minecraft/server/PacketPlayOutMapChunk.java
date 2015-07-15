@@ -18,7 +18,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut> {
         this.a = chunk.locX;
         this.b = chunk.locZ;
         this.d = flag;
-        this.c = a(chunk, flag, !chunk.getWorld().worldProvider.o(), i);
+        this.c = chunk.getChunkMap(flag, i); // PaperSpigot
         chunk.world.spigotConfig.antiXrayInstance.obfuscateSync(chunk.locX, chunk.locZ, c.b, c.a, chunk.world);
     }
 

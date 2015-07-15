@@ -8,6 +8,7 @@ public class ChunkSection {
     private char[] blockIds;
     private NibbleArray emittedLight;
     private NibbleArray skyLight;
+    boolean isDirty; // PaperSpigot
 
     public ChunkSection(int i, boolean flag) {
         this.yPos = i;
@@ -57,6 +58,7 @@ public class ChunkSection {
         }
 
         this.blockIds[j << 8 | k << 4 | i] = (char) Block.d.b(iblockdata);
+        isDirty = true; // PaperSpigot
     }
 
     public Block b(int i, int j, int k) {
@@ -83,6 +85,7 @@ public class ChunkSection {
 
     public void a(int i, int j, int k, int l) {
         this.skyLight.a(i, j, k, l);
+        isDirty = true; // PaperSpigot
     }
 
     public int d(int i, int j, int k) {
@@ -91,6 +94,7 @@ public class ChunkSection {
 
     public void b(int i, int j, int k, int l) {
         this.emittedLight.a(i, j, k, l);
+        isDirty = true; // PaperSpigot
     }
 
     public int e(int i, int j, int k) {

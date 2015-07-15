@@ -358,4 +358,10 @@ public class PaperSpigotWorldConfig
     {
         mobSpawnerTickRate = getInt( "mob-spawner-tick-rate", 1 );
     }
+
+    public boolean cacheChunkMaps;
+    private void cacheChunkMaps()
+    {
+        cacheChunkMaps = getBoolean( "cache-chunk-maps", false );
+    }
 }
