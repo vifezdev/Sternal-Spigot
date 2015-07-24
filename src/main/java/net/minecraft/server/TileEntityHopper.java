@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 // CraftBukkit end
+import net.techcable.tacospigot.HopperHelper; // TacoSpigot
 
 public class TileEntityHopper extends TileEntityContainer implements IHopper, IUpdatePlayerListBox {
 
@@ -200,7 +201,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
                 }
             }
             // PaperSpigot start
-            if (world.paperSpigotConfig.useHopperCheck && !this.n()) {
+            if (world.paperSpigotConfig.useHopperCheck && !world.tacoSpigotConfig.isHopperPushBased && !this.n()) { // TacoSpigot - dont use hopper check in push mode
                 this.d(world.spigotConfig.hopperCheck);
             }
             // PaperSpigot end
@@ -225,6 +226,12 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
         return true;
     }
 
+    // TacoSpigot start
+    public boolean canAcceptItems() {
+        return !this.n() && !this.q() && BlockHopper.f(this.u());
+    }
+    // TacoSpigot end
+
     private boolean q() {
         ItemStack[] aitemstack = this.items;
         int i = aitemstack.length;
@@ -241,7 +248,9 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
     }
 
     private boolean r() {
-        IInventory iinventory = this.H();
+        // TacoSpigot start - Don't use inefficient H() which does another bounding box search
+        IInventory iinventory = HopperHelper.getInventory(getWorld(), getPosition().shift(BlockHopper.b(this.u())));
+        // TacoSpigot end
 
         if (iinventory == null) {
             return false;
@@ -346,9 +355,21 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
         return true;
     }
 
+    // TacoSpigot start - Split methods, one that pushes and one that pulls
+    @Deprecated
     public static boolean a(IHopper ihopper) {
-        IInventory iinventory = b(ihopper);
+        IInventory iinventory;
+        if (ihopper.getWorld().tacoSpigotConfig.isHopperPushBased && ihopper instanceof TileEntityHopper) {
+            BlockPosition pos = ((TileEntityHopper) ihopper).getPosition().up(); // Only pull from a above, because everything else comes to us
+            iinventory = HopperHelper.getInventory(ihopper.getWorld(), pos);
+        } else {
+            iinventory = b(ihopper); // Use old behavior for BB entity searching
+        }
+        return acceptItem(ihopper, iinventory);
+    }
 
+    public static boolean acceptItem(IHopper ihopper, IInventory iinventory) {
+        // TacoSpigot end
         if (iinventory != null) {
             EnumDirection enumdirection = EnumDirection.DOWN;
 
@@ -374,7 +395,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
                     }
                 }
             }
-        } else {
+        } else if (!ihopper.getWorld().tacoSpigotConfig.isHopperPushBased || !(ihopper instanceof TileEntityHopper)) { // TacoSpigot - only search for entities in 'pull mode'
             Iterator iterator = a(ihopper.getWorld(), ihopper.A(), ihopper.B() + 1.0D, ihopper.C()).iterator();
 
             while (iterator.hasNext()) {
@@ -578,6 +599,18 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 
         return (IInventory) object;
     }
+
+    // TacoSpigot start
+    public AxisAlignedBB getHopperLookupBoundingBox() {
+        // Change this if b(IHopper) ever changes
+        return getHopperLookupBoundingBox(this.A(), this.B() + 1.0D, this.C());
+    }
+
+    private static AxisAlignedBB getHopperLookupBoundingBox(double d0, double d1, double d2) {
+        // Change this if the above ever changes
+        return new AxisAlignedBB(d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, d0 + 0.5D, d1 + 0.5D, d2 + 0.5D);
+    }
+    // TacoSpigot end
 
     private static boolean a(ItemStack itemstack, ItemStack itemstack1) {
         return itemstack.getItem() != itemstack1.getItem() ? false : (itemstack.getData() != itemstack1.getData() ? false : (itemstack.count > itemstack.getMaxStackSize() ? false : ItemStack.equals(itemstack, itemstack1)));

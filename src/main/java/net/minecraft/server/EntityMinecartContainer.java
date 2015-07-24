@@ -7,8 +7,16 @@ import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.InventoryHolder;
 // CraftBukkit end
+import net.techcable.tacospigot.HopperPusher; // TacoSpigot
 
-public abstract class EntityMinecartContainer extends EntityMinecartAbstract implements ITileInventory {
+// TacoSpigot start - HopperPusher
+public abstract class EntityMinecartContainer extends EntityMinecartAbstract implements ITileInventory, HopperPusher {
+
+    @Override
+    public boolean acceptItem(TileEntityHopper hopper) {
+        return TileEntityHopper.acceptItem(hopper, this);
+    }
+    // TacoSpigot end
 
     private ItemStack[] items = new ItemStack[27]; // CraftBukkit - 36 -> 27
     private boolean b = true;
@@ -59,6 +67,20 @@ public abstract class EntityMinecartContainer extends EntityMinecartAbstract imp
         }
 
     }
+
+    // TacoSpigot start
+    @Override
+    public void t_() {
+        super.t_();
+        tryPutInHopper();
+    }
+
+    @Override
+    public void inactiveTick() {
+        super.inactiveTick();
+        tryPutInHopper();
+    }
+    // TacoSpigot end
 
     public ItemStack getItem(int i) {
         return this.items[i];

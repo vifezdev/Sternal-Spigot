@@ -4,8 +4,15 @@ import java.util.Iterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.event.player.PlayerPickupItemEvent; // CraftBukkit
+import net.techcable.tacospigot.HopperPusher; // TacoSpigot
 
-public class EntityItem extends Entity {
+// TacoSpigot start - implement HopperPusher
+public class EntityItem extends Entity implements HopperPusher {
+    @Override
+    public boolean acceptItem(TileEntityHopper hopper) {
+        return TileEntityHopper.a(hopper, this);
+    }
+    // TacoSpigot end
 
     private static final Logger b = LogManager.getLogger();
     private int age;
@@ -59,6 +66,7 @@ public class EntityItem extends Entity {
             this.die();
         } else {
             super.t_();
+            if (tryPutInHopper()) return; // TacoSpigot
             // CraftBukkit start - Use wall time for pickup and despawn timers
             int elapsedTicks = MinecraftServer.currentTick - this.lastTick;
             if (this.pickupDelay != 32767) this.pickupDelay -= elapsedTicks;
@@ -124,6 +132,8 @@ public class EntityItem extends Entity {
     // Spigot start - copied from above
     @Override
     public void inactiveTick() {
+        if (tryPutInHopper()) return; // TacoSpigot
+        // CraftBukkit end
         // CraftBukkit start - Use wall time for pickup and despawn timers
         int elapsedTicks = MinecraftServer.currentTick - this.lastTick;
         if (this.pickupDelay != 32767) this.pickupDelay -= elapsedTicks;
