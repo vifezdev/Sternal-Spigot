@@ -162,6 +162,7 @@ public abstract class World implements IBlockAccess {
     public final org.github.paperspigot.PaperSpigotWorldConfig paperSpigotConfig; // PaperSpigot
 
     public final co.aikar.timings.WorldTimingsHandler timings; // Spigot
+    public final net.techcable.tacospigot.TacoSpigotWorldConfig tacoSpigotConfig;
 
     public CraftWorld getWorld() {
         return this.world;
@@ -178,6 +179,7 @@ public abstract class World implements IBlockAccess {
     protected World(IDataManager idatamanager, WorldData worlddata, WorldProvider worldprovider, MethodProfiler methodprofiler, boolean flag, ChunkGenerator gen, org.bukkit.World.Environment env) {
         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
         this.paperSpigotConfig = new org.github.paperspigot.PaperSpigotWorldConfig( worlddata.getName() ); // PaperSpigot
+        this.tacoSpigotConfig = new net.techcable.tacospigot.TacoSpigotWorldConfig(worlddata.getName()); // TacoSpigot
         this.generator = gen;
         this.world = new CraftWorld((WorldServer) this, gen, env);
         this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
@@ -225,8 +227,8 @@ public abstract class World implements IBlockAccess {
             public void b(WorldBorder worldborder, double d0) {}
 
             public void c(WorldBorder worldborder, double d0) {}
-        }); 
-        this.getServer().addWorld(this.world); 
+        });
+        this.getServer().addWorld(this.world);
         // CraftBukkit end
         this.keepSpawnInMemory = this.paperSpigotConfig.keepSpawnInMemory; // PaperSpigot
         timings = new co.aikar.timings.WorldTimingsHandler(this); // Spigot - code below can generate new world and access timings
@@ -766,7 +768,7 @@ public abstract class World implements IBlockAccess {
     {
         return getType( blockposition, true );
     }
-    
+
     public IBlockData getType(BlockPosition blockposition, boolean useCaptured) {
         // CraftBukkit start - tree generation
         if (captureTreeGeneration && useCaptured) {
@@ -1201,10 +1203,10 @@ public abstract class World implements IBlockAccess {
                                 entity.h(true);
                             }
 
-                            IBlockData block; 
+                            IBlockData block;
                             if (!this.getWorldBorder().a(blockposition) && flag1) {
                                 block = Blocks.STONE.getBlockData();
-                            } else 
+                            } else
                             {
                                 block = chunk.getBlockData( blockposition );
                             }
@@ -2717,7 +2719,7 @@ public abstract class World implements IBlockAccess {
                     continue;
                 }
             }
-            
+
             if (oclass.isAssignableFrom(entity.getClass())) {
             // if ((!(entity instanceof EntityInsentient) || !((EntityInsentient) entity).isPersistent()) && oclass.isAssignableFrom(entity.getClass())) {
                 // CraftBukkit end
