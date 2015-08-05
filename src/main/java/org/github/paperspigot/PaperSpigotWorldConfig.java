@@ -370,4 +370,10 @@ public class PaperSpigotWorldConfig
     {
         containerUpdateTickRate = getInt( "container-update-tick-rate", 1 );
     }
+
+    public float tntExplosionVolume;
+    private void tntExplosionVolume()
+    {
+        tntExplosionVolume = getFloat( "tnt-explosion-volume", 4.0F );
+    }
 }
