@@ -154,7 +154,7 @@ public abstract class BlockFluids extends Block {
                     return true;
                 }
 
-                if (integer.intValue() <= 4) {
+                if (integer.intValue() > 0) { // PaperSpigot
                     world.setTypeUpdate(blockposition, Blocks.COBBLESTONE.getBlockData());
                     this.fizz(world, blockposition);
                     return true;
