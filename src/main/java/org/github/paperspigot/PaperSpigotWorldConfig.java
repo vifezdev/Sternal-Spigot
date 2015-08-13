@@ -376,4 +376,10 @@ public class PaperSpigotWorldConfig
     {
         tntExplosionVolume = getFloat( "tnt-explosion-volume", 4.0F );
     }
+
+    public boolean useHopperCheck;
+    private void useHopperCheck()
+    {
+        useHopperCheck = getBoolean( "use-hopper-check", false );
+    }
 }
