@@ -61,7 +61,11 @@ public class BlockStateInteger extends BlockState<Integer> {
         return integer.toString();
     }
 
+    // TacoSpigot start - fix stupid generic thingies
+    /*
     public String a(Comparable comparable) {
         return this.a((Integer) comparable);
     }
+    */
+    // TacoSpigot end
 }

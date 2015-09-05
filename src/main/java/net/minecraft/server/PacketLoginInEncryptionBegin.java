@@ -33,7 +33,11 @@ public class PacketLoginInEncryptionBegin implements Packet<PacketLoginInListene
         return privatekey == null ? this.b : MinecraftEncryption.b(privatekey, this.b);
     }
 
+    // TacoSpigot start - fernflower is gud at generics
+    /*
     public void a(PacketListener packetlistener) {
         this.a((PacketLoginInListener) packetlistener);
     }
+    */
+    // TacoSpigot end
 }

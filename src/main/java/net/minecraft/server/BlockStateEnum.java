@@ -18,10 +18,10 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
     protected BlockStateEnum(String s, Class<T> oclass, Collection<T> collection) {
         super(s, oclass);
         this.a = ImmutableSet.copyOf(collection);
-        Iterator iterator = collection.iterator();
+        Iterator<T> iterator = collection.iterator(); // TacoSpigot - generic iterator
 
         while (iterator.hasNext()) {
-            Enum oenum = (Enum) iterator.next();
+            T oenum = iterator.next(); // TacoSpigot - generics
             String s1 = ((INamable) oenum).getName();
 
             if (this.b.containsKey(s1)) {
@@ -57,7 +57,11 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
         return new BlockStateEnum(s, oclass, collection);
     }
 
+    // TacoSpigot start - fix stupid generic thingies
+    /*
     public String a(Comparable comparable) {
         return this.a((Enum) comparable);
     }
+    */
+    // TacoSpigot end
 }

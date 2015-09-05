@@ -123,7 +123,7 @@ public class BlockStateList {
             if (!this.b.containsKey(iblockstate)) {
                 throw new IllegalArgumentException("Cannot get property " + iblockstate + " as it does not exist in " + this.a.P());
             } else {
-                return (Comparable) iblockstate.b().cast(this.b.get(iblockstate));
+                return iblockstate.b().cast(this.b.get(iblockstate)); // TacoSpigot - remove illegal and unnecessary cast
             }
         }
 

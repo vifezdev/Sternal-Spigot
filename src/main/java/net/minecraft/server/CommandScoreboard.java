@@ -13,6 +13,13 @@ import java.util.Set;
 
 public class CommandScoreboard extends CommandAbstract {
 
+    // TacoSpigot start - fix compile errors
+    @Override
+    public int compareTo(ICommand o) {
+        return super.a(o);
+    }
+    // TacoSpigot end
+
     public CommandScoreboard() {}
 
     public String getCommand() {

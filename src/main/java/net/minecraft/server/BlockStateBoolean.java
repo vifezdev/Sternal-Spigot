@@ -23,7 +23,11 @@ public class BlockStateBoolean extends BlockState<Boolean> {
         return obool.toString();
     }
 
+    // TacoSpigot start - fix stupid generic thingies
+    /*
     public String a(Comparable comparable) {
         return this.a((Boolean) comparable);
     }
+    */
+    // CraftBukkit end
 }
