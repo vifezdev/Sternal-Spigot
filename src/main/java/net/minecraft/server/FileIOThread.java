@@ -39,11 +39,12 @@ public class FileIOThread implements Runnable {
                 ++this.d;
             }
 
+            /* // Spigot start - don't sleep in between chunks so we unload faster.
             try {
                 Thread.sleep(this.e ? 0L : 10L);
             } catch (InterruptedException interruptedexception) {
                 interruptedexception.printStackTrace();
-            }
+            } */ // Spigot end
         }
 
         if (this.b.isEmpty()) {
