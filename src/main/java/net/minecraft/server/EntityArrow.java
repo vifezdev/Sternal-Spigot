@@ -7,6 +7,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 // CraftBukkit end
+// TacoSpigot start
+import net.techcable.tacospigot.event.entity.ArrowCollideEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Arrow;
+// TacoSpigot end
 
 public class EntityArrow extends Entity implements IProjectile {
 
@@ -227,7 +232,13 @@ public class EntityArrow extends Entity implements IProjectile {
                 }
             }
             // PaperSpigot end
-
+            // TacoSpigot start - call better event
+            if (movingobjectposition != null && movingobjectposition.entity != null) {
+                ArrowCollideEvent collideEvent = new ArrowCollideEvent((Arrow) getBukkitEntity(), movingobjectposition.entity.getBukkitEntity());
+                Bukkit.getPluginManager().callEvent(collideEvent);
+                if (collideEvent.isCancelled()) movingobjectposition = null;
+            }
+            // TacoSpigot end
             if (movingobjectposition != null) {
                 org.bukkit.craftbukkit.event.CraftEventFactory.callProjectileHitEvent(this); // CraftBukkit - Call event
                 if (movingobjectposition.entity != null) {
