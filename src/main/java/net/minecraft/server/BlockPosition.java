@@ -267,6 +267,12 @@ public class BlockPosition extends BaseBlockPosition {
         }
         */
 
+        // TacoSpigot start - OBFHELPER
+        public BlockPosition.MutableBlockPosition setValues(int x, int y, int z) {
+            return c(x, y, z);
+        }
+        // TacoSpigot end
+
         public BlockPosition.MutableBlockPosition c(int i, int j, int k) {
             setX(i);
             setY(j);
