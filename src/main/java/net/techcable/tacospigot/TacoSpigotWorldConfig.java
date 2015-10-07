@@ -69,4 +69,8 @@ public class TacoSpigotWorldConfig {
         isHopperPushBased = getBoolean("hopper.push-based", true);
     }
 
+    public boolean optimizeArmorStandMovement;
+    private void isArmorStandMoveWithoutGravity() {
+        optimizeArmorStandMovement = getBoolean("armor-stand.optimize-movement", false); // Doesn't fully emulate vanilla behavior, see issue #1
+    }
 }
