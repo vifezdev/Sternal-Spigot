@@ -1419,10 +1419,10 @@ public abstract class World implements IBlockAccess {
         guardEntityList = true; // Spigot
         // CraftBukkit start - Use field for loop variable
         int entitiesThisCycle = 0;
-        if (tickPosition < 0) tickPosition = 0;
-        for (entityLimiter.initTick();
-                entitiesThisCycle < entityList.size() && (entitiesThisCycle % 10 != 0 || entityLimiter.shouldContinue());
-                tickPosition++, entitiesThisCycle++) {
+        // PaperSpigot start - Disable tick limiters
+        //if (tickPosition < 0) tickPosition = 0;
+        for (tickPosition = 0; tickPosition < entityList.size(); tickPosition++) {
+            // PaperSpigot end
             tickPosition = (tickPosition < entityList.size()) ? tickPosition : 0;
             entity = (Entity) this.entityList.get(this.tickPosition);
             // CraftBukkit end
@@ -1485,9 +1485,7 @@ public abstract class World implements IBlockAccess {
 
         // Spigot start
         int tilesThisCycle = 0;
-        for (tileLimiter.initTick();
-                tilesThisCycle < tileEntityList.size() && (tilesThisCycle % 10 != 0 || tileLimiter.shouldContinue());
-                tileTickPosition++, tilesThisCycle++) {
+        for (tileTickPosition = 0; tileTickPosition < tileEntityList.size(); tileTickPosition++) { // PaperSpigot - Disable tick limiters
             tileTickPosition = (tileTickPosition < tileEntityList.size()) ? tileTickPosition : 0;
             TileEntity tileentity = (TileEntity) this.tileEntityList.get(tileTickPosition);
             // Spigot start
