@@ -382,9 +382,9 @@ public class EntityArmorStand extends EntityLiving {
             return false;
         }
         // CraftBukkit end
-        if (this.world.isClientSide) {
+        if (this.world.isClientSide || this.dead) {
             return false;
-        } else if (DamageSource.OUT_OF_WORLD.equals(damagesource)) {
+        } else if (DamageSource.OUT_OF_WORLD.equals(damagesource)) { // PaperSpigot
             this.die();
             return false;
         } else if (!this.isInvulnerable(damagesource) && !this.h && !this.s()) {
