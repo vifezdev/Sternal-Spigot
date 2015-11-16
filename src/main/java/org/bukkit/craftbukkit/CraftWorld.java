@@ -201,7 +201,12 @@ public class CraftWorld implements World {
             return false;
         }
 
-        net.minecraft.server.Chunk chunk = world.chunkProviderServer.getOrCreateChunk(x, z);
+        net.minecraft.server.Chunk chunk = world.chunkProviderServer.getChunkIfLoaded(x, z);
+        // PaperSpigot start - Don't create a chunk just to unload it
+        if (chunk == null) {
+            return false;
+        }
+        // PaperSpigot end
         if (chunk.mustSave) {   // If chunk had previously been queued to save, must do save to avoid loss of that data
             save = true;
         }
