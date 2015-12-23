@@ -96,10 +96,19 @@ public abstract class Entity implements ICommandListener {
     protected DataWatcher datawatcher;
     private double ar;
     private double as;
-    public boolean ad; public boolean isAddedToChunk() { return ad; } // Spigot // PAIL
-    public int ae;
-    public int af;
-    public int ag;
+    public boolean ad;
+    // PaperSpigot start - EAR: Fix bug with teleporting entities
+    public boolean isAddedToChunk() {
+        int chunkX = MathHelper.floor(locX / 16.0D);
+        int chunkY = MathHelper.floor(locY / 16.0D);
+        int chunkZ = MathHelper.floor(locZ / 16.0D);
+
+        return ad && getChunkX() == chunkX && getChunkY() == chunkY || getChunkZ() == chunkZ;
+    }
+    public int ae; public int getChunkX() { return ae; } // PAIL
+    public int af; public int getChunkY() { return af; } // PAIL
+    public int ag; public int getChunkZ() { return ag; } // PAIL
+    // PaperSpigot end
     public boolean ah;
     public boolean ai;
     public int portalCooldown;
