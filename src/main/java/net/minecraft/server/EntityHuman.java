@@ -1271,7 +1271,17 @@ public abstract class EntityHuman extends EntityLiving {
         return this.world.getType(this.bx).getBlock() == Blocks.BED;
     }
 
+    // PaperSpigot start - SPIGOT-1387: Resolve bed issues on unloaded chunks
     public static BlockPosition getBed(World world, BlockPosition blockposition, boolean flag) {
+        boolean before = ((WorldServer) world).chunkProviderServer.forceChunkLoad;
+        ((WorldServer) world).chunkProviderServer.forceChunkLoad = true;
+        final BlockPosition result = getBed0(world, blockposition, flag);
+        ((WorldServer) world).chunkProviderServer.forceChunkLoad = before;
+        return result;
+    }
+
+    private static BlockPosition getBed0(World world, BlockPosition blockposition, boolean flag) {
+        // PaperSpigot end
         ((ChunkProviderServer) world.chunkProvider).getChunkAt(blockposition.getX() >> 4, blockposition.getZ() >> 4); // CraftBukkit
         Block block = world.getType(blockposition).getBlock();
 
