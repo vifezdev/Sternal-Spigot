@@ -45,7 +45,7 @@ import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
 import org.bukkit.craftbukkit.Main;
-import org.bukkit.craftbukkit.SpigotTimings; // Spigot
+import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
 
 public abstract class MinecraftServer implements Runnable, ICommandListener, IAsyncTaskHandler, IMojangStatistics {
@@ -449,6 +449,8 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         // CraftBukkit end
         if (!this.N) {
             MinecraftServer.LOGGER.info("Stopping server");
+            SpigotTimings.stopServer(); // Spigot
+
             // CraftBukkit start
             if (this.server != null) {
                 this.server.disablePlugins();
@@ -697,7 +699,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     protected void z() {}
 
     protected void A() throws ExceptionWorldConflict { // CraftBukkit - added throws
-        SpigotTimings.serverTickTimer.startTiming(); // Spigot
+        co.aikar.timings.TimingsManager.FULL_SERVER_TICK.startTiming(); // Spigot
         long i = System.nanoTime();
 
         ++this.ticks;
@@ -757,11 +759,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         this.methodProfiler.b();
         this.methodProfiler.b();
         org.spigotmc.WatchdogThread.tick(); // Spigot
-        SpigotTimings.serverTickTimer.stopTiming(); // Spigot
-        org.spigotmc.CustomTimingsHandler.tick(); // Spigot
+        co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Spigot
     }
 
     public void B() {
+        SpigotTimings.minecraftSchedulerTimer.startTiming(); // Spigot
         this.methodProfiler.a("jobs");
         Queue queue = this.j;
 
@@ -772,13 +774,14 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             SystemUtils.a(entry, MinecraftServer.LOGGER);
          }
         // Spigot end
+        SpigotTimings.minecraftSchedulerTimer.stopTiming(); // Spigot
 
         this.methodProfiler.c("levels");
 
-        SpigotTimings.schedulerTimer.startTiming(); // Spigot
+        SpigotTimings.bukkitSchedulerTimer.startTiming(); // Spigot
         // CraftBukkit start
         this.server.getScheduler().mainThreadHeartbeat(this.ticks);
-        SpigotTimings.schedulerTimer.stopTiming(); // Spigot
+        SpigotTimings.bukkitSchedulerTimer.stopTiming(); // Spigot
 
         // Run tasks that are waiting on processing
         SpigotTimings.processQueueTimer.startTiming(); // Spigot

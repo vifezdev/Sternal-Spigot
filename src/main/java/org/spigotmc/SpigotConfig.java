@@ -12,8 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import com.google.common.collect.Lists;
 import net.minecraft.server.AttributeRanged;
 import net.minecraft.server.GenericAttributes;
 import net.minecraft.server.MinecraftServer;
@@ -26,6 +28,8 @@ import org.bukkit.command.Command;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import co.aikar.timings.Timings;
+import co.aikar.timings.TimingsManager;
 
 public class SpigotConfig
 {
@@ -230,6 +234,39 @@ public class SpigotConfig
             System.out.println( "Oudated config, disabling BungeeCord support!" );
         }
         bungee = getBoolean( "settings.bungeecord", false );
+    }
+
+    private static void timings()
+    {
+        boolean timings = getBoolean( "timings.enabled", true );
+        boolean verboseTimings = getBoolean( "timings.verbose", true );
+        TimingsManager.privacy = getBoolean( "timings.server-name-privacy", false );
+        TimingsManager.hiddenConfigs = getList( "timings.hidden-config-entries", Lists.newArrayList("database", "settings.bungeecord-addresses"));
+        int timingHistoryInterval = getInt( "timings.history-interval", 300 );
+        int timingHistoryLength = getInt( "timings.history-length", 3600 );
+
+
+        Timings.setVerboseTimingsEnabled( verboseTimings );
+        Timings.setTimingsEnabled( timings );
+        Timings.setHistoryInterval( timingHistoryInterval * 20 );
+        Timings.setHistoryLength( timingHistoryLength * 20 );
+
+        Bukkit.getLogger().log( Level.INFO, "Spigot Timings: " + timings +
+            " - Verbose: " + verboseTimings +
+            " - Interval: " + timeSummary(Timings.getHistoryInterval() / 20) +
+            " - Length: " +  timeSummary(Timings.getHistoryLength() / 20));
+    }
+    protected static String timeSummary(int seconds) {
+        String time = "";
+        if (seconds > 60*60) {
+            time += TimeUnit.SECONDS.toHours(seconds) + "h";
+            seconds /= 60;
+        }
+
+        if (seconds > 0) {
+            time += TimeUnit.SECONDS.toMinutes(seconds) + "m";
+        }
+        return time;
     }
 
     private static void nettyThreads()

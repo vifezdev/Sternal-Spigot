@@ -16,7 +16,8 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Vehicle;
-import org.spigotmc.CustomTimingsHandler; // Spigot
+import co.aikar.timings.SpigotTimings; // Spigot
+import co.aikar.timings.Timing; // Spigot
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
@@ -128,7 +129,7 @@ public abstract class Entity implements ICommandListener {
     public boolean loadChunks = false; // PaperSpigot - Entities can load chunks they move through and keep them loaded
 
     // Spigot start
-    public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getEntityTimings(this); // Spigot
+    public Timing tickTimer = SpigotTimings.getEntityTimings(this); // Spigot
     public final byte activationType = org.spigotmc.ActivationRange.initializeEntityActivationType(this);
     public final boolean defaultActivationState;
     public long activatedTick = Integer.MIN_VALUE;
@@ -426,7 +427,6 @@ public abstract class Entity implements ICommandListener {
 
 
     public void move(double d0, double d1, double d2) {
-        org.bukkit.craftbukkit.SpigotTimings.entityMoveTimer.startTiming(); // Spigot
         if (this.loadChunks) loadChunks(); // PaperSpigot - Load chunks
         if (this.noclip) {
             this.a(this.getBoundingBox().c(d0, d1, d2));
@@ -764,7 +764,6 @@ public abstract class Entity implements ICommandListener {
 
             this.world.methodProfiler.b();
         }
-        org.bukkit.craftbukkit.SpigotTimings.entityMoveTimer.stopTiming(); // Spigot
     }
 
     private void recalcPosition() {

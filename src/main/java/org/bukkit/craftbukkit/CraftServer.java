@@ -329,6 +329,7 @@ public final class CraftServer implements Server {
             DefaultPermissions.registerCorePermissions();
             CraftDefaultPermissions.registerCorePermissions();
             helpMap.initializeCommands();
+            co.aikar.timings.Timings.reset(); // Spigot
         }
     }
 
@@ -1715,10 +1716,29 @@ public final class CraftServer implements Server {
         }
         // PaperSpigot end
 
+        @Deprecated
         @Override
         public YamlConfiguration getConfig()
         {
+            return getBukkitConfig();
+        }
+
+        @Override
+        public YamlConfiguration getBukkitConfig()
+        {
+            return configuration;
+        }
+
+        @Override
+        public YamlConfiguration getSpigotConfig()
+        {
             return org.spigotmc.SpigotConfig.config;
+        }
+
+        @Override
+        public YamlConfiguration getPaperSpigotConfig()
+        {
+            return org.github.paperspigot.PaperSpigotConfig.config;
         }
 
         @Override
