@@ -193,10 +193,12 @@ public class PaperSpigotWorldConfig
 
     public boolean boatsDropBoats;
     public boolean disablePlayerCrits;
+    public boolean disableChestCatDetection;
     private void mechanicsChanges()
     {
         boatsDropBoats = getBoolean( "game-mechanics.boats-drop-boats", false );
         disablePlayerCrits = getBoolean( "game-mechanics.disable-player-crits", false );
+        disableChestCatDetection = getBoolean( "game-mechanics.disable-chest-cat-detection", false );
     }
 
     public boolean netherVoidTopDamage;

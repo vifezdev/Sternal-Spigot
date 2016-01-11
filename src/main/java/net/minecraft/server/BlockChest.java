@@ -410,6 +410,11 @@ public class BlockChest extends BlockContainer {
     }
 
     private boolean p(World world, BlockPosition blockposition) {
+        // PaperSpigot start - Option to disable chest's cat detection (Performance++)
+        if (world.paperSpigotConfig.disableChestCatDetection) {
+            return false;
+        }
+        // PaperSpigot end
         Iterator iterator = world.a(EntityOcelot.class, new AxisAlignedBB((double) blockposition.getX(), (double) (blockposition.getY() + 1), (double) blockposition.getZ(), (double) (blockposition.getX() + 1), (double) (blockposition.getY() + 2), (double) (blockposition.getZ() + 1))).iterator();
 
         EntityOcelot entityocelot;
