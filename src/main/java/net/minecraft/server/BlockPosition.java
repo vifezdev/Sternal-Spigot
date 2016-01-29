@@ -198,9 +198,11 @@ public class BlockPosition extends BaseBlockPosition {
                                 ++k;
                             }
 
-                            this.b.c = i;
-                            this.b.d = j;
-                            this.b.e = k;
+                            // PaperSpigot start
+                            this.b.setX(i);
+                            this.b.setY(j);
+                            this.b.setZ(k);
+                            // PaperSpigot stop
                             return this.b;
                         }
                     }
@@ -219,9 +221,25 @@ public class BlockPosition extends BaseBlockPosition {
 
     public static final class MutableBlockPosition extends BlockPosition {
 
+        // PaperSpigot start - remove our overriding variables
+        /*
         private int c;
         private int d;
         private int e;
+        */
+
+        public void setX(int x) {
+            ((BaseBlockPosition) this).a = x;
+        }
+
+        public void setY(int y) {
+            ((BaseBlockPosition) this).c = y;
+        }
+
+        public void setZ(int z) {
+            ((BaseBlockPosition) this).d = z;
+        }
+        // PaperSpigot end
 
         public MutableBlockPosition() {
             this(0, 0, 0);
@@ -229,11 +247,13 @@ public class BlockPosition extends BaseBlockPosition {
 
         public MutableBlockPosition(int i, int j, int k) {
             super(0, 0, 0);
-            this.c = i;
-            this.d = j;
-            this.e = k;
+            // PaperSpigot start - modify base x,y,z
+            this.setX(i);
+            this.setY(j);
+            this.setZ(k);
         }
 
+        /*
         public int getX() {
             return this.c;
         }
@@ -245,11 +265,13 @@ public class BlockPosition extends BaseBlockPosition {
         public int getZ() {
             return this.e;
         }
+        */
 
         public BlockPosition.MutableBlockPosition c(int i, int j, int k) {
-            this.c = i;
-            this.d = j;
-            this.e = k;
+            setX(i);
+            setY(j);
+            setZ(k);
+            // PaperSpigot end
             return this;
         }
 
