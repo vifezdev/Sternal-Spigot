@@ -14,8 +14,8 @@ public class BlockBloodStone extends Block {
     }
 
     // CraftBukkit start
-    @Override
-    public void doPhysics(World world, BlockPosition position, IBlockData iblockdata, Block block) {
+    //@Override // PaperSpigot - Remove completely invalid Redstone event for Netherrack
+    public void doPhysics_nvmplsdont(World world, BlockPosition position, IBlockData iblockdata, Block block) {
         if (block != null && block.isPowerSource()) {
             org.bukkit.block.Block bl = world.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
             int power = bl.getBlockPower();
