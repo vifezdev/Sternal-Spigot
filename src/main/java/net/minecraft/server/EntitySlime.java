@@ -234,7 +234,9 @@ public class EntitySlime extends EntityInsentient implements IMonster {
                     return super.bR();
                 }
 
-                if (this.random.nextInt(10) == 0 && chunk.a(987234911L).nextInt(10) == 0 && this.locY < 40.0D) {
+                // PaperSpigot - Toggle to make all chunks spawn chunks
+                boolean isSlimeChunk = world.paperSpigotConfig.allChunksAreSlimeChunks || chunk.a(987234911L).nextInt(10) == 0;
+                if (this.random.nextInt(10) == 0 && isSlimeChunk && this.locY < 40.0D) {
                     return super.bR();
                 }
             }

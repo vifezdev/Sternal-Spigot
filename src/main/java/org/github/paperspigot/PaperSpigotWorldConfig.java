@@ -384,4 +384,10 @@ public class PaperSpigotWorldConfig
     {
         useHopperCheck = getBoolean( "use-hopper-check", false );
     }
+
+    public boolean allChunksAreSlimeChunks;
+    private void allChunksAreSlimeChunks()
+    {
+        allChunksAreSlimeChunks = getBoolean( "all-chunks-are-slime-chunks", false );
+    }
 }
