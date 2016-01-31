@@ -1153,7 +1153,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             return arraylist;
         }
         */
-        return server.tabComplete(icommandlistener, s);
+        return server.tabComplete(icommandlistener, s, blockposition); // PaperSpigot - add Location argument
         // CraftBukkit end
     }
 

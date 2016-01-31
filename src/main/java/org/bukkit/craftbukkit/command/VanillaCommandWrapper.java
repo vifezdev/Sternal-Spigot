@@ -7,6 +7,7 @@ import net.minecraft.server.*;
 
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.Level;
+import org.bukkit.Location;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -46,11 +47,25 @@ public final class VanillaCommandWrapper extends VanillaCommand {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        return tabComplete(sender, alias, args, null); // PaperSpigot - location tab-completes. Original code moved below
+    }
+
+    // PaperSpigot start - location tab-completes
+    /*
+        this code is copied, except for the noted change, from the original tabComplete(CommandSender sender, String alias, String[] args) method
+     */
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args, Location location) throws IllegalArgumentException {
         Validate.notNull(sender, "Sender cannot be null");
         Validate.notNull(args, "Arguments cannot be null");
         Validate.notNull(alias, "Alias cannot be null");
-        return (List<String>) vanillaCommand.tabComplete(getListener(sender), args, new BlockPosition(0, 0, 0));
+        if (location == null) { // PaperSpigot use location information if available
+            return (List<String>) vanillaCommand.tabComplete(getListener(sender), args, new BlockPosition(0, 0, 0));
+        } else {
+            return (List<String>) vanillaCommand.tabComplete(getListener(sender), args, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+        }
     }
+    // PaperSpigot end
 
     public static CommandSender lastSender = null; // Nasty :(
 

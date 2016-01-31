@@ -29,6 +29,7 @@ import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.UnsafeValues;
@@ -1597,21 +1598,38 @@ public final class CraftServer implements Server {
     }
 
     public List<String> tabComplete(net.minecraft.server.ICommandListener sender, String message) {
+        return tabComplete(sender, message, null); // PaperSpigot - location tab-completes. Original code here moved below
+    }
+
+    // PaperSpigot start - add BlockPosition support
+    /*
+        this code is copied, except for the noted change, from the original tabComplete(net.minecraft.server.ICommandListener sender, String message) method
+     */
+    public List<String> tabComplete(net.minecraft.server.ICommandListener sender, String message, BlockPosition blockPosition) {
         if (!(sender instanceof EntityPlayer)) {
             return ImmutableList.of();
         }
 
         Player player = ((EntityPlayer) sender).getBukkitEntity();
         if (message.startsWith("/")) {
-            return tabCompleteCommand(player, message);
+            return tabCompleteCommand(player, message, blockPosition);
         } else {
             return tabCompleteChat(player, message);
         }
     }
+    // PaperSpigot end
 
     public List<String> tabCompleteCommand(Player player, String message) {
+        return tabCompleteCommand(player, message, null); // PaperSpigot - location tab-completes. Original code here moved below
+    }
+
+    // PaperSpigot start - add BlockPosition support
+    /*
+        this code is copied, except for the noted change, from the original tabCompleteCommand(Player player, String message) method
+     */
+    public List<String> tabCompleteCommand(Player player, String message, BlockPosition blockPosition) {
         // Spigot Start
-		if ( (org.spigotmc.SpigotConfig.tabComplete < 0 || message.length() <= org.spigotmc.SpigotConfig.tabComplete) && !message.contains( " " ) )
+        if ( (org.spigotmc.SpigotConfig.tabComplete < 0 || message.length() <= org.spigotmc.SpigotConfig.tabComplete) && !message.contains( " " ) )
         {
             return ImmutableList.of();
         }
@@ -1619,7 +1637,13 @@ public final class CraftServer implements Server {
 
         List<String> completions = null;
         try {
-            completions = getCommandMap().tabComplete(player, message.substring(1));
+            // send location info if present
+            // completions = getCommandMap().tabComplete(player, message.substring(1));
+            if (blockPosition == null || !((CraftWorld) player.getWorld()).getHandle().paperSpigotConfig.allowBlockLocationTabCompletion) {
+                completions = getCommandMap().tabComplete(player, message.substring(1));
+            } else {
+                completions = getCommandMap().tabComplete(player, message.substring(1), new Location(player.getWorld(), blockPosition.getX(), blockPosition.getY(), blockPosition.getZ()));
+            }
         } catch (CommandException ex) {
             player.sendMessage(ChatColor.RED + "An internal error occurred while attempting to tab-complete this command");
             getLogger().log(Level.SEVERE, "Exception when " + player.getName() + " attempted to tab complete " + message, ex);
@@ -1627,6 +1651,7 @@ public final class CraftServer implements Server {
 
         return completions == null ? ImmutableList.<String>of() : completions;
     }
+    // PaperSpigot end
 
     public List<String> tabCompleteChat(Player player, String message) {
         List<String> completions = new ArrayList<String>();

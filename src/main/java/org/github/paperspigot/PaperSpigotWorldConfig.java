@@ -390,4 +390,10 @@ public class PaperSpigotWorldConfig
     {
         allChunksAreSlimeChunks = getBoolean( "all-chunks-are-slime-chunks", false );
     }
+
+    public boolean allowBlockLocationTabCompletion;
+    private void allowBlockLocationTabCompletion()
+    {
+        allowBlockLocationTabCompletion = getBoolean( "allow-block-location-tab-completion", true );
+    }
 }
