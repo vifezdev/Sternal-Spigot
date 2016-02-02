@@ -25,6 +25,11 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import co.aikar.timings.SpigotTimings; // Spigot
 
+// PaperSpigot start
+import org.bukkit.Bukkit;
+import org.spigotmc.event.entity.EntityDismountEvent;
+// PaperSpigot end
+
 public abstract class EntityLiving extends Entity {
 
     private static final UUID a = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
@@ -1709,8 +1714,12 @@ public abstract class EntityLiving extends Entity {
                 }
             }
             // CraftBukkit end
-            org.bukkit.Bukkit.getPluginManager().callEvent( new org.spigotmc.event.entity.EntityDismountEvent( this.getBukkitEntity(), this.vehicle.getBukkitEntity() ) ); // Spigot
-            
+            // PaperSpigot start - make dismountEvent cancellable
+            EntityDismountEvent dismountEvent = new EntityDismountEvent(this.getBukkitEntity(), this.vehicle.getBukkitEntity()); // Spigot
+            Bukkit.getPluginManager().callEvent(dismountEvent);
+            if (dismountEvent.isCancelled()) return;
+            // PaperSpigot end
+
             if (!this.world.isClientSide) {
                 this.q(this.vehicle);
             }

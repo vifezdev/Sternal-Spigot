@@ -33,6 +33,10 @@ import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.plugin.PluginManager;
 // CraftBukkit end
 
+// PaperSpigot start
+import org.spigotmc.event.entity.EntityDismountEvent;
+// PaperSpigot end
+
 public abstract class Entity implements ICommandListener {
 
     // CraftBukkit start
@@ -1576,7 +1580,11 @@ public abstract class Entity implements ICommandListener {
                     }
                 }
                 // CraftBukkit end
-                pluginManager.callEvent( new org.spigotmc.event.entity.EntityDismountEvent( this.getBukkitEntity(), this.vehicle.getBukkitEntity() ) ); // Spigot
+                // PaperSpigot start - make EntityDismountEvent cancellable
+                EntityDismountEvent dismountEvent = new EntityDismountEvent(this.getBukkitEntity(), this.vehicle.getBukkitEntity()); // Spigot
+                pluginManager.callEvent(dismountEvent);
+                if (dismountEvent.isCancelled()) return;
+                // PaperSpigot end
                 this.setPositionRotation(this.vehicle.locX, this.vehicle.getBoundingBox().b + (double) this.vehicle.length, this.vehicle.locZ, this.yaw, this.pitch);
                 this.vehicle.passenger = null;
             }
