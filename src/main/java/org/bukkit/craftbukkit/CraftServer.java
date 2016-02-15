@@ -1558,6 +1558,7 @@ public final class CraftServer implements Server {
         return helpMap;
     }
 
+    @Override // Paper - add override
     public SimpleCommandMap getCommandMap() {
         return commandMap;
     }
