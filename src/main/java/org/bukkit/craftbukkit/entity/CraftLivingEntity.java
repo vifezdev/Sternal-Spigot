@@ -80,7 +80,9 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 
     public void setHealth(double health) {
         if ((health < 0) || (health > getMaxHealth())) {
-            throw new IllegalArgumentException("Health must be between 0 and " + getMaxHealth());
+            throw new IllegalArgumentException("Health must be between 0 and " + getMaxHealth() + ", but was " + health
+                + ". (attribute base value: " + this.getHandle().getAttributeInstance(GenericAttributes.maxHealth).b()
+            + (this instanceof CraftPlayer ? ", player: " + this.getName() + ')' : ')'));
         }
 
         if (entity instanceof EntityPlayer && health == 0) {
