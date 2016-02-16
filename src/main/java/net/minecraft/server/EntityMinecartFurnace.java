@@ -58,17 +58,12 @@ public class EntityMinecartFurnace extends EntityMinecartAbstract {
 
         if (d0 > 1.0E-4D && this.motX * this.motX + this.motZ * this.motZ > 0.001D) {
             d0 = (double) MathHelper.sqrt(d0);
-            this.a /= d0;
-            this.b /= d0;
-            if (this.a * this.motX + this.b * this.motZ < 0.0D) {
-                this.a = 0.0D;
-                this.b = 0.0D;
-            } else {
-                double d1 = d0 / this.m();
-
-                this.a *= d1;
-                this.b *= d1;
-            }
+            // PaperSpigot - Don't lose all your velocity on corners
+            // https://bugs.mojang.com/browse/MC-51053?focusedCommentId=223854
+            double d1 = (double) MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ);
+            this.a = (motX / d1) * d0;
+            this.b = (motZ / d1) * d0;
+            // PaperSpigot end
         }
 
     }
