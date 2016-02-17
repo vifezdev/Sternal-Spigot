@@ -1311,6 +1311,22 @@ public final class CraftServer implements Server {
         return count;
     }
 
+    // Paper start
+    @Override
+    public void broadcast(BaseComponent component) {
+        for (Player player : getOnlinePlayers()) {
+            player.sendMessage(component);
+        }
+    }
+
+    @Override
+    public void broadcast(BaseComponent... components) {
+        for (Player player : getOnlinePlayers()) {
+            player.sendMessage(components);
+        }
+    }
+    // Paper end
+
     @Override
     @Deprecated
     public OfflinePlayer getOfflinePlayer(String name) {

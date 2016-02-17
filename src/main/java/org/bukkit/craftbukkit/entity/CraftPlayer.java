@@ -162,6 +162,22 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         }
     }
 
+    // Paper start
+    @Override
+    public void sendMessage(BaseComponent component) {
+        sendMessage(new BaseComponent[]{component});
+    }
+
+    @Override
+    public void sendMessage(BaseComponent... components) {
+        if (getHandle().playerConnection == null) return;
+
+        PacketPlayOutChat packet = new PacketPlayOutChat();
+        packet.components = components;
+        getHandle().playerConnection.sendPacket(packet);
+    }
+    // Paper end
+
     @Override
     public String getDisplayName() {
         return getHandle().displayName;
