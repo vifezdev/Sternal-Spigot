@@ -10,6 +10,18 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     private int d;
     private int e;
 
+    // Paper start
+    public net.md_5.bungee.api.chat.BaseComponent[] components;
+
+    public PacketPlayOutTitle(EnumTitleAction action, net.md_5.bungee.api.chat.BaseComponent[] components, int fadeIn, int stay, int fadeOut) {
+        this.a = action;
+        this.components = components;
+        this.c = fadeIn;
+        this.d = stay;
+        this.e = fadeOut;
+    }
+    // Paper end
+
     public PacketPlayOutTitle() {}
 
     public PacketPlayOutTitle(EnumTitleAction packetplayouttitle_enumtitleaction, IChatBaseComponent ichatbasecomponent) {
@@ -45,7 +57,13 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     public void b(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.a((Enum) this.a);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
-            packetdataserializer.a(this.b);
+            // Paper start
+            if (this.components != null) {
+                packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components));
+            } else {
+                packetdataserializer.a(this.b);
+            }
+            // Paper end
         }
 
         if (this.a == EnumTitleAction.TIMES) {
@@ -60,9 +78,13 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
         packetlistenerplayout.a(this);
     }
 
+    // PaperSpigot start - fix compile error
+    /*
     public void a(PacketListener packetlistener) {
         this.a((PacketListenerPlayOut) packetlistener);
     }
+    */
+    // PaperSpigot end
 
     public static enum EnumTitleAction {
 
