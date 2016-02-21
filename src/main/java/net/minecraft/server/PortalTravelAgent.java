@@ -109,7 +109,7 @@ public class PortalTravelAgent {
         return true;
     }
 
-    public BlockPosition findPortal(double x, double y, double z, int short1) {
+    public BlockPosition findPortal(double x, double y, double z, int searchRadius) { // Paper - actually use search radius
         if (this.a.getWorld().getEnvironment() == org.bukkit.World.Environment.THE_END) {
             return this.findEndPortal(this.a.worldProvider.h());
         }
@@ -133,10 +133,10 @@ public class PortalTravelAgent {
         } else {
             BlockPosition blockposition = new BlockPosition(x, y, z);
 
-            for (int l = -128; l <= 128; ++l) {
+            for (int l = -searchRadius; l <= searchRadius; ++l) {   // Paper - actually use search radius
                 BlockPosition blockposition1;
 
-                for (int i1 = -128; i1 <= 128; ++i1) {
+                for (int i1 = -searchRadius; i1 <= searchRadius; ++i1) {    // Paper - actually use search radius
                     for (BlockPosition blockposition2 = blockposition.a(l, this.a.V() - 1 - blockposition.getY(), i1); blockposition2.getY() >= 0; blockposition2 = blockposition1) {
                         blockposition1 = blockposition2.down();
                         if (this.a.getType(blockposition2).getBlock() == Blocks.PORTAL) {

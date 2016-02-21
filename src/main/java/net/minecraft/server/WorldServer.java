@@ -65,7 +65,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         this.manager = new PlayerChunkMap(this, spigotConfig.viewDistance); // Spigot
         this.worldProvider.a(this);
         this.chunkProvider = this.k();
-        this.Q = new org.bukkit.craftbukkit.CraftTravelAgent(this); // CraftBukkit
+        this.Q = ((org.bukkit.craftbukkit.CraftTravelAgent) new org.bukkit.craftbukkit.CraftTravelAgent(this).setSearchRadius(paperSpigotConfig.portalSearchRadius)); // CraftBukkit // Paper - configurable search radius
         this.B();
         this.C();
         this.getWorldBorder().a(minecraftserver.aI());

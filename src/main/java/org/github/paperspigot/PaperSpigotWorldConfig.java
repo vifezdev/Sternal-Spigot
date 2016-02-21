@@ -396,4 +396,10 @@ public class PaperSpigotWorldConfig
     {
         allowBlockLocationTabCompletion = getBoolean( "allow-block-location-tab-completion", true );
     }
+
+    public int portalSearchRadius;
+    private void portalSearchRadius()
+    {
+        portalSearchRadius = getInt("portal-search-radius", 128);
+    }
 }
