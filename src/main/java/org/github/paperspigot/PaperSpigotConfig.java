@@ -216,4 +216,10 @@ public class PaperSpigotConfig
             e.printStackTrace();
         }
     }
+
+    public static boolean warnForExcessiveVelocity;
+    private static void excessiveVelocityWarning()
+    {
+        warnForExcessiveVelocity = getBoolean("warnWhenSettingExcessiveVelocity", true);
+    }
 }

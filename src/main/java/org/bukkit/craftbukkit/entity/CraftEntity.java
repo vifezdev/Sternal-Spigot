@@ -25,6 +25,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.permissions.ServerOperator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
+import org.github.paperspigot.PaperSpigotConfig;
 
 public abstract class CraftEntity implements org.bukkit.entity.Entity {
     private static final PermissibleBase perm = new PermissibleBase(new ServerOperator() {
@@ -205,6 +206,15 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public void setVelocity(Vector vel) {
+        // Paper start - warn server owners when plugins try to set super high velocities
+        if (PaperSpigotConfig.warnForExcessiveVelocity) {
+            if(vel.getX() > 4 || vel.getX() < -4 || vel.getY() > 4 || vel.getY() < -4 || vel.getZ() > 4 || vel.getZ() < -4) {
+                getServer().getLogger().warning("Excessive velocity set detected: tried to set velocity of entity #"+getEntityId()+" to ("+vel.getX()+","+vel.getY()+","+vel.getZ()+").");
+                Thread.dumpStack();
+            }
+        }
+        // Paper end
+
         entity.motX = vel.getX();
         entity.motY = vel.getY();
         entity.motZ = vel.getZ();
