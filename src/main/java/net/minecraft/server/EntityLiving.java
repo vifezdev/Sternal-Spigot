@@ -1824,6 +1824,7 @@ public abstract class EntityLiving extends Entity {
     }
 
     public ScoreboardTeamBase getScoreboardTeam() {
+        if (!this.world.tacoSpigotConfig.nonPlayerEntitiesOnScoreboards && !(this instanceof EntityHuman)) return null; // TacoSpigot
         return this.world.getScoreboard().getPlayerTeam(this.getUniqueID().toString());
     }
 

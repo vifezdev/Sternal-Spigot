@@ -478,6 +478,7 @@ public class CommandScoreboard extends CommandAbstract {
 
                     while (iterator.hasNext()) {
                         Entity entity = (Entity) iterator.next();
+                        if (!entity.world.tacoSpigotConfig.nonPlayerEntitiesOnScoreboards && !(entity instanceof EntityHuman)) continue; // TacoSpigot
                         String s2 = e(icommandlistener, entity.getUniqueID().toString());
 
                         if (scoreboard.addPlayerToTeam(s2, s)) {

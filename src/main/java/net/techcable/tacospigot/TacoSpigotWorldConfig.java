@@ -78,4 +78,9 @@ public class TacoSpigotWorldConfig {
     private void isArmorStandMoveWithoutGravity() {
         optimizeArmorStandMovement = getBoolean("armor-stand.optimize-movement", false); // Doesn't fully emulate vanilla behavior, see issue #1
     }
+
+    public boolean nonPlayerEntitiesOnScoreboards = false;
+    private void nonPlayerEntitiesOnScoreboards() {
+        nonPlayerEntitiesOnScoreboards = getBoolean("allow-non-player-entities-on-scoreboards", false);
+    }
 }
