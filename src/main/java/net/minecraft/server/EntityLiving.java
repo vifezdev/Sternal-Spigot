@@ -1166,10 +1166,21 @@ public abstract class EntityLiving extends Entity {
         return (float) this.getAttributeInstance(GenericAttributes.maxHealth).getValue();
     }
 
+    // TacoSpigot start - deobfuscation helper
+    public int getArrowsStuck() {
+        return this.bv();
+    }
+    // TacoSpigot end
     public final int bv() {
         return this.datawatcher.getByte(9);
     }
 
+
+    // TacoSpigot start - deobfuscation helper
+    public void setArrowsStuck(int i) {
+        this.o(i);
+    }
+    // TacoSpigot end
     public final void o(int i) {
         this.datawatcher.watch(9, Byte.valueOf((byte) i));
     }

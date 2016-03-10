@@ -11,7 +11,6 @@ import net.minecraft.server.DamageSource;
 import net.minecraft.server.EntityArmorStand;
 import net.minecraft.server.EntityArrow;
 import net.minecraft.server.EntityEgg;
-import net.minecraft.server.EntityEnderDragon;
 import net.minecraft.server.EntityEnderPearl;
 import net.minecraft.server.EntityFishingHook;
 import net.minecraft.server.EntityHuman;
@@ -502,4 +501,16 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     public void _INVALID_setMaxHealth(int health) {
         setMaxHealth(health);
     }
+
+    // TacoSpigot start
+    @Override
+    public int getArrowsStuck() {
+        return getHandle().getArrowsStuck();
+    }
+
+    @Override
+    public void setArrowsStuck(int arrows) {
+        getHandle().setArrowsStuck(arrows);
+    }
+    // TacoSpigot end
 }
