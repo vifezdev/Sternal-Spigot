@@ -849,7 +849,12 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     // CraftBukkit start
     public void a(PacketPlayInResourcePackStatus packetplayinresourcepackstatus) {
-        this.server.getPluginManager().callEvent(new PlayerResourcePackStatusEvent(getPlayer(), PlayerResourcePackStatusEvent.Status.values()[packetplayinresourcepackstatus.b.ordinal()]));
+        // TacoSpigot start
+        PlayerConnectionUtils.ensureMainThread(packetplayinresourcepackstatus, this, this.player.u());
+        PlayerResourcePackStatusEvent.Status status = PlayerResourcePackStatusEvent.Status.values()[packetplayinresourcepackstatus.b.ordinal()];
+        this.getPlayer().setResourcePackStatus(status, packetplayinresourcepackstatus.a);
+        this.server.getPluginManager().callEvent(new PlayerResourcePackStatusEvent(getPlayer(), status, packetplayinresourcepackstatus.a));
+        // TacoSpigot end
     }
     // CraftBukkit end
 
