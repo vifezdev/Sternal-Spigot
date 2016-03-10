@@ -83,4 +83,9 @@ public class TacoSpigotWorldConfig {
     private void nonPlayerEntitiesOnScoreboards() {
         nonPlayerEntitiesOnScoreboards = getBoolean("allow-non-player-entities-on-scoreboards", false);
     }
+
+    public boolean grassIgnoresLight = false;
+    private void isGrassIgnoresLight() {
+        grassIgnoresLight = getBoolean("grass-ignores-light", false);
+    }
 }
