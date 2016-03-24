@@ -571,7 +571,9 @@ public abstract class World implements IBlockAccess {
             try {
                 // CraftBukkit start
                 CraftWorld world = ((WorldServer) this).getWorld();
-                if (world != null) {
+				// TacoSpigot start - Add config to disable redstone firing BlockPhysicsEvent 
+				if (world != null && (this.tacoSpigotConfig.isRedstoneFireBPE || !(block instanceof BlockRedstoneWire || block instanceof BlockRedstoneTorch || block instanceof BlockRepeater))) {
+				// TacoSpigot end
                     BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), CraftMagicNumbers.getId(block));
                     this.getServer().getPluginManager().callEvent(event);
 

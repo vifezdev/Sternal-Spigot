@@ -64,6 +64,11 @@ public class TacoSpigotWorldConfig {
         return config.getString("world-settings." + worldName + "." + path, config.getString("world-settings.default." + path));
     }
 
+    public boolean isRedstoneFireBPE;
+    private void isRedstoneFireBPE() {
+        isRedstoneFireBPE = getBoolean("redstone-fire-BlockPhysicsEvent", true);
+    }
+
     public boolean isHopperPushBased;
     private void isHopperPushBased() {
         isHopperPushBased = getBoolean("hopper.push-based", true);
