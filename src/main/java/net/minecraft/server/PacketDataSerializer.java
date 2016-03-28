@@ -22,12 +22,27 @@ import java.nio.charset.Charset;
 import java.util.UUID;
 
 import org.bukkit.craftbukkit.inventory.CraftItemStack; // CraftBukkit
+// TacoSpigot start
+import net.techcable.tacospigot.CompatHacks;
+// TacoSpigot end
 
 public class PacketDataSerializer extends ByteBuf {
 
     private final ByteBuf a;
 
+    // TacoSpigot start
+    private final boolean allowLargePackets;
     public PacketDataSerializer(ByteBuf bytebuf) {
+        /*
+         * By default, we limit the size of the received byte array to Short.MAX_VALUE, which is 31 KB.
+         * However, we make an exception when ProtocolSupport is installed, to allow 1.7 clients to work,
+         * and limit them to 31 MEGABYTES as they seem to need to send larger packets sometimes.
+         * Although a 31 MB limit leaves the server slightly vulnerable,
+         * it's still much better than the old system of having no limit,
+         * which would leave the server vulnerable to packets up to 2 GIGABYTES in size.
+         */
+        this.allowLargePackets = CompatHacks.hasProtocolSupport();
+        // TacoSpigot end
         this.a = bytebuf;
     }
 
@@ -46,9 +61,20 @@ public class PacketDataSerializer extends ByteBuf {
         this.writeBytes(abyte);
     }
 
+    // TacoSpigot start
+    private static final int DEFAULT_LIMIT = Short.MAX_VALUE;
+    private static final int LARGE_PACKET_LIMIT = Short.MAX_VALUE * 1024;
     public byte[] a() {
-        byte[] abyte = new byte[this.e()];
+        // TacoSpigot start
+        int limit = allowLargePackets ? LARGE_PACKET_LIMIT : DEFAULT_LIMIT;
+        return readByteArray(limit);
+    }
 
+    public byte[] readByteArray(int limit) {
+        int len = this.e();
+        if (len > limit) throw new DecoderException("The received a byte array longer than allowed " + len + " > " + limit);
+        byte[] abyte = new byte[len];
+        // TacoSpigot end
         this.readBytes(abyte);
         return abyte;
     }

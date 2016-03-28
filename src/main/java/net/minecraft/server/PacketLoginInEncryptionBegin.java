@@ -12,8 +12,10 @@ public class PacketLoginInEncryptionBegin implements Packet<PacketLoginInListene
     public PacketLoginInEncryptionBegin() {}
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = packetdataserializer.a();
-        this.b = packetdataserializer.a();
+        // TacoSpigot start - limit to 256 bytes
+        this.a = packetdataserializer.readByteArray(256);
+        this.b = packetdataserializer.readByteArray(256);
+        // TacoSpigot end
     }
 
     public void b(PacketDataSerializer packetdataserializer) throws IOException {
