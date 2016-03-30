@@ -22,16 +22,23 @@ import org.bukkit.craftbukkit.util.LongHashSet;
 import org.bukkit.craftbukkit.util.LongObjectHashMap;
 import org.bukkit.event.world.ChunkUnloadEvent;
 // CraftBukkit end
+// TacoSpigot start
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongArraySet;
+import it.unimi.dsi.fastutil.longs.LongIterator;
+import it.unimi.dsi.fastutil.longs.LongSet;
+// TacoSpigot end
 
 public class ChunkProviderServer implements IChunkProvider {
 
     private static final Logger b = LogManager.getLogger();
-    public LongHashSet unloadQueue = new LongHashSet(); // CraftBukkit - LongHashSet
+    public LongSet unloadQueue = new LongArraySet(); // CraftBukkit - LongHashSet // TacoSpigot - LongHashSet -> HashArraySet
     public Chunk emptyChunk;
     public IChunkProvider chunkProvider;
     private IChunkLoader chunkLoader;
     public boolean forceChunkLoad = false; // CraftBukkit - true -> false
-    public LongObjectHashMap<Chunk> chunks = new LongObjectHashMap<Chunk>();
+    public Long2ObjectMap<Chunk> chunks = new Long2ObjectOpenHashMap<Chunk>(4096, 0.5f); // TacoSpigot - use trove Long2ObjectOpenHashMap instead of craftbukkit implementation (using inital capacity and load factor chosen by Amaranth in an old impl)
     public WorldServer world;
 
     public ChunkProviderServer(WorldServer worldserver, IChunkLoader ichunkloader, IChunkProvider ichunkprovider) {
@@ -73,7 +80,7 @@ public class ChunkProviderServer implements IChunkProvider {
         if (this.world.worldProvider.e()) {
             if (!this.world.c(i, j)) {
                 // CraftBukkit start
-                this.unloadQueue.add(i, j);
+                this.unloadQueue.add(LongHash.toLong(i, j));  // TacoSpigot - directly invoke LongHash
 
                 Chunk c = chunks.get(LongHash.toLong(i, j));
                 if (c != null) {
@@ -83,7 +90,7 @@ public class ChunkProviderServer implements IChunkProvider {
             }
         } else {
             // CraftBukkit start
-            this.unloadQueue.add(i, j);
+            this.unloadQueue.add(LongHash.toLong(i, j)); // TacoSpigot - directly invoke LongHash
 
             Chunk c = chunks.get(LongHash.toLong(i, j));
             if (c != null) {
@@ -115,7 +122,7 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public Chunk getChunkAt(int i, int j, Runnable runnable) {
-        unloadQueue.remove(i, j);
+        unloadQueue.remove(LongHash.toLong(i, j)); // TacoSpigot - directly invoke LongHash
         Chunk chunk = chunks.get(LongHash.toLong(i, j));
         ChunkRegionLoader loader = null;
 
@@ -143,7 +150,7 @@ public class ChunkProviderServer implements IChunkProvider {
         return chunk;
     }
     public Chunk originalGetChunkAt(int i, int j) {
-        this.unloadQueue.remove(i, j);
+        this.unloadQueue.remove(LongHash.toLong(i, j)); // TacoSpigot - directly invoke LongHash
         Chunk chunk = (Chunk) this.chunks.get(LongHash.toLong(i, j));
         boolean newChunk = false;
         // CraftBukkit end
@@ -360,8 +367,12 @@ public class ChunkProviderServer implements IChunkProvider {
         if (!this.world.savingDisabled) {
             // CraftBukkit start
             Server server = this.world.getServer();
-            for (int i = 0; i < 100 && !this.unloadQueue.isEmpty(); ++i) {
-                long chunkcoordinates = this.unloadQueue.popFirst();
+            // TacoSpigot start - use iterator for unloadQueue
+            LongIterator iterator = unloadQueue.iterator();
+            for (int i = 0; i < 100 && iterator.hasNext(); ++i) {
+                long chunkcoordinates = iterator.next();
+                iterator.remove();
+                // TacoSpigot end
                 Chunk chunk = this.chunks.get(chunkcoordinates);
                 if (chunk == null) continue;
 

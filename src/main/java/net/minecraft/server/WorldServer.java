@@ -402,7 +402,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                 int chunkX = World.keyToX( chunkCoord );
                 int chunkZ = World.keyToZ( chunkCoord );
                 // If unloaded, or in procedd of being unloaded, drop it
-                if ( ( !this.chunkProvider.isChunkLoaded( chunkX, chunkZ ) ) || ( this.chunkProviderServer.unloadQueue.contains( chunkX, chunkZ ) ) )
+                if ( ( !this.chunkProvider.isChunkLoaded( chunkX, chunkZ ) ) || ( this.chunkProviderServer.unloadQueue.contains( LongHash.toLong(chunkX, chunkZ) ) ) ) // TacoSpigot - invoke LongHash directly
                 {
                     iter.remove();
                     continue;

@@ -10,17 +10,26 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.commons.lang3.ObjectUtils;
+// TacoSpigot start
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntIterator;
+// TacoSpigot end
 
 public class DataWatcher {
 
     private final Entity a;
     private boolean b = true;
     // Spigot Start
-    private static final gnu.trove.map.TObjectIntMap classToId = new gnu.trove.map.hash.TObjectIntHashMap( 10, 0.5f, -1 );
-    private final gnu.trove.map.TIntObjectMap dataValues = new gnu.trove.map.hash.TIntObjectHashMap( 10, 0.5f, -1 );
+    // TacoSpigot start - use fastutil instead of trove
+    private static final Object2IntMap<Class<?>> classToId = new Object2IntOpenHashMap(10, 0.5f);
+    private final Int2ObjectMap dataValues = new Int2ObjectOpenHashMap(10, 0.5f);
     // These exist as an attempt at backwards compatability for (broken) NMS plugins
-    private static final Map<Class<?>, Integer> c = gnu.trove.TDecorators.wrap( classToId );
-    private final Map<Integer, DataWatcher.WatchableObject> d = gnu.trove.TDecorators.wrap( dataValues );
+    private static final Map<Class<?>, Integer> c = classToId;
+    private final Map<Integer, DataWatcher.WatchableObject> d = dataValues;
+    // TacoSpigot end
     // Spigot End
     private boolean e;
     private ReadWriteLock f = new ReentrantReadWriteLock();
@@ -144,7 +153,7 @@ public class DataWatcher {
 
         if (this.e) {
             this.f.readLock().lock();
-            Iterator iterator = this.dataValues.valueCollection().iterator(); // Spigot
+            Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
 
             while (iterator.hasNext()) {
                 DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
@@ -179,7 +188,7 @@ public class DataWatcher {
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
         this.f.readLock().lock();
-        Iterator iterator = this.dataValues.valueCollection().iterator(); // Spigot
+        Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
 
         while (iterator.hasNext()) {
             DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
@@ -196,7 +205,7 @@ public class DataWatcher {
 
         this.f.readLock().lock();
 
-        arraylist.addAll(this.dataValues.valueCollection()); // Spigot
+        arraylist.addAll(this.dataValues.values()); // Spigot // TacoSpigot
         // Spigot start - copy ItemStacks to prevent ConcurrentModificationExceptions
         for ( int i = 0; i < arraylist.size(); i++ )
         {
