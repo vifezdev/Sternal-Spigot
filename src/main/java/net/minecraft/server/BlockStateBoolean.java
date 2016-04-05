@@ -11,6 +11,25 @@ public class BlockStateBoolean extends BlockState<Boolean> {
         super(s, Boolean.class);
     }
 
+    // TacoSpigot start
+    @Override
+    public int getValueId(Boolean value) {
+        return value ? 1 : 0;
+    }
+
+    @Override
+    public Boolean getByValueId(int id) {
+        switch (id) {
+            case 0:
+                return false;
+            case 1:
+                return true;
+            default:
+                throw new IllegalArgumentException("Invalid id: " + id);
+        }
+    }
+    // TacoSpigot end
+
     public Collection<Boolean> c() {
         return this.a;
     }

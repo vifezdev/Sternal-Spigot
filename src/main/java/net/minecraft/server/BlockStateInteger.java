@@ -8,9 +8,40 @@ import java.util.HashSet;
 public class BlockStateInteger extends BlockState<Integer> {
 
     private final ImmutableSet<Integer> a;
+    // TacoSpigot start
+    private final int min, max;
+    private final int range;
+
+    @Override
+    public int getValueId(Integer value) {
+        if (value < min) {
+            throw new IllegalArgumentException("Too small: " + value);
+        } else if (value > max) {
+            throw new IllegalArgumentException("Too large: " + value);
+        } else {
+            return value - min;
+        }
+    }
+
+    @Override
+    public Integer getByValueId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Negative id: " + id);
+        } else if (id > range) {
+            throw new IllegalArgumentException("Id is out of range: " + id);
+        } else {
+            return id;
+        }
+    }
+    // TacoSpigot end
 
     protected BlockStateInteger(String s, int i, int j) {
         super(s, Integer.class);
+        // TacoSpigot start
+        this.min = i;
+        this.max = j;
+        this.range = (max - min); // min and max are _both_ inclusive (there's a reason you're not supposed to do this :p)
+        // TacoSpigot end
         if (i < 0) {
             throw new IllegalArgumentException("Min value of " + s + " must be 0 or greater");
         } else if (j <= i) {

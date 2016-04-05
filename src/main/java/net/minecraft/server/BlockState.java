@@ -2,10 +2,31 @@ package net.minecraft.server;
 
 import com.google.common.base.Objects;
 
+// TacoSpigot start
+import com.google.common.base.Preconditions;
+
+import net.techcable.tacospigot.BlockStateRegistry;
+// TacoSpigot end
+
 public abstract class BlockState<T extends Comparable<T>> implements IBlockState<T> {
 
     private final Class<T> a;
     private final String b;
+    // TacoSpigot start
+    private int id = -1;
+
+    @Override
+    public int getId() {
+        assert id >= 0 : "Id not initialized";
+        return id;
+    }
+
+    public void tryInitId() {
+        if (id < 0) {
+            this.id = BlockStateRegistry.getId(this);
+        }
+    }
+    // TacoSpigot end
 
     protected BlockState(String s, Class<T> oclass) {
         this.a = oclass;

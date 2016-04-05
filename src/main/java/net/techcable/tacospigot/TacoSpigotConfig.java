@@ -103,4 +103,9 @@ public class TacoSpigotConfig {
         config.addDefault(path, def);
         return config.getString(path, config.getString(path));
     }
+
+    public static boolean useArraysForBlockStates;
+    private static void useArraysForBlockStates() {
+        useArraysForBlockStates = getBoolean("useArraysForBlockStates", false);
+    }
 }

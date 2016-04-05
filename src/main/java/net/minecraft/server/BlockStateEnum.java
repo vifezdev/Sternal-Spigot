@@ -36,10 +36,27 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
     public Collection<T> c() {
         return this.a;
     }
-
     public String a(T t0) {
         return ((INamable) t0).getName();
     }
+
+    // TacoSpigot start
+    @Override
+    public int
+getValueId(T value) {
+        return value.ordinal();
+    }
+
+    @Override
+    public T getByValueId(int id) {
+        T[] values = this.b().getEnumConstants();
+        if (id >= 0 && id < values.length) {
+            return values[id];
+        } else {
+            throw new IllegalArgumentException("Invalid id: " + id);
+        }
+    }
+    // TacoSpigot end
 
     public static <T extends Enum<T> & INamable> BlockStateEnum<T> of(String s, Class<T> oclass) {
         return a(s, oclass, Predicates.alwaysTrue());

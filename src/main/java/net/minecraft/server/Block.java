@@ -970,6 +970,7 @@ public class Block {
             while (iterator1.hasNext()) {
                 IBlockData iblockdata = (IBlockData) iterator1.next();
                 int i = Block.REGISTRY.b(block13) << 4 | block13.toLegacyData(iblockdata);
+                // TacoSpigot start
 
                 Block.d.a(iblockdata, i);
             }
