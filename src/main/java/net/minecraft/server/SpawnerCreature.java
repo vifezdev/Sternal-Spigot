@@ -22,6 +22,15 @@ public final class SpawnerCreature {
     // Spigot start - get entity count only from chunks being processed in b
     private int getEntityCount(WorldServer server, Class oClass)
     {
+        // TacoSpigot start - use entire world, not just active chunks. Spigot broke vanilla expectations.
+        if (true) {
+            return server
+                    .chunkProviderServer
+                    .chunks.values()
+                    .stream()
+                    .collect(java.util.stream.Collectors.summingInt(c -> c.entityCount.get(oClass)));
+        }
+        // TacoSpigot end
         int i = 0;
         Iterator<Long> it = this.b.iterator();
         while ( it.hasNext() )
@@ -118,7 +127,7 @@ public final class SpawnerCreature {
                     k = worldserver.a(enumcreaturetype.a());
                     int l1 = limit * i / a; // CraftBukkit - use per-world limits
 
-                    if ((mobcnt = getEntityCount(worldserver, enumcreaturetype.a())) <= limit * i / 256) {
+                    if ((mobcnt = getEntityCount(worldserver, enumcreaturetype.a())) <= limit * i / 289) { // TacoSpigot - use 17x17 like vanilla (a at top of file)
                         Iterator iterator1 = this.b.iterator();
 
                         int moblimit = (limit * i / 256) - mobcnt + 1; // Spigot - up to 1 more than limit
