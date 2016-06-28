@@ -5,7 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 // CraftBukkit start
+import net.techcable.tacospigot.event.entity.SpawnerPreSpawnEvent;
+
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 // CraftBukkit end
@@ -91,6 +95,16 @@ public abstract class MobSpawnerAbstract {
                 boolean flag = false;
 
                 for (int i = 0; i < this.spawnCount; ++i) {
+                    // TacoSpigot start
+                    SpawnerPreSpawnEvent event = new SpawnerPreSpawnEvent( new Location(this.a().getWorld(), blockposition.getX(), blockposition.getY(), blockposition.getZ()), EntityType.fromName(this.getMobName()));
+                    this.a().getServer().getPluginManager().callEvent(event);
+
+                    if (event.isCancelled()) {
+                        flag = true;
+                        break;
+                    }
+                    // TacoSpigot end
+
                     Entity entity = EntityTypes.createEntityByName(this.getMobName(), this.a());
 
                     if (entity == null) {
