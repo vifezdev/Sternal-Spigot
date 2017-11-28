@@ -579,19 +579,21 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                     // PaperSpigot start - Further improve tick loop
                     wait = TICK_TIME - (curTime - lastTick);
                     if (wait > 0) {
+                        // TacoSpigot start - fix the tick loop improvements
                         if (catchupTime < 2E6) {
                             wait += Math.abs(catchupTime);
-                        }
-                        if (wait < catchupTime) {
+                        } else if (wait < catchupTime) {
                             catchupTime -= wait;
                             wait = 0;
-                        } else if (catchupTime > 2E6) {
+                        } else {
                             wait -= catchupTime;
-                            catchupTime -= catchupTime;
+                            catchupTime = 0;
                         }
+                        // TacoSpigot end
                     }
                     if (wait > 0) {
                         Thread.sleep(wait / 1000000);
+                        curTime = System.nanoTime();
                         wait = TICK_TIME - (curTime - lastTick);
                     }
 
