@@ -1233,6 +1233,8 @@ public abstract class World implements IBlockAccess {
 
         if (entity instanceof EntityItem) return arraylist; // PaperSpigot - Optimize item movement
         if (entity instanceof EntityArmorStand) return arraylist; // TacoSpigot - Optimize armor stand movement
+        if (entity instanceof EntityTNTPrimed) return arraylist; // TacoSpigot - Optimize tnt entity movement
+        if (entity instanceof EntityFallingBlock) return arraylist; // TacoSpigot - Optimize falling block movement
 
         double d0 = 0.25D;
         List list = this.getEntities(entity, axisalignedbb.grow(d0, d0, d0));

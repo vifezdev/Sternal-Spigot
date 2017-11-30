@@ -93,4 +93,13 @@ public class TacoSpigotWorldConfig {
     private void isGrassIgnoresLight() {
         grassIgnoresLight = getBoolean("grass-ignores-light", false);
     }
+
+    public boolean optimizeTntMovement = false;
+    private void isOptimizeTnt() {
+        optimizeTntMovement = getBoolean("tnt.optimize-movement", false); // May not fully emulate vanilla behavior
+    }
+    public boolean optimizeLiquidExplosions = true;
+    private void isOptimizeLiquidExplosions() {
+        optimizeLiquidExplosions = getBoolean("tnt.optimize-liquid-explosions", true); // This seems like a pretty sane default
+    }
 }

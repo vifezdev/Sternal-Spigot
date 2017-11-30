@@ -54,6 +54,9 @@ public class Explosion {
         int i;
         int j;
 
+        Block b = world.getChunkAt((int)posX >> 4, (int)posZ >> 4).getBlockData(new BlockPosition(posX, posY, posZ)).getBlock(); // TacoSpigot - get block of the explosion
+
+        if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { //TacoSpigot - skip calculating what blocks to blow up in water/lava
         for (int k = 0; k < 16; ++k) {
             for (i = 0; i < 16; ++i) {
                 for (j = 0; j < 16; ++j) {
@@ -92,6 +95,7 @@ public class Explosion {
                     }
                 }
             }
+        }
         }
 
         this.blocks.addAll(hashset);
