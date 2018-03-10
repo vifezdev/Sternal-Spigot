@@ -536,10 +536,28 @@ public abstract class Entity implements ICommandListener {
             this.a(this.getBoundingBox().c(0.0D, d1, 0.0D));
             boolean flag1 = this.onGround || d7 != d1 && d7 < 0.0D;
 
-            if(axisScan) list = this.world.getCubes(this, this.getBoundingBox().a(d0, 0, 0)); // TacoSpigot - get x axis blocks
-
             AxisAlignedBB axisalignedbb2;
             Iterator iterator1;
+
+            if(this.world.tacoSpigotConfig.fixEastWest && Math.abs(d0) > Math.abs(d2)) { //TacoSpigot - fix east/west cannoning by calculating the z movement before x if the x velocity is greater
+            if(axisScan) list = this.world.getCubes(this, this.getBoundingBox().a(0, 0, d2)); // TacoSpigot - get z axis blocks
+
+            for (iterator1 = list.iterator(); iterator1.hasNext(); d2 = axisalignedbb2.c(this.getBoundingBox(), d2)) {
+                axisalignedbb2 = (AxisAlignedBB) iterator1.next();
+            }
+
+                this.a(this.getBoundingBox().c(0.0D, 0.0D, d2));
+
+                if(axisScan) list = this.world.getCubes(this, this.getBoundingBox().a(d0, 0, 0)); // TacoSpigot - get x axis blocks
+
+                for (iterator1 = list.iterator(); iterator1.hasNext(); d0 = axisalignedbb2.a(this.getBoundingBox(), d0)) {
+                    axisalignedbb2 = (AxisAlignedBB) iterator1.next();
+                }
+
+                this.a(this.getBoundingBox().c(d0, 0.0D, 0.0D));
+
+            } else {
+            if(axisScan) list = this.world.getCubes(this, this.getBoundingBox().a(d0, 0, 0)); // TacoSpigot - get x axis blocks
 
             for (iterator1 = list.iterator(); iterator1.hasNext(); d0 = axisalignedbb2.a(this.getBoundingBox(), d0)) {
                 axisalignedbb2 = (AxisAlignedBB) iterator1.next();
@@ -554,6 +572,8 @@ public abstract class Entity implements ICommandListener {
             }
 
             this.a(this.getBoundingBox().c(0.0D, 0.0D, d2));
+            }
+
             if (this.S > 0.0F && flag1 && (d6 != d0 || d8 != d2)) {
                 double d10 = d0;
                 double d11 = d1;

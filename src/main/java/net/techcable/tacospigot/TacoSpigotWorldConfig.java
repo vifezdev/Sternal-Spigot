@@ -102,4 +102,9 @@ public class TacoSpigotWorldConfig {
     private void isOptimizeLiquidExplosions() {
         optimizeLiquidExplosions = getBoolean("tnt.optimize-liquid-explosions", true); // This seems like a pretty sane default
     }
+
+    public boolean fixEastWest;
+    private void fixEastWest() {
+        fixEastWest = getBoolean("fix-east-west-cannoning", false);
+    }
 }
