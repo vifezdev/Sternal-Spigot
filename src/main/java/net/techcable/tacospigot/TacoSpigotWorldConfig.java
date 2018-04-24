@@ -107,4 +107,7 @@ public class TacoSpigotWorldConfig {
     private void fixEastWest() {
         fixEastWest = getBoolean("fix-east-west-cannoning", false);
     }
+
+    public boolean disableFallingBlockStackingAt256;
+    private void DisableFallingBlockStackingAt256() { disableFallingBlockStackingAt256 = getBoolean("disable-falling-block-stacking-at-256", false);}
 }
