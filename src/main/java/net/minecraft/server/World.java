@@ -137,7 +137,12 @@ public abstract class World implements IBlockAccess {
     private org.spigotmc.TickLimiter tileLimiter;
     private int tileTickPosition;
     public ExecutorService lightingExecutor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("PaperSpigot - Lighting Thread").build()); // PaperSpigot - Asynchronous lighting updates
-    public final Map<Explosion.CacheKey, Float> explosionDensityCache = new HashMap<Explosion.CacheKey, Float>(); // PaperSpigot - Optimize explosions
+    // IonSpigot start - Optimise Density Cache
+    public final it.unimi.dsi.fastutil.ints.Int2FloatMap explosionDensityCache = new it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap(); // IonSpigot - Use faster collection here // PaperSpigot - Optimize explosions
+    {
+        explosionDensityCache.defaultReturnValue(-1.0f);
+    }
+    // IonSpigot end
 
     public static long chunkToKey(int x, int z)
     {

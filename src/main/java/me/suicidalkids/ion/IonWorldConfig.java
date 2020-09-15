@@ -71,4 +71,14 @@ public class IonWorldConfig {
         return config.getString("world-settings." + worldName + "." + path, config.getString(path));
     }
 
+    public boolean constantExplosions;
+    private void ConstantExplosions() {
+        constantExplosions = getBoolean("explosions.constant-radius", false);
+    }
+
+    public boolean explosionProtectedRegions;
+    private void ExplosionProtectedRegions() {
+        explosionProtectedRegions = getBoolean("explosions.protected-regions", true);
+    }
+
 }
