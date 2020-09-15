@@ -1,4 +1,12 @@
-package net.techcable.tacospigot;
+package me.suicidalkids.ion;
+
+import com.google.common.base.Throwables;
+import net.minecraft.server.MinecraftServer;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.spigotmc.Metrics;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,41 +18,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import net.minecraft.server.MinecraftServer;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.google.common.base.Throwables;
-
-public class TacoSpigotConfig {
+public class IonConfig {
 
     private static File CONFIG_FILE;
-    private static final String HEADER = "This is the main configuration file for TacoSpigot.\n" + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n" + "with caution, and make sure you know what each option does before configuring.\n" + "\n" + "If you need help with the configuration or have any questions related to TacoSpigot,\n" + "join us at the IRC.\n" + "\n" + "IRC: #taco @ irc.spi.gt ( http://irc.spi.gt/iris/?channels=taco )\n";
+    private static final String HEADER = "This is the main configuration file for Ion.\n" + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n" + "with caution, and make sure you know what each option does before configuring.\n";
     /*========================================================================*/
-    public static YamlConfiguration config; // IonSpigot - public <- package private
+    public static YamlConfiguration config;
     static int version;
+    static Map<String, Command> commands;
     /*========================================================================*/
 
     public static void init(File configFile) {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
         try {
-            System.out.println("Loading TacoSpigot config from " + configFile.getName());
+            System.out.println("Loading Ion config from " + configFile.getName());
             config.load(CONFIG_FILE);
         } catch (IOException ex) {
         } catch (InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not load taco.yml, please correct your syntax errors", ex);
+            Bukkit.getLogger().log(Level.SEVERE, "Could not load ion.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
         }
         config.options().header(HEADER);
         config.options().copyDefaults(true);
 
+        commands = new HashMap<>();
+
         version = getInt("config-version", 1);
         set("config-version", 1);
-        readConfig(TacoSpigotConfig.class, null);
+        readConfig(IonConfig.class, null);
+    }
+
+    public static void registerCommands() {
+        for (Map.Entry<String, Command> entry : commands.entrySet()) {
+            MinecraftServer.getServer().server.getCommandMap().register( entry.getKey(), "Ion", entry.getValue() );
+        }
+    }
+
+    private static void commands() {
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
@@ -94,6 +105,10 @@ public class TacoSpigotConfig {
         return config.getInt(path, config.getInt(path));
     }
 
+    private int getInterval(String path, int def) {
+        return Math.max(getInt(path, def), 0) + 1;
+    }
+
     private static <T> List getList(String path, T def) {
         config.addDefault(path, def);
         return (List<T>) config.getList(path, config.getList(path));
@@ -104,8 +119,4 @@ public class TacoSpigotConfig {
         return config.getString(path, config.getString(path));
     }
 
-    public static boolean useArraysForBlockStates;
-    private static void useArraysForBlockStates() {
-        useArraysForBlockStates = getBoolean("useArraysForBlockStates", false);
-    }
 }

@@ -148,6 +148,14 @@ public class Main {
                         .defaultsTo(new File("taco.yml"))
                         .describedAs("Yml file");
                 // TacoSpigot end
+
+                // IonSpigot start
+                acceptsAll(asList("ion", "ion-settings"), "File for ion settings")
+                        .withRequiredArg()
+                        .ofType(File.class)
+                        .defaultsTo(new File("ion.yml"))
+                        .describedAs("Yml file");
+                // IonSpigot end
             }
         };
 
@@ -216,6 +224,7 @@ public class Main {
                 }
                 // Spigot End
                 net.techcable.tacospigot.TacoSpigotConfig.init((File) options.valueOf("taco-settings")); // TacoSpigot - load config before we load libraries to allow access while loading
+                me.suicidalkids.ion.IonConfig.init((File) options.valueOf("ion-settings")); // IonSpigot
                 System.out.println("Loading libraries, please wait...");
                 MinecraftServer.main(options);
             } catch (Throwable t) {

@@ -127,7 +127,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
-    private final String serverName = "CraftBukkit";
+    private final String serverName = "IonSpigot"; // IonSpigot - IonSpigot > "CraftBukkit"
     private final String serverVersion;
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
@@ -715,6 +715,7 @@ public final class CraftServer implements Server {
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
         org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
+        me.suicidalkids.ion.IonConfig.init((File) console.options.valueOf("ion-settings")); // IonSpigot
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
@@ -732,6 +733,7 @@ public final class CraftServer implements Server {
             world.spigotConfig.init(); // Spigot
             world.paperSpigotConfig.init(); // PaperSpigot
             world.tacoSpigotConfig.init(); // TacoSpigot
+            world.ionConfig.init(); // IonSpigot
         }
 
         pluginManager.clearPlugins();
@@ -739,6 +741,7 @@ public final class CraftServer implements Server {
         resetRecipes();
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
         org.github.paperspigot.PaperSpigotConfig.registerCommands(); // PaperSpigot
+        me.suicidalkids.ion.IonConfig.registerCommands(); // IonSpigot
 
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
 
@@ -1807,6 +1810,20 @@ public final class CraftServer implements Server {
         {
             return org.github.paperspigot.PaperSpigotConfig.config;
         }
+
+        // IonSpigot start - Configuration Files
+        @Override
+        public YamlConfiguration getTacoSpigotConfig()
+        {
+            return net.techcable.tacospigot.TacoSpigotConfig.config;
+        }
+
+        @Override
+        public YamlConfiguration getIonConfig()
+        {
+            return me.suicidalkids.ion.IonConfig.config;
+        }
+        // IonSpigot end
 
         @Override
         public void restart() {
