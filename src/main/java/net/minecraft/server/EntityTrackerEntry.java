@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import me.suicidalkids.ion.visuals.Visuals; // IonSpigot
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -349,7 +351,7 @@ public class EntityTrackerEntry {
                     entityplayer.removeQueue.remove(Integer.valueOf(this.tracker.getId()));
                     // CraftBukkit end
                     this.trackedPlayerMap.put(entityplayer, true); // PaperBukkit
-                    Packet packet = this.c();
+                    Packet packet = this.createPacket(entityplayer); // IonSpigot
 
                     entityplayer.playerConnection.sendPacket(packet);
                     if (!this.tracker.getDataWatcher().d()) {
@@ -455,6 +457,11 @@ public class EntityTrackerEntry {
     }
 
     private Packet c() {
+        // IonSpigot start - Visibility Toggles
+        return this.createPacket(null);
+    }
+    private Packet createPacket(EntityPlayer entityPlayer) {
+        // IonSpigot end
         if (this.tracker.dead) {
             // CraftBukkit start - Remove useless error spam, just return
             // EntityTrackerEntry.p.warn("Fetching addPacket for removed entity");
@@ -523,12 +530,23 @@ public class EntityTrackerEntry {
             } else if (this.tracker instanceof EntityEgg) {
                 return new PacketPlayOutSpawnEntity(this.tracker, 62);
             } else if (this.tracker instanceof EntityTNTPrimed) {
+                // IonSpigot start - Visibility Toggle
+                if (entityPlayer != null) {
+                    if (entityPlayer.visualSettings.isToggled(Visuals.VisualType.TNT_VISIBILITY)) {
+                        return null;
+                    } else if (entityPlayer.visualSettings.isToggled(Visuals.VisualType.FLASHING_TNT)) {
+                        return new PacketPlayOutSpawnEntity(this.tracker, 70, Block.getCombinedId(Blocks.TNT.getBlockData()));
+                    }
+                }
                 return new PacketPlayOutSpawnEntity(this.tracker, 50);
             } else if (this.tracker instanceof EntityEnderCrystal) {
                 return new PacketPlayOutSpawnEntity(this.tracker, 51);
             } else if (this.tracker instanceof EntityFallingBlock) {
                 EntityFallingBlock entityfallingblock = (EntityFallingBlock) this.tracker;
-
+                if (entityPlayer != null && entityPlayer.visualSettings.isToggled(Visuals.VisualType.SAND_VISIBILITY)) {
+                    return null;
+                }
+                // IonSpigot end
                 return new PacketPlayOutSpawnEntity(this.tracker, 70, Block.getCombinedId(entityfallingblock.getBlock()));
             } else if (this.tracker instanceof EntityArmorStand) {
                 return new PacketPlayOutSpawnEntity(this.tracker, 78);

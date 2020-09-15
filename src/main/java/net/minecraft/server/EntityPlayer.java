@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
+import me.suicidalkids.ion.visuals.VisualSettings; // IonSpigot - Visual Settings API
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,6 +52,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     public boolean g;
     public int ping;
     public boolean viewingCredits;
+    public VisualSettings visualSettings = new VisualSettings(); // IonSpigot - Visual Settings API
 
     // CraftBukkit start
     public String displayName;
@@ -128,12 +131,18 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             }
         }
 
+        // IonSpigot start - Visual Settings API
+        if (nbttagcompound.hasKey("Ion.Visuals")) {
+            this.visualSettings.loadCompound(nbttagcompound.getCompound("Ion.Visuals"));
+        }
         this.getBukkitEntity().readExtraData(nbttagcompound); // CraftBukkit
     }
 
     public void b(NBTTagCompound nbttagcompound) {
         super.b(nbttagcompound);
         nbttagcompound.setInt("playerGameType", this.playerInteractManager.getGameMode().getId());
+        nbttagcompound.set("Ion.Visuals", this.visualSettings.getCompound());
+        // IonSpigot end
 
         this.getBukkitEntity().setExtraData(nbttagcompound); // CraftBukkit
     }

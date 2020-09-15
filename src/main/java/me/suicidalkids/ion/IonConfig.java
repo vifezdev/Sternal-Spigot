@@ -1,6 +1,9 @@
 package me.suicidalkids.ion;
 
 import com.google.common.base.Throwables;
+import me.suicidalkids.ion.visuals.commands.FlashingTNTCommand;
+import me.suicidalkids.ion.visuals.commands.SandToggleCommand;
+import me.suicidalkids.ion.visuals.commands.TNTToggleCommand;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -56,6 +59,9 @@ public class IonConfig {
     }
 
     private static void commands() {
+        commands.put("tnttoggle", new TNTToggleCommand("tnttoggle"));
+        commands.put("sandtoggle", new SandToggleCommand("sandtoggle"));
+        commands.put("flashingtnt", new FlashingTNTCommand("flashingtnt"));
     }
 
     static void readConfig(Class<?> clazz, Object instance) {

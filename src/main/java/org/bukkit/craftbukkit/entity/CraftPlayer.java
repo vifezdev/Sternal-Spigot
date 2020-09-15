@@ -1448,6 +1448,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         getHandle().playerConnection.sendPacket(packetReset);
     }
 
+    // IonSpigot start - Visual Settings API
+    @Override
+    public me.suicidalkids.ion.visuals.Visuals getVisuals() {
+        return getHandle().visualSettings;
+    }
+    // IonSpigot end
+
     // Spigot start
     private final Player.Spigot spigot = new Player.Spigot()
     {
