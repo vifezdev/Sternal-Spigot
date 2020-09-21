@@ -27,7 +27,12 @@ public abstract class BlockFluids extends Block {
     }
 
     protected int e(IBlockAccess iblockaccess, BlockPosition blockposition) {
-        return iblockaccess.getType(blockposition).getBlock().getMaterial() == this.material ? ((Integer) iblockaccess.getType(blockposition).get(BlockFluids.LEVEL)).intValue() : -1;
+        // IonSpigot start - Optimise Draining
+        return e(iblockaccess.getType(blockposition));
+    }
+    protected int e(IBlockData iblockdata) {
+        return iblockdata.getBlock().getMaterial() == this.material ? iblockdata.get(BlockFluids.LEVEL) : -1;
+        // IonSpigot end
     }
 
     protected int f(IBlockAccess iblockaccess, BlockPosition blockposition) {
@@ -172,9 +177,13 @@ public abstract class BlockFluids extends Block {
 
         world.makeSound(d0 + 0.5D, d1 + 0.5D, d2 + 0.5D, "random.fizz", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
 
+        // IonSpigot start - Remove unused code
+        /*
         for (int i = 0; i < 8; ++i) {
             world.addParticle(EnumParticle.SMOKE_LARGE, d0 + Math.random(), d1 + 1.2D, d2 + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
         }
+        */
+        // IonSpigot end
 
     }
 

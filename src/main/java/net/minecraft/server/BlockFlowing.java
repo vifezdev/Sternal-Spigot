@@ -28,6 +28,7 @@ public class BlockFlowing extends BlockFluids {
         org.bukkit.Server server = world.getServer();
         org.bukkit.block.Block source = bworld == null ? null : bworld.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ());
         // CraftBukkit end
+        BlockPosition pos = blockposition.down(); // IonSpigot - Cache Below Position
         int i = ((Integer) iblockdata.get(BlockFlowing.LEVEL)).intValue();
         byte b0 = 1;
 
@@ -35,7 +36,7 @@ public class BlockFlowing extends BlockFluids {
             b0 = 2;
         }
 
-        int j = this.getFlowSpeed(world, blockposition); // PaperSpigot
+//        int j = this.getFlowSpeed(world, blockposition); // PaperSpigot // IonSpigot - Moved down
         int k;
 
         if (i > 0) {
@@ -43,29 +44,40 @@ public class BlockFlowing extends BlockFluids {
 
             this.a = 0;
 
+            // IonSpigot start - Optimise Fluids
+            int temp = this.e(world, blockposition.up());
+            int i1 = b0;
+            if (temp < 8) {
             EnumDirection enumdirection;
 
             for (Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator(); iterator.hasNext(); l = this.a(world, blockposition.shift(enumdirection), l)) {
                 enumdirection = (EnumDirection) iterator.next();
             }
 
-            int i1 = l + b0;
+            i1 = l + b0;
 
             if (i1 >= 8 || l < 0) {
                 i1 = -1;
             }
+            } else if (temp == 8 && world.getType(pos) == Blocks.AIR.getBlockData()) {
+                // TODO: Look into adding an option to make this 2
+                this.f(world, blockposition, iblockdata);
+                world.setTypeAndData(pos, iblockdata, 3);
+                return;
+            }
 
-            if (this.e(world, blockposition.up()) >= 0) {
-                k = this.e(world, blockposition.up());
+            if (temp >= 0) {
+                k = temp;
                 if (k >= 8) {
                     i1 = k;
                 } else {
                     i1 = k + 8;
                 }
             }
+            // IonSpigot end
 
             if (this.a >= 2 && this.material == Material.WATER) {
-                IBlockData iblockdata1 = world.getType(blockposition.down());
+                IBlockData iblockdata1 = world.getType(pos); // IonSpigot - Cache Below Position
 
                 if (iblockdata1.getBlock().getMaterial().isBuildable()) {
                     i1 = 0;
@@ -74,9 +86,13 @@ public class BlockFlowing extends BlockFluids {
                 }
             }
 
+            // IonSpigot start - Unused logic
+            /*
             if (!world.paperSpigotConfig.fastDrainLava && this.material == Material.LAVA && i < 8 && i1 < 8 && i1 > i && random.nextInt(4) != 0) { // PaperSpigot
                 j *= 4;
             }
+            */
+            // IonSpigot end
 
             if (i1 == i) {
                 this.f(world, blockposition, iblockdata);
@@ -85,6 +101,7 @@ public class BlockFlowing extends BlockFluids {
                 if (i1 < 0 || canFastDrain(world, blockposition)) { // PaperSpigot - Fast draining
                     world.setAir(blockposition);
                 } else {
+                    int j = this.getFlowSpeed(world, blockposition); // PaperSpigot // IonSpigot - From above
                     iblockdata = iblockdata.set(BlockFlowing.LEVEL, Integer.valueOf(i1));
                     world.setTypeAndData(blockposition, iblockdata, 2);
                     world.a(blockposition, (Block) this, j);
@@ -103,29 +120,31 @@ public class BlockFlowing extends BlockFluids {
         }
 
         if (world.getType(blockposition).getBlock().getMaterial() != material) return; // PaperSpigot - Stop updating flowing block if material has changed
-        IBlockData iblockdata2 = world.getType(blockposition.down());
+        // IonSpigot start - Cache Below Position
+        IBlockData iblockdata2 = world.getType(pos);
 
-        if (this.h(world, blockposition.down(), iblockdata2)) {
+        if (this.h(world, pos, iblockdata2)) {
             // CraftBukkit start - Send "down" to the server
             BlockFromToEvent event = new BlockFromToEvent(source, BlockFace.DOWN);
             if (server != null) {
                 server.getPluginManager().callEvent(event);
             }
             if (!event.isCancelled()) {
-            if (this.material == Material.LAVA && world.getType(blockposition.down()).getBlock().getMaterial() == Material.WATER) {
-                world.setTypeUpdate(blockposition.down(), Blocks.STONE.getBlockData());
-                this.fizz(world, blockposition.down());
+            if (this.material == Material.LAVA && world.getType(pos).getBlock().getMaterial() == Material.WATER) {
+                world.setTypeUpdate(pos, Blocks.STONE.getBlockData());
+                this.fizz(world, pos);
                 return;
             }
 
             if (i >= 8) {
-                this.flow(world, blockposition.down(), iblockdata2, i);
+                this.flow(world, pos, iblockdata2, i);
             } else {
-                this.flow(world, blockposition.down(), iblockdata2, i + 8);
+                this.flow(world, pos, iblockdata2, i + 8);
             }
             }
             // CraftBukkit end
-        } else if (i >= 0 && (i == 0 || this.g(world, blockposition.down(), iblockdata2))) {
+        } else if (i >= 0 && (i == 0 || this.g(world, pos, iblockdata2))) {
+            // IonSpigot end
             Set set = this.f(world, blockposition);
 
             k = i + b0;
@@ -149,7 +168,7 @@ public class BlockFlowing extends BlockFluids {
                 }
 
                 if (!event.isCancelled()) {
-                    this.flow(world, blockposition.shift(enumdirection1), world.getType(blockposition.shift(enumdirection1)), k);
+                    this.flow(world, pos = blockposition.shift(enumdirection1), world.getType(pos), k); // IonSpigot  - Don't shift twice
                 }
                 // CraftBukkit end
             }
@@ -183,7 +202,7 @@ public class BlockFlowing extends BlockFluids {
                 BlockPosition blockposition1 = blockposition.shift(enumdirection1);
                 IBlockData iblockdata = world.getType(blockposition1);
 
-                if (!this.g(world, blockposition1, iblockdata) && (iblockdata.getBlock().getMaterial() != this.material || ((Integer) iblockdata.get(BlockFlowing.LEVEL)).intValue() > 0)) {
+                if (!this.g(iblockdata.getBlock()) && (iblockdata.getBlock().getMaterial() != this.material || ((Integer) iblockdata.get(BlockFlowing.LEVEL)).intValue() > 0)) { // IonSpigot - Optimise Fluids
                     if (!this.g(world, blockposition1.down(), iblockdata)) {
                         return i;
                     }
@@ -212,11 +231,11 @@ public class BlockFlowing extends BlockFluids {
             BlockPosition blockposition1 = blockposition.shift(enumdirection);
             IBlockData iblockdata = world.getType(blockposition1);
 
-            if (!this.g(world, blockposition1, iblockdata) && (iblockdata.getBlock().getMaterial() != this.material || ((Integer) iblockdata.get(BlockFlowing.LEVEL)).intValue() > 0)) {
+            if (!this.g(iblockdata.getBlock()) && (iblockdata.getBlock().getMaterial() != this.material || ((Integer) iblockdata.get(BlockFlowing.LEVEL)).intValue() > 0)) { // IonSpigot - Optimise Fluids
                 int j;
 
-                if (this.g(world, blockposition1.down(), world.getType(blockposition1.down()))) {
-                    j = this.a(world, blockposition1, 1, enumdirection.opposite());
+                if (this.g(world, blockposition1.down(), iblockdata)) { // IonSpigot - Unused check
+                    j = this.a(world, blockposition1, 4, enumdirection.opposite()); // IonSpigot - Optimise Fluids
                 } else {
                     j = 0;
                 }
@@ -237,6 +256,11 @@ public class BlockFlowing extends BlockFluids {
 
     private boolean g(World world, BlockPosition blockposition, IBlockData iblockdata) {
         Block block = world.getType(blockposition).getBlock();
+        // IonSpigot start - Optimise Fluids
+        return this.g(block);
+    }
+    private boolean g(Block block) {
+        // IonSpigot end
 
         return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS ? (block.material == Material.PORTAL ? true : block.material.isSolid()) : true;
     }
@@ -262,7 +286,7 @@ public class BlockFlowing extends BlockFluids {
     private boolean h(World world, BlockPosition blockposition, IBlockData iblockdata) {
         Material material = iblockdata.getBlock().getMaterial();
 
-        return material != this.material && material != Material.LAVA && !this.g(world, blockposition, iblockdata);
+        return material != this.material && material != Material.LAVA && !this.g(iblockdata.getBlock()); // IonSpigot - Optimise Fluids
     }
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
@@ -293,7 +317,16 @@ public class BlockFlowing extends BlockFluids {
      * PaperSpigot - Data check method for fast draining
      */
     public int getData(World world, BlockPosition position) {
-        int data = this.e(world, position);
+        // IonSpigot start - Optimise Draining
+        return getData(world.getType(position));
+    }
+    public boolean checkData(World world, BlockPosition position, Material material, int data) {
+        IBlockData state = world.getType(position);
+        return state.getBlock().getMaterial() == material && getData(state) < data;
+    }
+    public int getData(IBlockData iblockdata) {
+        int data = this.e(iblockdata);
+        // IonSpigot end
         return data < 8 ? data : 0;
     }
 
@@ -308,13 +341,15 @@ public class BlockFlowing extends BlockFluids {
                 result = true;
                 if (getData(world, position.down()) < 0) {
                     result = false;
-                } else if (world.getType(position.north()).getBlock().getMaterial() == Material.WATER && getData(world, position.north()) < data) {
+                    // IonSpigot start - Optimise Draining
+                } else if (checkData(world, position.north(), Material.WATER, data)) {
                     result = false;
-                } else if (world.getType(position.south()).getBlock().getMaterial() == Material.WATER && getData(world, position.south()) < data) {
+                } else if (checkData(world, position.south(), Material.WATER, data)) {
                     result = false;
-                } else if (world.getType(position.west()).getBlock().getMaterial() == Material.WATER && getData(world, position.west()) < data) {
+                } else if (checkData(world, position.west(), Material.WATER, data)) {
                     result = false;
-                } else if (world.getType(position.east()).getBlock().getMaterial() == Material.WATER && getData(world, position.east()) < data) {
+                } else if (checkData(world, position.east(), Material.WATER, data)) {
+                    // IonSpigot end
                     result = false;
                 }
             }
@@ -323,13 +358,15 @@ public class BlockFlowing extends BlockFluids {
                 result = true;
                 if (getData(world, position.down()) < 0 || world.getType(position.up()).getBlock().getMaterial() != Material.AIR) {
                     result = false;
-                } else if (world.getType(position.north()).getBlock().getMaterial() == Material.LAVA && getData(world, position.north()) < data) {
+                    // IonSpigot start - Optimise Draining
+                } else if (checkData(world, position.north(), Material.LAVA, data)) {
                     result = false;
-                } else if (world.getType(position.south()).getBlock().getMaterial() == Material.LAVA && getData(world, position.south()) < data) {
+                } else if (checkData(world, position.south(), Material.LAVA, data)) {
                     result = false;
-                } else if (world.getType(position.west()).getBlock().getMaterial() == Material.LAVA && getData(world, position.west()) < data) {
+                } else if (checkData(world, position.west(), Material.LAVA, data)) {
                     result = false;
-                } else if (world.getType(position.east()).getBlock().getMaterial() == Material.LAVA && getData(world, position.east()) < data) {
+                } else if (checkData(world, position.east(), Material.LAVA, data)) {
+                    // IonSpigot end
                     result = false;
                 }
             }
