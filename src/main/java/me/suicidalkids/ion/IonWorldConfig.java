@@ -81,4 +81,9 @@ public class IonWorldConfig {
         explosionProtectedRegions = getBoolean("explosions.protected-regions", true);
     }
 
+    public boolean fixSandUnloading;
+    private void FixSandUnloading() {
+        fixSandUnloading = getBoolean("sand.fix-unloading", false);
+    }
+
 }
