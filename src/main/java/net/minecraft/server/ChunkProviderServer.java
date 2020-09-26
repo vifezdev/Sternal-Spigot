@@ -60,8 +60,9 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public void queueUnload(int i, int j) {
+        long key = LongHash.toLong(i, j); // IonSpigot - Only create key once
         // PaperSpigot start - Asynchronous lighting updates
-        Chunk chunk = chunks.get(LongHash.toLong(i, j));
+        Chunk chunk = chunks.get(key); // IonSpigot
         if (chunk != null && chunk.world.paperSpigotConfig.useAsyncLighting && (chunk.pendingLightUpdates.get() > 0 || chunk.world.getTime() - chunk.lightUpdateTime < 20)) {
             return;
         }
@@ -80,9 +81,9 @@ public class ChunkProviderServer implements IChunkProvider {
         if (this.world.worldProvider.e()) {
             if (!this.world.c(i, j)) {
                 // CraftBukkit start
-                this.unloadQueue.add(LongHash.toLong(i, j));  // TacoSpigot - directly invoke LongHash
+                this.unloadQueue.add(key); // IonSpigot  // TacoSpigot - directly invoke LongHash
 
-                Chunk c = chunks.get(LongHash.toLong(i, j));
+                Chunk c = chunks.get(key); // IonSpigot
                 if (c != null) {
                     c.mustSave = true;
                 }
@@ -90,9 +91,9 @@ public class ChunkProviderServer implements IChunkProvider {
             }
         } else {
             // CraftBukkit start
-            this.unloadQueue.add(LongHash.toLong(i, j)); // TacoSpigot - directly invoke LongHash
+            this.unloadQueue.add(key); // IonSpigot // TacoSpigot - directly invoke LongHash
 
-            Chunk c = chunks.get(LongHash.toLong(i, j));
+            Chunk c = chunks.get(key); // IonSpigot
             if (c != null) {
                 c.mustSave = true;
             }
@@ -122,8 +123,9 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public Chunk getChunkAt(int i, int j, Runnable runnable) {
-        unloadQueue.remove(LongHash.toLong(i, j)); // TacoSpigot - directly invoke LongHash
-        Chunk chunk = chunks.get(LongHash.toLong(i, j));
+        long key = LongHash.toLong(i, j); // IonSpigot - Only create key once
+        unloadQueue.remove(key); // IonSpigot // TacoSpigot - directly invoke LongHash
+        Chunk chunk = chunks.get(key); // IonSpigot
         ChunkRegionLoader loader = null;
 
         if (this.chunkLoader instanceof ChunkRegionLoader) {
@@ -150,8 +152,9 @@ public class ChunkProviderServer implements IChunkProvider {
         return chunk;
     }
     public Chunk originalGetChunkAt(int i, int j) {
-        this.unloadQueue.remove(LongHash.toLong(i, j)); // TacoSpigot - directly invoke LongHash
-        Chunk chunk = (Chunk) this.chunks.get(LongHash.toLong(i, j));
+        long key = LongHash.toLong(i, j); // IonSpigot - Only create key once
+        this.unloadQueue.remove(key); // IonSpigot // TacoSpigot - directly invoke LongHash
+        Chunk chunk = (Chunk) this.chunks.get(key); // IonSpigot
         boolean newChunk = false;
         // CraftBukkit end
 
@@ -169,7 +172,7 @@ public class ChunkProviderServer implements IChunkProvider {
                         CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Chunk to be generated");
 
                         crashreportsystemdetails.a("Location", (Object) String.format("%d,%d", new Object[] { Integer.valueOf(i), Integer.valueOf(j)}));
-                        crashreportsystemdetails.a("Position hash", (Object) Long.valueOf(LongHash.toLong(i, j))); // CraftBukkit - Use LongHash
+                        crashreportsystemdetails.a("Position hash", (Object) key); // IonSpigot // CraftBukkit - Use LongHash
                         crashreportsystemdetails.a("Generator", (Object) this.chunkProvider.getName());
                         throw new ReportedException(crashreport);
                     }
@@ -177,7 +180,7 @@ public class ChunkProviderServer implements IChunkProvider {
                 newChunk = true; // CraftBukkit
             }
 
-            this.chunks.put(LongHash.toLong(i, j), chunk);
+            this.chunks.put(key, chunk);
             
             chunk.addEntities();
             
