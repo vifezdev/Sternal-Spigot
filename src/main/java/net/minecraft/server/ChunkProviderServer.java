@@ -218,12 +218,26 @@ public class ChunkProviderServer implements IChunkProvider {
         return chunk;
     }
 
+    // IonSpigot start - Optimise Chunk Getting
+    private Chunk cachedChunk = null;
     public Chunk getOrCreateChunk(int i, int j) {
+        Chunk chunk = cachedChunk; // We have to do this for thread safety
+        if (chunk != null && chunk.locX == i && chunk.locZ == j && chunk.o()) {
+            return chunk;
+        }
         // CraftBukkit start
-        Chunk chunk = (Chunk) this.chunks.get(LongHash.toLong(i, j));
+        chunk = this.chunks.get(LongHash.toLong(i, j));
 
-        chunk = chunk == null ? (!this.world.ad() && !this.forceChunkLoad ? this.emptyChunk : this.getChunkAt(i, j)) : chunk;
+        if (chunk == null) {
+            if (!this.world.ad() && !this.forceChunkLoad) {
+                return this.emptyChunk;
+            }
 
+            chunk = this.getChunkAt(i, j);
+        }
+
+        cachedChunk = chunk;
+        /*
         if (chunk == emptyChunk) return chunk;
         if (i != chunk.locX || j != chunk.locZ) {
             b.error("Chunk (" + chunk.locX + ", " + chunk.locZ + ") stored at  (" + i + ", " + j + ") in world '" + world.getWorld().getName() + "'");
@@ -232,6 +246,8 @@ public class ChunkProviderServer implements IChunkProvider {
             ex.fillInStackTrace();
             ex.printStackTrace();
         }
+        */
+        // IonSpigot end
 
         return chunk;
         // CraftBukkit end
