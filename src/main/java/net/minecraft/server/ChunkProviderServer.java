@@ -29,11 +29,12 @@ import it.unimi.dsi.fastutil.longs.LongArraySet;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongSet;
 // TacoSpigot end
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet; // IonSpigot
 
 public class ChunkProviderServer implements IChunkProvider {
 
     private static final Logger b = LogManager.getLogger();
-    public LongSet unloadQueue = new LongArraySet(); // CraftBukkit - LongHashSet // TacoSpigot - LongHashSet -> HashArraySet
+    public LongSet unloadQueue = new LongOpenHashSet(); // CraftBukkit - LongHashSet // TacoSpigot - LongHashSet -> HashArraySet // IonSpigot - LongOpenHashSet
     public Chunk emptyChunk;
     public IChunkProvider chunkProvider;
     private IChunkLoader chunkLoader;
