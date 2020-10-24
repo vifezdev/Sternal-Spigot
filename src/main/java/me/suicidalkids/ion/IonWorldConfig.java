@@ -86,4 +86,9 @@ public class IonWorldConfig {
         fixSandUnloading = getBoolean("sand.fix-unloading", false);
     }
 
+    public boolean movementCache;
+    private void MovementCache() {
+        movementCache = getBoolean("movement.cache", true);
+    }
+
 }

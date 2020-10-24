@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import me.suicidalkids.ion.movement.MovementCache;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftServer;
@@ -143,6 +144,7 @@ public abstract class World implements IBlockAccess {
         explosionDensityCache.defaultReturnValue(-1.0f);
     }
     // IonSpigot end
+    public final MovementCache movementCache = new MovementCache(); // IonSpigot - Movement Cache
 
     public static long chunkToKey(int x, int z)
     {
@@ -422,6 +424,7 @@ public abstract class World implements IBlockAccess {
                     this.methodProfiler.b();
                 }
 
+                movementCache.clear(); // IonSpigot - Movement Cache
                 /*
                 if ((i & 2) != 0 && (!this.isClientSide || (i & 4) == 0) && chunk.isReady()) {
                     this.notify(blockposition);
