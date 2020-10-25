@@ -125,4 +125,9 @@ public class IonConfig {
         return config.getString(path, config.getString(path));
     }
 
+    public static boolean usePandaWire;
+    private static void UsePandaWire() {
+        usePandaWire = getBoolean("redstone.panda-wire", true);
+    }
+
 }
