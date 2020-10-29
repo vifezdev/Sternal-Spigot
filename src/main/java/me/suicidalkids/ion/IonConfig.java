@@ -130,4 +130,19 @@ public class IonConfig {
         usePandaWire = getBoolean("redstone.panda-wire", true);
     }
 
+    public static int minSpawnDelay;
+    public static int maxSpawnDelay;
+    public static int spawnCount;
+    public static int spawnRange;
+    public static int maxNearbyEntities;
+    public static int requiredPlayerRange;
+    private static void Spawners() {
+        minSpawnDelay = getInt("spawners.spawning.min-delay", 200);
+        maxSpawnDelay = getInt("spawners.spawning.max-delay", 800);
+        spawnCount = getInt("spawners.spawning.count", 4);
+        spawnRange = getInt("spawners.spawning.range", 4);
+        maxNearbyEntities = getInt("spawners.nearby.max-entities", 6);
+        requiredPlayerRange = getInt("spawners.nearby.player-range", 16);
+    }
+
 }

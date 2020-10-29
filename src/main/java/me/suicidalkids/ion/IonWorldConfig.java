@@ -91,4 +91,13 @@ public class IonWorldConfig {
         movementCache = getBoolean("movement.cache", true);
     }
 
+    public boolean requirePlayers;
+    public boolean checkMaxEntities;
+    public boolean checkConditions;
+    private void Spawners() {
+        checkConditions = getBoolean("spawners.spawning.check-conditions", true);
+        checkMaxEntities = getBoolean("spawners.nearby.check-max-entities", true);
+        requirePlayers = getBoolean("spawners.nearby.require-players", true);
+    }
+
 }
