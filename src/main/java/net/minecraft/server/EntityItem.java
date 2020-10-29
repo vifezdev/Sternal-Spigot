@@ -66,7 +66,7 @@ public class EntityItem extends Entity implements HopperPusher {
             this.die();
         } else {
             super.t_();
-            if (tryPutInHopper()) return; // TacoSpigot
+            if (ticksLived % world.ionConfig.hopperInterval == 0 && tryPutInHopper()) return; // IonSpigot - Add Interval // TacoSpigot
             // CraftBukkit start - Use wall time for pickup and despawn timers
             int elapsedTicks = MinecraftServer.currentTick - this.lastTick;
             if (this.pickupDelay != 32767) this.pickupDelay -= elapsedTicks;
@@ -78,7 +78,7 @@ public class EntityItem extends Entity implements HopperPusher {
             this.lastY = this.locY;
             this.lastZ = this.locZ;
             this.motY -= 0.03999999910593033D;
-            this.noclip = this.j(this.locX, (this.getBoundingBox().b + this.getBoundingBox().e) / 2.0D, this.locZ);
+            this.noclip = ticksLived % world.ionConfig.noclipInterval == 0 && this.j(this.locX, (this.getBoundingBox().b + this.getBoundingBox().e) / 2.0D, this.locZ); // IonSpigot
             this.move(this.motX, this.motY, this.motZ);
             boolean flag = (int) this.lastX != (int) this.locX || (int) this.lastY != (int) this.locY || (int) this.lastZ != (int) this.locZ;
 
@@ -90,7 +90,7 @@ public class EntityItem extends Entity implements HopperPusher {
                     this.makeSound("random.fizz", 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
                 }
 
-                if (!this.world.isClientSide) {
+                if (!this.world.isClientSide && ticksLived % world.ionConfig.mergeInterval == 0) { // IonSpigot
                     this.w();
                 }
             }
@@ -132,7 +132,7 @@ public class EntityItem extends Entity implements HopperPusher {
     // Spigot start - copied from above
     @Override
     public void inactiveTick() {
-        if (tryPutInHopper()) return; // TacoSpigot
+        if (ticksLived % world.ionConfig.hopperInterval == 0 && tryPutInHopper()) return; // IonSpigot - Add Interval // TacoSpigot
         // CraftBukkit end
         // CraftBukkit start - Use wall time for pickup and despawn timers
         int elapsedTicks = MinecraftServer.currentTick - this.lastTick;

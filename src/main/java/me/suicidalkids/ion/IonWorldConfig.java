@@ -107,4 +107,13 @@ public class IonWorldConfig {
         silenceSounds = getBoolean("silence-sounds", false);
     }
 
+    public int noclipInterval;
+    public int mergeInterval;
+    public int hopperInterval;
+    private void Items() {
+        noclipInterval = getInterval("items.noclip-delay", 0);
+        mergeInterval = getInterval("items.merge-delay", 0);
+        hopperInterval = getInterval("items.hoppers.delay", 0);
+    }
+
 }
