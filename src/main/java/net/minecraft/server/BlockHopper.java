@@ -28,19 +28,23 @@ public class BlockHopper extends BlockContainer {
     }
 
     public void a(World world, BlockPosition blockposition, IBlockData iblockdata, AxisAlignedBB axisalignedbb, List<AxisAlignedBB> list, Entity entity) {
+        // North side
+        this.a(0.0F, 0.625F, 0.125F, 1.0F, 1.0F, 0.0F);
+        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
+        // South side
+        this.a(0.0F, 0.625F, 0.875F, 1.0F, 1.0F, 1.0F);
+        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
+        // West side
+        this.a(0.125F, 0.625F, 0.0F, 0.0F, 1.0F, 1.0F);
+        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
+        // East side
+        this.a(0.875F, 0.625F, 0.0F, 1.0F, 1.0F, 1.0F);
+        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
+        // Bottom part
         this.a(0.0F, 0.0F, 0.0F, 1.0F, 0.625F, 1.0F);
         super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
-        float f = 0.125F;
-
-        this.a(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
-        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
-        this.a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
-        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
-        this.a(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
-        this.a(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
-        super.a(world, blockposition, iblockdata, axisalignedbb, list, entity);
-        this.a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        // Reset
+        this.updateShape(world, blockposition);
     }
 
     public IBlockData getPlacedState(World world, BlockPosition blockposition, EnumDirection enumdirection, float f, float f1, float f2, int i, EntityLiving entityliving) {
