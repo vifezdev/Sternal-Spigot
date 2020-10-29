@@ -155,7 +155,7 @@ public abstract class EntityLiving extends Entity {
                 // CraftBukkit start - visiblity api
                 if (this instanceof EntityPlayer) {
                     ((WorldServer) this.world).sendParticles((EntityPlayer) this, EnumParticle.BLOCK_DUST, false, this.locX, this.locY, this.locZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] { Block.getCombinedId(iblockdata)});
-                } else {
+                } else if (!world.ionConfig.silenceSounds) { // IonSpigot
                     ((WorldServer) this.world).a(EnumParticle.BLOCK_DUST, this.locX, this.locY, this.locZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] { Block.getCombinedId(iblockdata)});
                 }
                 // CraftBukkit end
@@ -960,7 +960,11 @@ public abstract class EntityLiving extends Entity {
             if (block.getMaterial() != Material.AIR) {
                 Block.StepSound block_stepsound = block.stepSound;
 
+                // IonSpigot start - Disable footstep sounds
+                if (world.ionConfig.footstepSounds) {
                 this.makeSound(block_stepsound.getStepSound(), block_stepsound.getVolume1() * 0.5F, block_stepsound.getVolume2() * 0.75F);
+                }
+                // IonSpigot end
             }
         }
 

@@ -100,4 +100,11 @@ public class IonWorldConfig {
         requirePlayers = getBoolean("spawners.nearby.require-players", true);
     }
 
+    public boolean footstepSounds;
+    public boolean silenceSounds;
+    private void Sounds() {
+        footstepSounds = getBoolean("footstep-sounds", true);
+        silenceSounds = getBoolean("silence-sounds", false);
+    }
+
 }

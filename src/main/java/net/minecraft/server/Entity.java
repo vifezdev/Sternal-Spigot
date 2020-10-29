@@ -787,7 +787,11 @@ public abstract class Entity implements ICommandListener {
                         this.makeSound(this.P(), f, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
                     }
 
+                    // IonSpigot start - Disable footstep sounds
+                    if (world.ionConfig.footstepSounds) {
                     this.a(blockposition, block);
+                    }
+                    // Ionspigot end
                     block.a(this.world, blockposition, this); // CraftBukkit moved from above
                 }
             }
@@ -895,7 +899,7 @@ public abstract class Entity implements ICommandListener {
     }
 
     public boolean R() {
-        return this.datawatcher.getByte(4) == 1;
+        return !world.ionConfig.silenceSounds && this.datawatcher.getByte(4) == 1;
     }
 
     public void b(boolean flag) {
