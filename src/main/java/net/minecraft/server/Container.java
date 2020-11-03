@@ -106,6 +106,12 @@ public abstract class Container {
     }
 
     public Slot getSlot(int i) {
+        final int lastIndex = this.c.size() - 1;
+
+        if (i > lastIndex) {
+            i = lastIndex;
+        }
+
         return (Slot) this.c.get(i);
     }
 
