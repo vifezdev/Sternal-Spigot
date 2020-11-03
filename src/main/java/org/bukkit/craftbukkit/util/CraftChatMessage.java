@@ -143,8 +143,14 @@ public final class CraftChatMessage {
     public static String fromComponent(IChatBaseComponent component, EnumChatFormat defaultColor) {
         if (component == null) return "";
         StringBuilder out = new StringBuilder();
+        // FlamePaper - Limit iterations to 2
+        int iterations = 0;
         
         for (IChatBaseComponent c : (Iterable<IChatBaseComponent>) component) {
+            if (++iterations > 2) {
+                break;
+            }
+
             ChatModifier modi = c.getChatModifier();
             out.append(modi.getColor() == null ? defaultColor : modi.getColor());
             if (modi.isBold()) {
