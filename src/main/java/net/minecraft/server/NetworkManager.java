@@ -239,6 +239,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void close(IChatBaseComponent ichatbasecomponent) {
+        this.i.clear(); // FlamePaper - Minetick fix memory leaks
         // Spigot Start
         this.preparing = false;
         // Spigot End

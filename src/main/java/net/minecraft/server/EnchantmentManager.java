@@ -169,6 +169,9 @@ public class EnchantmentManager {
             a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.d, entityliving.bA());
         }
 
+        // FlamePaper - Minetick fix memory leaks
+        EnchantmentManager.e.a = null;
+        EnchantmentManager.e.b = null;
     }
 
     public static void b(EntityLiving entityliving, Entity entity) {
@@ -182,6 +185,9 @@ public class EnchantmentManager {
             a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.e, entityliving.bA());
         }
 
+        // FlamePaper - Minetick fix memory leaks
+        EnchantmentManager.e.a = null;
+        EnchantmentManager.e.b = null;
     }
 
     public static int a(EntityLiving entityliving) {

@@ -181,4 +181,14 @@ public class PersistentCollection {
             return oshort.shortValue();
         }
     }
+
+    // FlamePaper - Minetick fix memory leaks
+    public void removeTrackedPlayer(EntityHuman entityhuman) {
+        for(Object o: this.c) {
+            if(o instanceof WorldMap) {
+                WorldMap map = (WorldMap) o;
+                map.untrackPlayer(entityhuman);
+            }
+        }
+    }
 }
