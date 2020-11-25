@@ -13,7 +13,7 @@ public class EntityTracker {
 
     private static final Logger a = LogManager.getLogger();
     private final WorldServer world;
-    private Set<EntityTrackerEntry> c = Sets.newHashSet();
+    private Set<EntityTrackerEntry> c = new io.papermc.paper.util.maplist.ObjectMapList<>(); // IonSpigot - HashSet -> ObjectMapList
     public IntHashMap<EntityTrackerEntry> trackedEntities = new IntHashMap();
     private int e;
 
