@@ -116,4 +116,9 @@ public class IonWorldConfig {
         hopperInterval = getInterval("items.hoppers.delay", 0);
     }
 
+    public boolean mergeSpawnedItems;
+    private void MergeSpawnedItems() {
+        mergeSpawnedItems = getBoolean("items.merged-spawned-items", false);
+    }
+
 }

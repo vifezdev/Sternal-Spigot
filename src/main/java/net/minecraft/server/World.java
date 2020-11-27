@@ -998,7 +998,29 @@ public abstract class World implements IBlockAccess {
         return true;
     }
 
+    // IonSpigot start - Merge Spawned Items
+    public boolean addEntity(EntityItem entityItem) {
+        if (ionConfig.mergeSpawnedItems) {
+            int floorX = org.bukkit.util.NumberConversions.floor(entityItem.locX) >> 4;
+            int floorZ = org.bukkit.util.NumberConversions.floor(entityItem.locZ) >> 4;
+            Chunk chunk = getChunkIfLoaded(floorX, floorZ);
+
+            EntityItem cachedItem = chunk.cachedEntityItem;
+            if (cachedItem != null && cachedItem.isAlive() &&
+                cachedItem.h(entityItem) < spigotConfig.itemMerge * spigotConfig.itemMerge &&
+                cachedItem.a(entityItem) && !entityItem.isAlive()) {
+                return false;
+            }
+
+            chunk.cachedEntityItem = entityItem;
+        }
+        return addEntity(entityItem, SpawnReason.DEFAULT);
+    }
     public boolean addEntity(Entity entity) {
+        if (entity instanceof EntityItem) {
+            return addEntity((EntityItem) entity);
+        }
+        // IonSpigot end
         // CraftBukkit start - Used for entities other than creatures
         return addEntity(entity, SpawnReason.DEFAULT);
     }

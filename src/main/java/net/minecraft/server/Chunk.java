@@ -54,6 +54,7 @@ public class Chunk {
     public AtomicInteger pendingLightUpdates = new AtomicInteger();
     public long lightUpdateTime;
     // PaperSpigot end
+    public EntityItem cachedEntityItem; // IonSpigot - Merge Spawned Items
 
     // PaperSpigot start - ChunkMap caching
     private PacketPlayOutMapChunk.ChunkMap chunkMap;

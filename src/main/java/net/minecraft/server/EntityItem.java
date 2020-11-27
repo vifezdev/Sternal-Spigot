@@ -167,7 +167,7 @@ public class EntityItem extends Entity implements HopperPusher {
 
     }
 
-    private boolean a(EntityItem entityitem) {
+    public boolean a(EntityItem entityitem) { // IonSpigot - private -> public
         if (entityitem == this) {
             return false;
         } else if (entityitem.isAlive() && this.isAlive()) {
