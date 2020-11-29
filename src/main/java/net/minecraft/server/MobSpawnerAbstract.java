@@ -167,7 +167,7 @@ public abstract class MobSpawnerAbstract {
                 if (!event.isCancelled()) {
                     entity.world.addEntity(entity, CreatureSpawnEvent.SpawnReason.SPAWNER); // CraftBukkit
                     // Spigot Start
-                    if ( entity.world.spigotConfig.nerfSpawnerMobs )
+                    if ( true ) // IonSpigot
                     {
                         entity.fromMobSpawner = true;
                     }
@@ -220,7 +220,7 @@ public abstract class MobSpawnerAbstract {
             if (!event.isCancelled()) {
                 entity.world.addEntity(entity, CreatureSpawnEvent.SpawnReason.SPAWNER); // CraftBukkit
                 // Spigot Start
-                if ( entity.world.spigotConfig.nerfSpawnerMobs )
+                if ( true ) // IonSpigot
                 {
                     entity.fromMobSpawner = true;
                 }

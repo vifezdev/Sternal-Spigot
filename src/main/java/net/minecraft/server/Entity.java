@@ -145,6 +145,7 @@ public abstract class Entity implements ICommandListener {
     public boolean fromMobSpawner;
     public void inactiveTick() { }
     // Spigot end
+    public boolean naturalSpawn; // IonSpigot
 
     public int getId() {
         return this.id;
@@ -1321,6 +1322,8 @@ public abstract class Entity implements ICommandListener {
                 }
             }
 
+            nbttagcompound.setBoolean("FromMobSpawner", this.fromMobSpawner); // IonSpigot
+            nbttagcompound.setBoolean("NaturalSpawn", this.naturalSpawn); // IonSpigot
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.a(throwable, "Saving entity NBT");
             CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Entity being saved");
@@ -1387,6 +1390,14 @@ public abstract class Entity implements ICommandListener {
             if (this.af()) {
                 this.setPosition(this.locX, this.locY, this.locZ);
             }
+            // IonSpigot start
+            if (nbttagcompound.hasKey("FromMobSpawner")) {
+                this.fromMobSpawner = nbttagcompound.getBoolean("FromMobSpawner");
+            }
+            if (nbttagcompound.hasKey("NaturalSpawn")) {
+                this.naturalSpawn = nbttagcompound.getBoolean("NaturalSpawn");
+            }
+            // IonSpigot end
 
             // CraftBukkit start
             if (this instanceof EntityLiving) {

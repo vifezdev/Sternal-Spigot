@@ -121,4 +121,11 @@ public class IonWorldConfig {
         mergeSpawnedItems = getBoolean("items.merged-spawned-items", false);
     }
 
+    public boolean nerfSpawnedLogic;
+    public boolean nerfNaturalSpawns;
+    private void NerfSpawnedLogic() {
+        nerfSpawnedLogic = getBoolean("spawners.nerf-spawned-logic", false);
+        nerfNaturalSpawns = getBoolean("nerf-natural-spawns", false);
+    }
+
 }

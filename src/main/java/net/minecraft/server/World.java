@@ -1048,6 +1048,11 @@ public abstract class World implements IBlockAccess {
                     entity.dead = true;
                     return false;
                 }
+                // IonSpigot start
+                if (spawnReason != SpawnReason.SPAWNER && spawnReason != SpawnReason.SPAWNER_EGG) {
+                    entity.naturalSpawn = true;
+                }
+                // IonSpigot end
             }
 
             event = CraftEventFactory.callCreatureSpawnEvent((EntityLiving) entity, spawnReason);

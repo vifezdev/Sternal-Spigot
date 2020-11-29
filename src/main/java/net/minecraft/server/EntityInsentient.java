@@ -459,7 +459,8 @@ public abstract class EntityInsentient extends EntityLiving {
         this.D();
         this.world.methodProfiler.b();
         // Spigot Start
-        if ( this.fromMobSpawner )
+        if ( this.fromMobSpawner && (world.spigotConfig.nerfSpawnerMobs || world.ionConfig.nerfSpawnedLogic) ||
+             this.naturalSpawn && world.ionConfig.nerfNaturalSpawns) // IonSpigot - Nerf Spawned Mob Logic
         {
             // PaperSpigot start - Allow nerfed mobs to jump
             if (goalFloat != null) {

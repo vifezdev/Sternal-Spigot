@@ -173,6 +173,21 @@ public abstract class EntityLiving extends Entity {
         this.ay = this.az;
         super.K();
         this.world.methodProfiler.a("livingEntityBaseTick");
+        // IonSpigot start - Nerf Spawned Mob Logic
+        if ((this.fromMobSpawner && world.ionConfig.nerfSpawnedLogic ||
+             this.naturalSpawn && world.ionConfig.nerfNaturalSpawns) &&
+            (!onGround || deathTicks != 0)) {
+            if (this.deathTicks != 0) {
+                this.aZ();
+            }
+
+            if (this.noDamageTicks > 0) {
+                --this.noDamageTicks;
+            }
+
+            return;
+        }
+        // IonSpigot end
         boolean flag = this instanceof EntityHuman;
 
         if (this.isAlive()) {
@@ -1470,6 +1485,13 @@ public abstract class EntityLiving extends Entity {
 
     public void t_() {
         super.t_();
+        // IonSpigot start - Nerf Spawned Mob Logic
+        if (this.fromMobSpawner && world.ionConfig.nerfSpawnedLogic ||
+            this.naturalSpawn && world.ionConfig.nerfNaturalSpawns) {
+            this.m();
+            return;
+        }
+        // IonSpigot end
         if (!this.world.isClientSide) {
             int i = this.bv();
 
@@ -1602,6 +1624,35 @@ public abstract class EntityLiving extends Entity {
     }
 
     public void m() {
+        // IonSpigot start - Nerf Spawned Mob Logic
+        if (this.fromMobSpawner && world.ionConfig.nerfSpawnedLogic ||
+            this.naturalSpawn && world.ionConfig.nerfNaturalSpawns) {
+            if (deathTicks == 0) {
+                this.doTick();
+
+                if (this.aY) {
+                    if (this.V()) {
+                        this.bG();
+                    } else if (this.ab()) {
+                        this.bH();
+                    } else if (this.onGround && this.bn == 0) {
+                        this.bF();
+                        this.bn = 10;
+                    }
+                } else {
+                    this.bn = 0;
+                }
+
+                this.move(this.motX, this.motY, this.motZ);
+                this.motY -= 0.08D;
+                this.motY *= 0.9800000190734863D;
+                this.motX *= 0.91F;
+                this.motZ *= 0.91F;
+            }
+            
+            return;
+        }
+        // IonSpigot end
         if (this.bn > 0) {
             --this.bn;
         }
