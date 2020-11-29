@@ -128,4 +128,9 @@ public class IonWorldConfig {
         nerfNaturalSpawns = getBoolean("nerf-natural-spawns", false);
     }
 
+    public boolean movementEntityCollisions;
+    private void MovementEntityCollisions() {
+        movementEntityCollisions = getBoolean("movement.entity-collisions", true);
+    }
+
 }

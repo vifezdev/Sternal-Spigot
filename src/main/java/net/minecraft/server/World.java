@@ -1268,6 +1268,7 @@ public abstract class World implements IBlockAccess {
         }
         // Spigot end
 
+        if (!ionConfig.movementEntityCollisions) return arraylist; // IonSpigot - Optimise general movement...
         if (entity instanceof EntityItem) return arraylist; // PaperSpigot - Optimize item movement
         if (entity instanceof EntityArmorStand) return arraylist; // TacoSpigot - Optimize armor stand movement
         if (entity instanceof EntityTNTPrimed) return arraylist; // TacoSpigot - Optimize tnt entity movement
