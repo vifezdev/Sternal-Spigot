@@ -143,4 +143,13 @@ public class IonWorldConfig {
         smoothPotting = getBoolean("potions.smooth", true);
     }
 
+    public boolean pearlThroughGates;
+    public boolean pearlThroughString;
+    public boolean pearlThroughCobwebs;
+    private void PearlThrough() {
+        pearlThroughGates = getBoolean("pearls.through.fence-gates", true);
+        pearlThroughString = getBoolean("pearls.through.string", false);
+        pearlThroughCobwebs = getBoolean("pearls.through.cobwebs", false);
+    }
+
 }

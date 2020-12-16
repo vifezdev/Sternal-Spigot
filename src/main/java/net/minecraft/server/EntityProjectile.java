@@ -165,7 +165,22 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.BLOCK && this.world.getType(movingobjectposition.a()).getBlock() == Blocks.PORTAL) {
                 this.d(movingobjectposition.a());
             } else {
+                // IonSpigot start
+                boolean hit = true;
+                if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
+                    IBlockData iblockdata = this.world.getType(movingobjectposition.a());
+                    Block block = iblockdata.getBlock();
+
+                    if (block instanceof BlockFenceGate && world.ionConfig.pearlThroughGates && iblockdata.get(BlockFenceGate.OPEN)
+                        || block instanceof BlockTripwire && world.ionConfig.pearlThroughString
+                        || block == Blocks.WEB && world.ionConfig.pearlThroughCobwebs) {
+                        hit = false;
+                    }
+                }
+                if (hit) {
                 this.a(movingobjectposition);
+                }
+                // IonSpigot end
                 // CraftBukkit start
                 if (this.dead) {
                     org.bukkit.craftbukkit.event.CraftEventFactory.callProjectileHitEvent(this);
