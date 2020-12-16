@@ -25,6 +25,12 @@ public class EntityPotion extends EntityProjectile {
     public EntityPotion(World world, EntityLiving entityliving, ItemStack itemstack) {
         super(world, entityliving);
         this.item = itemstack;
+        // IonSpigot start - Lag Compensated Potions
+        if (entityliving instanceof EntityPlayer && world.ionConfig.lagCompensatedPotions) {
+            ((EntityPlayer) entityliving).lagCompensatedTicking.add(this);
+            compensated = true;
+        }
+        // IonSpigot end
     }
 
     public EntityPotion(World world, double d0, double d1, double d2, ItemStack itemstack) {
@@ -60,6 +66,17 @@ public class EntityPotion extends EntityProjectile {
         return this.item.getData();
     }
 
+    // IonSpigot start - Lag Compensated Potions
+    @Override
+    public void t_() {
+        if (!compensated) {
+            tick();
+        }
+    }
+    public void tick() {
+        super.t_();
+    }
+    // IonSpigot end
     protected void a(MovingObjectPosition movingobjectposition) {
         if (!this.world.isClientSide) {
             List list = Items.POTION.h(this.item);

@@ -133,4 +133,9 @@ public class IonWorldConfig {
         movementEntityCollisions = getBoolean("movement.entity-collisions", true);
     }
 
+    public boolean lagCompensatedPotions;
+    private void LagCompensatedPotions() {
+        lagCompensatedPotions = getBoolean("potions.lag-compensated", true);
+    }
+
 }
