@@ -138,4 +138,9 @@ public class IonWorldConfig {
         lagCompensatedPotions = getBoolean("potions.lag-compensated", true);
     }
 
+    public boolean smoothPotting;
+    private void SmoothPotting() {
+        smoothPotting = getBoolean("potions.smooth", true);
+    }
+
 }
