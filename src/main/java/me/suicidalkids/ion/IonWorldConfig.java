@@ -152,4 +152,11 @@ public class IonWorldConfig {
         pearlThroughCobwebs = getBoolean("pearls.through.cobwebs", false);
     }
 
+    public boolean tntMerging;
+    public boolean sandMerging;
+    private void Merging() {
+        tntMerging = getBoolean("tnt.merging", true);
+        sandMerging = getBoolean("sand.merging", true);
+    }
+
 }

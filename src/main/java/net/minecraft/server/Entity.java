@@ -96,7 +96,7 @@ public abstract class Entity implements ICommandListener {
     public boolean noclip;
     public float U;
     protected Random random;
-    public int ticksLived;
+    public int ticksLived; public int getTicksLived() { return ticksLived; }; // IonSpigot
     public int maxFireTicks;
     public int fireTicks;
     public boolean inWater; // Spigot - protected -> public // PAIL
@@ -150,6 +150,15 @@ public abstract class Entity implements ICommandListener {
     public void inactiveTick() { }
     // Spigot end
     public boolean naturalSpawn; // IonSpigot
+    // IonSpigot start - Merge Cannoning Entities
+    protected int potential = 1;
+
+    public boolean merge(Entity entity) {
+        return false;
+    }
+
+    protected void respawn() {}
+    // IonSpigot end
 
     public int getId() {
         return this.id;
@@ -847,7 +856,7 @@ public abstract class Entity implements ICommandListener {
         }
     }
 
-    private void recalcPosition() {
+    protected void recalcPosition() { // IonSpigot - private -> protected
         this.locX = (this.getBoundingBox().a + this.getBoundingBox().d) / 2.0D;
         this.locY = this.getBoundingBox().b;
         this.locZ = (this.getBoundingBox().c + this.getBoundingBox().f) / 2.0D;

@@ -81,6 +81,7 @@ public class EntityTNTPrimed extends Entity {
         }
 
         if (this.fuseTicks-- <= 0) {
+            this.respawn(); // IonSpigot
             // CraftBukkit start - Need to reverse the order of the explosion and the entity death so we have a location for the event
             // this.die();
             if (!this.world.isClientSide) {
@@ -123,6 +124,69 @@ public class EntityTNTPrimed extends Entity {
         }
         // PaperSpigot end
     }
+    // IonSpigot start - Merge Cannoning Entities
+    @Override
+    public boolean merge(Entity entity) {
+        return world.ionConfig.tntMerging && entity.ticksLived == ticksLived + 1
+            && entity.lastX == locX && entity.lastY == locY && entity.lastZ == locZ
+            && entity.lastMotX == motX && entity.lastMotY == motY - 0.03999999910593033D
+            && entity.lastMotZ == motZ && entity.getClass() == getClass()
+            && ((EntityTNTPrimed) entity).fuseTicks == fuseTicks - 1 && fuseTicks > 0;
+    }
+
+    @Override
+    protected void respawn() {
+        // If this hasn't been merged just skip this process, no reason for it.
+        if (this.potential <= 1) {
+            return;
+        }
+
+        /*
+         * We're going to use this for keeping track of the motion from the
+         * explosion then applying that to this entity and exploding it again...
+         * and again. This is not the most efficient method but it'll preserve
+         * all of this entities metadata, and much better for plugins.
+         */
+        EntityTNTPrimed temp = new EntityTNTPrimed(new org.bukkit.Location(
+                this.world.getWorld(), this.lastX, this.lastY, this.lastZ),
+                this.world, this.lastX, this.lastY, this.lastZ, this.source);
+
+        // Update properties
+        temp.motX = this.lastMotX;
+        temp.motY = this.lastMotY + 0.03999999910593033D; // Add gravity back
+        temp.motZ = this.lastMotZ;
+        temp.recalcPosition();
+
+        // Add "temp" to the chunk
+        Chunk chunk = world.getChunkAtWorldCoords(new BlockPosition(temp));
+        chunk.a(temp);
+
+        // We should only explode this TNT, otherwise metadata would have to be transferred.
+        for (int i = 1; i < this.potential; ++i) {
+            // Explode!
+            this.explode();
+
+            // This should be fine, it'll reassign during ticking.
+            this.locX = this.lastX;
+            this.locY = this.lastY;
+            this.locZ = this.lastZ;
+            // Ok, now apply the motion
+            this.motX = temp.motX;
+            this.motY = temp.motY;
+            this.motZ = temp.motZ;
+            // Update bounding box
+            this.a(temp.getBoundingBox());
+            // So it doesn't explode during ticking
+            this.fuseTicks = 1;
+
+            // Now, tick this entity
+            this.t_();
+        }
+
+        // Remove "temp" from the chunk
+        chunk.b(temp);
+    }
+    // IonSpigot end
 
     protected void b(NBTTagCompound nbttagcompound) {
         nbttagcompound.setByte("Fuse", (byte) this.fuseTicks);

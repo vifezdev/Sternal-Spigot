@@ -1472,6 +1472,7 @@ public abstract class World implements IBlockAccess {
         int entitiesThisCycle = 0;
         // PaperSpigot start - Disable tick limiters
         //if (tickPosition < 0) tickPosition = 0;
+        Entity lastEntity = null; // IonSpigot - Merge Cannoning Entities
         for (tickPosition = 0; tickPosition < entityList.size(); tickPosition++) {
             // PaperSpigot end
             tickPosition = (tickPosition < entityList.size()) ? tickPosition : 0;
@@ -1489,9 +1490,17 @@ public abstract class World implements IBlockAccess {
             this.methodProfiler.a("tick");
             if (!entity.dead) {
                 try {
+                    // IonSpigot start - Merge Cannoning Entities
+                    if (lastEntity != null && entity.merge(lastEntity)) {
+                        entity.die();
+                        lastEntity.potential += entity.potential;
+                    } else {
+                    lastEntity = entity;
                     entity.tickTimer.startTiming(); // Spigot
                     this.g(entity);
                     entity.tickTimer.stopTiming(); // Spigot
+                    }
+                    // IonSpigot end
                 } catch (Throwable throwable1) {
                     // PaperSpigot start - Prevent tile entity and entity crashes
                     entity.tickTimer.stopTiming();

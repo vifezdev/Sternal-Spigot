@@ -118,6 +118,7 @@ public class EntityFallingBlock extends Entity {
                                     return;
                                 }
                                 this.world.setTypeAndData(blockposition, this.block, 3);
+                                this.respawn(); // IonSpigot
                                 world.spigotConfig.antiXrayInstance.updateNearbyBlocks(world, blockposition); // Spigot
                                 // CraftBukkit end
                                 if (block instanceof BlockFalling) {
@@ -197,6 +198,39 @@ public class EntityFallingBlock extends Entity {
         }
 
     }
+    // IonSpigot start - Merge Cannoning Entities
+    @Override
+    public boolean merge(Entity entity) {
+        return world.ionConfig.sandMerging && entity.ticksLived == getTicksLived() + 1
+            && entity.lastX == locX && entity.lastY == locY && entity.lastZ == locZ
+            && entity.lastMotX == motX && entity.lastMotY == motY - 0.03999999910593033D
+            && entity.lastMotZ == motZ && entity.getClass() == getClass()
+            && ((EntityFallingBlock) entity).getBlock() == getBlock();
+    }
+
+    @Override
+    protected void respawn() {
+        // If this hasn't been merged just skip this process, no reason for it.
+        if (this.potential <= 1) {
+            return;
+        }
+
+        // Store it as we need to set it to 1 below
+        int amount = this.potential;
+        for (int i = 1; i < amount; ++i) {
+            // Set the position of this entity to the last location
+            this.setPosition(this.lastX, this.lastY, this.lastZ);
+            this.motX = this.lastMotX;
+            this.motY = this.lastMotY + 0.03999999910593033D; // Add gravity back
+            this.motZ = this.lastMotZ;
+            // This will prevent a loop
+            this.potential = 1;
+
+            // and tick!
+            this.t_();
+        }
+    }
+    // IonSpigot end
 
     protected void b(NBTTagCompound nbttagcompound) {
         Block block = this.block != null ? this.block.getBlock() : Blocks.AIR;
