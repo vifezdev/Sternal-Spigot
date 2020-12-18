@@ -159,4 +159,15 @@ public class IonWorldConfig {
         sandMerging = getBoolean("sand.merging", true);
     }
 
+    public int potionTime;
+    public float potionSpeed;
+    public float potionGravity;
+    public float potionVerticalOffset;
+    private void Potions() {
+        potionTime = getInt("potions.time", 5);
+        potionGravity = getFloat("potions.gravity", 0.05F);
+        potionSpeed = getFloat("potions.speed", 0.5F);
+        potionVerticalOffset = getFloat("potions.vertical-offset", -20.0F);
+    }
+
 }

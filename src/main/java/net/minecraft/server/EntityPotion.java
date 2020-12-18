@@ -39,15 +39,17 @@ public class EntityPotion extends EntityProjectile {
     }
 
     protected float m() {
-        return 0.05F;
+        // IonSpigot start - Configurable Potions
+        return world.ionConfig.potionGravity;
     }
 
     protected float j() {
-        return 0.5F;
+        return world.ionConfig.potionSpeed;
     }
 
     protected float l() {
-        return -20.0F;
+        return world.ionConfig.potionVerticalOffset;
+        // IonSpigot end
     }
 
     public void setPotionValue(int i) {

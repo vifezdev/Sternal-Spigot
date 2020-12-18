@@ -126,7 +126,7 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             for (int i = 0; i < list.size(); ++i) {
                 Entity entity1 = (Entity) list.get(i);
 
-                if (entity1.ad() && (entity1 != entityliving || this.ar >= 5)) {
+                if (entity1.ad() && (entity1 != entityliving || this.ar >= (this instanceof EntityPotion ? world.ionConfig.potionTime : 5))) { // IonSpigot - Configurable Potions
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow((double) f, (double) f, (double) f);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
