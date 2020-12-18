@@ -229,7 +229,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 
     // TacoSpigot start
     public boolean canAcceptItems() {
-        return !this.n() && !this.q() && BlockHopper.f(this.u());
+        return world.ionConfig.hoppersAlwaysAcceptItems || !this.n() && !this.q() && BlockHopper.f(this.u()); // IonSpigot
     }
     // TacoSpigot end
 

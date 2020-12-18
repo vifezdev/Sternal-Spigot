@@ -97,7 +97,7 @@ public class BlockHopper extends BlockContainer {
     }
 
     private void e(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        boolean flag = !world.isBlockIndirectlyPowered(blockposition);
+        boolean flag = !world.ionConfig.hoppersCheckPower || !world.isBlockIndirectlyPowered(blockposition); // IonSpigot
 
         if (flag != ((Boolean) iblockdata.get(BlockHopper.ENABLED)).booleanValue()) {
             world.setTypeAndData(blockposition, iblockdata.set(BlockHopper.ENABLED, Boolean.valueOf(flag)), 4);

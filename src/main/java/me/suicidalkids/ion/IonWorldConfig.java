@@ -170,4 +170,11 @@ public class IonWorldConfig {
         potionVerticalOffset = getFloat("potions.vertical-offset", -20.0F);
     }
 
+    public boolean hoppersCheckPower;
+    public boolean hoppersAlwaysAcceptItems;
+    private void Hoppers() {
+        hoppersCheckPower = getBoolean("hoppers.check-power", true);
+        hoppersAlwaysAcceptItems = getBoolean("hoppers.always-accept-items", false);
+    }
+
 }
