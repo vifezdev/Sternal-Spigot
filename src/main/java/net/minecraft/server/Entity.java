@@ -136,6 +136,10 @@ public abstract class Entity implements ICommandListener {
     public boolean forceExplosionKnockback; // CraftBukkit - SPIGOT-949
     public boolean inUnloadedChunk = false; // PaperSpigot - Remove entities in unloaded chunks
     public boolean loadChunks = false; // PaperSpigot - Entities can load chunks they move through and keep them loaded
+    // IonSpigot start - Lag Compensated Ticking
+    protected boolean compensated;
+    protected void tick() {}
+    // IonSpigot end
 
     // Spigot start
     public Timing tickTimer = SpigotTimings.getEntityTimings(this); // Spigot
