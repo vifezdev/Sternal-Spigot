@@ -19,6 +19,12 @@ public class EntityEnderPearl extends EntityProjectile {
         super(world, entityliving);
         this.c = entityliving;
         this.loadChunks = world.paperSpigotConfig.loadUnloadedEnderPearls; // PaperSpigot
+        // IonSpigot start - Lag Compensated Pearls
+        if (entityliving instanceof EntityPlayer && world.ionConfig.lagCompensatedPearls) {
+            ((EntityPlayer) entityliving).lagCompensatedTicking.add(this);
+            compensated = true;
+        }
+        // IonSpigot end
     }
 
     protected void a(MovingObjectPosition movingobjectposition) {
@@ -87,7 +93,15 @@ public class EntityEnderPearl extends EntityProjectile {
 
     }
 
+    // IonSpigot start - Lag Compensated Pearls
+    @Override
     public void t_() {
+        if (!compensated) {
+            tick();
+        }
+    }
+    public void tick() {
+    // IonSpigot end
         EntityLiving entityliving = this.getShooter();
 
         if (entityliving != null && entityliving instanceof EntityHuman && !entityliving.isAlive()) {

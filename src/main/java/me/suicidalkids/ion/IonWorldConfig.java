@@ -177,4 +177,9 @@ public class IonWorldConfig {
         hoppersAlwaysAcceptItems = getBoolean("hoppers.always-accept-items", false);
     }
 
+    public boolean lagCompensatedPearls;
+    private void LagCompensatedPearls() {
+        lagCompensatedPearls = getBoolean("pearls.lag-compensated", true);
+    }
+
 }
