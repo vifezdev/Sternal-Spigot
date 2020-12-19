@@ -141,6 +141,11 @@ public class EntityIronGolem extends EntityGolem {
     protected void dropDeathLoot(boolean flag, int i) {
         int j = this.random.nextInt(3);
 
+        // IonSpigot start
+        if (!world.ionConfig.ironGolemsDropPoppies) {
+            j = 0;
+        }
+        // IonSpigot end
         int k;
 
         for (k = 0; k < j; ++k) {

@@ -182,4 +182,11 @@ public class IonWorldConfig {
         lagCompensatedPearls = getBoolean("pearls.lag-compensated", true);
     }
 
+    public boolean ironGolemsDropPoppies;
+    public boolean ironGolemsFallDamage;
+    private void IronGolems() {
+        ironGolemsFallDamage = getBoolean("iron-golems-drop-poppies", true);
+        ironGolemsDropPoppies = getBoolean("iron-golems-take-fall-damage", false);
+    }
+
 }
