@@ -548,8 +548,7 @@ public class DispenserRegistry {
                 EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(block.getLocation(), world, event.getVelocity().getX(), event.getVelocity().getY(), event.getVelocity().getZ(), (EntityLiving) null); // PaperSpigot
                 // CraftBukkit end
 
-                world.addEntity(entitytntprimed);
-                world.makeSound(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
+                world.dispenserOrder.queueSpawn(entitytntprimed); // IonSpigot - Column Spawning
                 // --itemstack.count; // CraftBukkit - handled above
                 return itemstack;
             }

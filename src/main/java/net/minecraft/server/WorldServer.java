@@ -697,6 +697,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                 }
                 timings.scheduledBlocksTicking.stopTiming(); // Spigot
 
+                this.dispenserOrder.dispatch(); // IonSpigot - Column Spawning
                 this.methodProfiler.b();
                 this.V.clear();
                 return !this.M.isEmpty();

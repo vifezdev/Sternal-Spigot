@@ -4,6 +4,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+// IonSpigot start
+import me.suicidalkids.ion.blocks.dispenser.DispenserOrder;
+import me.suicidalkids.ion.blocks.dispenser.NormalSpawning;
+// IonSpigot end
 import me.suicidalkids.ion.movement.MovementCache;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -145,6 +149,7 @@ public abstract class World implements IBlockAccess {
     }
     // IonSpigot end
     public final MovementCache movementCache = new MovementCache(); // IonSpigot - Movement Cache
+    public DispenserOrder dispenserOrder = new NormalSpawning(); // IonSpigot - Column Spawning
 
     public static long chunkToKey(int x, int z)
     {

@@ -36,6 +36,7 @@ public class BlockFalling extends Block {
 
             if (world.ionConfig.fixSandUnloading || !BlockFalling.instaFall && world.areChunksLoadedBetween(blockposition.a(-b0, -b0, -b0), blockposition.a(b0, b0, b0))) {
                 if (!world.isClientSide) {
+                    world.dispenserOrder.dispatch(); // IonSpigot - Column Spawning
                     // PaperSpigot start - Add FallingBlock source location API
                     org.bukkit.Location loc = new org.bukkit.Location(world.getWorld(), (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F));
                     EntityFallingBlock entityfallingblock = new EntityFallingBlock(loc, world, (double) blockposition.getX() + 0.5D, (double) blockposition.getY(), (double) blockposition.getZ() + 0.5D, world.getType(blockposition));

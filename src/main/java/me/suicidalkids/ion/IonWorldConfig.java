@@ -189,4 +189,15 @@ public class IonWorldConfig {
         ironGolemsDropPoppies = getBoolean("iron-golems-take-fall-damage", false);
     }
 
+    private void ColumnSpawning() {
+        // This may affect *some* cannons, though it would be a really small amount.
+        boolean tntColumnSpawning = getBoolean("tnt.more-efficient-merging", false);
+
+        if (tntColumnSpawning) {
+            world.dispenserOrder = new me.suicidalkids.ion.blocks.dispenser.ColumnSpawning();
+        } else {
+            world.dispenserOrder = new me.suicidalkids.ion.blocks.dispenser.NormalSpawning();
+        }
+    }
+
 }
