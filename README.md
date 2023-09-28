@@ -1,9 +1,13 @@
+# Forking
+You are allowed to fork this and if you want to sell licenses you can, but anything you do is your responssbility and i do not claim any responsibility for what you have done.
+If you sell licneses you must state in the ttitle Sternal Spigot Fork and you cannot sell it for over $25/License
+
 # Credits
 Vifez
 Kira Development
 
 # Rules
-You cannot repoduce this as your own iten, you can fork it but you nust credit Vifez @ Kira development
+You cannot reproduce this as your own iten, you can fork it but you must credit Vifez @ Kira development
 
 CraftBukkit
 ======
