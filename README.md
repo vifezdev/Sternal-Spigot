@@ -1,3 +1,10 @@
+# Credits
+Vifez
+Kira Development
+
+# Rules
+You cannot repoduce this as your own iten, you can fork it but you nust credit Vifez @ Kira development
+
 CraftBukkit
 ======
 An implemenation of the [Bukkit](https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit) plugin API for [Minecraft](https://minecraft.net/) servers, currently maintained by [SpigotMC](http://www.spigotmc.org/).
