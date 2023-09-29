@@ -3,12 +3,14 @@ package org.bukkit.craftbukkit;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import net.minecraft.server.EULAThread;
 import net.minecraft.server.MinecraftServer;
 
 import org.apache.commons.lang3.JavaVersion;
@@ -20,8 +22,17 @@ public class Main {
     public static boolean useConsole = true;
 
     public static void main(String[] args) {
+        List<String> Logotipo = new ArrayList<String>();
+        Logotipo.add("░██████╗████████╗███████╗██████╗░███╗░░██╗░█████╗░██╗░░░░░░██████╗██████╗░██╗░██████╗░░█████╗░████████╗");
+        Logotipo.add("██╔════╝╚══██╔══╝██╔════╝██╔══██╗████╗░██║██╔══██╗██║░░░░░██╔════╝██╔══██╗██║██╔════╝░██╔══██╗╚══██╔══╝");
+        Logotipo.add("╚█████╗░░░░██║░░░█████╗░░██████╔╝██╔██╗██║███████║██║░░░░░╚█████╗░██████╔╝██║██║░░██╗░██║░░██║░░░██║░░░");
+        Logotipo.add("░╚═══██╗░░░██║░░░██╔══╝░░██╔══██╗██║╚████║██╔══██║██║░░░░░░╚═══██╗██╔═══╝░██║██║░░╚██╗██║░░██║░░░██║░░░");
+        Logotipo.add("██████╔╝░░░██║░░░███████╗██║░░██║██║░╚███║██║░░██║███████╗██████╔╝██║░░░░░██║╚██████╔╝╚█████╔╝░░░██║░░░");
+        Logotipo.add("╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝╚══════╝╚═════╝░╚═╝░░░░░╚═╝░╚═════╝░░╚════╝░░░░╚═╝░░░");
+        Logotipo.add("                         Version 7.2");
+        Logotipo.forEach(System.out::println);
         if (!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_8)) {
-            System.err.println("TacoSpigot requires java 8");
+            System.err.println("SternalSpigot requires java 8");
             System.err.println("Oracle dropped all support for java " + SystemUtils.JAVA_VERSION);
             System.err.println("Please update to use TacoSpigot and the numerous bug-fixes, performance improvements, and security fixes");
             System.err.println("Shutting down");
