@@ -1,7 +1,3 @@
-# Forking
-You are allowed to fork this and if you want to sell licenses you can, but anything you do is your responssbility and i do not claim any responsibility for what you have done.
-If you sell licneses you must state in the ttitle Sternal Spigot Fork and you cannot sell it for over $25/License
-
 # Credits
 Vifez
 Kira Development
