@@ -29,7 +29,8 @@ public class Main {
         Logotipo.add("░╚═══██╗░░░██║░░░██╔══╝░░██╔══██╗██║╚████║██╔══██║██║░░░░░░╚═══██╗██╔═══╝░██║██║░░╚██╗██║░░██║░░░██║░░░");
         Logotipo.add("██████╔╝░░░██║░░░███████╗██║░░██║██║░╚███║██║░░██║███████╗██████╔╝██║░░░░░██║╚██████╔╝╚█████╔╝░░░██║░░░");
         Logotipo.add("╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝╚══════╝╚═════╝░╚═╝░░░░░╚═╝░╚═════╝░░╚════╝░░░░╚═╝░░░");
-        Logotipo.add("                         Version 7.2");
+        Logotipo.add("Sternal Spigot by vifez @ Kira Development")
+        Logotipo.add("Version 7.2");
         Logotipo.forEach(System.out::println);
         if (!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_8)) {
             System.err.println("SternalSpigot requires java 8");
