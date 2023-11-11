@@ -1,6 +1,5 @@
 # Credits
-Vifez
-Kira Development
+Vifez @ Kira Development
 
 # Rules
 Do not re distribute without any authorization or permission from vifez
