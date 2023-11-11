@@ -3,7 +3,9 @@ Vifez
 Kira Development
 
 # Rules
-You cannot reproduce this as your own iten, you can fork it but you must credit Vifez @ Kira development
+Do not re distribute without any authorization or permission from vifez
+Do not claim as your own
+Credits must be given
 
 CraftBukkit
 ======
