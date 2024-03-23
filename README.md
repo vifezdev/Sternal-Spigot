@@ -6,7 +6,7 @@ If you would like to re distribute a fork developed by your self, You are requir
 Do not claim as your own
 Credits must be given
 
-# Dev Creduts
+# Dev Credits
 CraftBukkit
 TacoSpigot
  
