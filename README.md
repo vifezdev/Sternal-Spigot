@@ -2,9 +2,10 @@
 Vifez @ Kira Development
 
 # Rules
-If you would like to re distribute a fork developed by your self, You are required to ask for confirmation from me on my discord: vifez
-Do not claim as your own
-Credits must be given
+If you would like to distribute a fork of yours, you are required to ask for confirmation from me on my Discord account (`vifez`), and under these conditions (unless specified otherwise by me):
+- You shall not claim this as your own
+- All credits must be given
+
 
 # Dev Credits
 CraftBukkit
