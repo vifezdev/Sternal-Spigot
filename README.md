@@ -1,5 +1,7 @@
 # Credits
 Vifez @ Krypton-Development
+Nate @ Krypton-Development
+Scalebound @ SB Development
 
 # Rules
 If you would like to re distribute a fork developed by your self, You are required to ask for confirmation from me on my discord: vifez
